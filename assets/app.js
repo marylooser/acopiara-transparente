@@ -220,7 +220,7 @@
     const paint = r => { if (r.off) { boxes.forEach(b => b.classList.add('off')); return; } boxes.forEach(b => { ['views', 'shares', 'like', 'dislike'].forEach(k => $$(`[data-c="${k}"]`, b).forEach(e => { if (r[k] != null) e.textContent = Number(r[k]).toLocaleString('pt-BR'); })); $$('[data-act="like"]', b).forEach(x => x.classList.toggle('on', r.mine === 'like')); $$('[data-act="dislike"]', b).forEach(x => { x.classList.toggle('on', r.mine === 'dislike'); x.classList.add('neg'); }); }); };
     $$('[data-act]', main).forEach(b => b.onclick = async () => {
       if (b.dataset.act === 'share') return openShare(item, p);
-      const r = await API.react(p, b.dataset.act); if (!r.off) paint(Object.assign({}, r));
+      const r = await API.react(p, b.dataset.act); if (!r.off) { paint(Object.assign({}, r)); if (r.mine && r.mine !== b.dataset.act) toast('Seu voto já foi registrado neste aparelho'); }
     });
     $$('.mbar[data-eng]').length && document.body.classList.add('has-mbar');
     paint(await API.hit(p));
@@ -639,9 +639,9 @@
     m.hidden = false; closeable(m);
     const cv = $('#cv'), draw = async () => { $('#sh-dim').textContent = fmt === 'story' ? 'Imagem vertical de 2160 × 3840 px (9:16), pronta para os stories do Instagram, WhatsApp e Facebook.' : 'Imagem vertical de 2160 × 2700 px (4:5), o formato que ocupa mais espaço no feed do Instagram e do Facebook.'; await CARDS.render(cv, it, fmt); };
     $$('.seg button', m).forEach(b => b.onclick = async () => { fmt = b.dataset.f; $$('.seg button', m).forEach(x => x.classList.toggle('on', x === b)); await draw(); });
-    $('#sh-img').onclick = async () => { const r = await CARDS.share(cv, it.nome + '-' + fmt, x.titulo); if (r !== 'cancel') API.share(p, fmt); };
+    $('#sh-img').onclick = async () => { const r = await CARDS.share(cv, it.nome + '-' + fmt, x.titulo); if (r !== 'cancel') API.share(p, fmt).then(r => r && !r.off && $$(`[data-eng] [data-c="shares"]`).forEach(e => e.textContent = Number(r.shares).toLocaleString('pt-BR'))); };
     $('#sh-dl').onclick = async () => { await CARDS.save(cv, it.nome + '-' + fmt); API.share(p, fmt + '-download'); };
-    $('#sh-wa').onclick = () => API.share(p, 'whatsapp');
+    $('#sh-wa').onclick = () => { API.share(p, 'whatsapp'); };
     $('#sh-cp').onclick = async () => { try { await navigator.clipboard.writeText(url); toast('Link copiado'); } catch (e) { prompt('Copie o link:', url); } API.share(p, 'link'); };
     await draw();
   }
