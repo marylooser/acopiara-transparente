@@ -1,0 +1,6 @@
+{
+  "name": "acopiara-transparente",
+  "private": true,
+  "description": "Site estático com funções serverless para contadores, reações, denúncias e notificações.",
+  "dependencies": { "web-push": "^3.6.7" }
+}

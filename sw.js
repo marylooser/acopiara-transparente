@@ -1,0 +1,17 @@
+// Service worker: funciona offline com o que já foi visto e recebe notificações.
+const V = 'at-v8';
+const CORE = ['./', 'index.html', 'assets/styles.css', 'assets/app.js', 'assets/api.js', 'assets/cards.js', 'assets/scenes.js', 'assets/cidade.js', 'assets/doodles.js', 'img/favicon.svg', 'data/casos.json', 'data/site.json', 'data/noticias.json', 'data/perfis.json', 'data/dinheiro.json', 'data/processos.json'];
+self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => Promise.all(CORE.map(u => c.add(u).catch(() => 0)))).then(() => self.skipWaiting())); });
+self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
+self.addEventListener('fetch', e => {
+  const u = new URL(e.request.url);
+  if (e.request.method !== 'GET' || u.origin !== location.origin || u.pathname.includes('/api/') || u.pathname.includes('/painel')) return;
+  const fresh = u.pathname.includes('/data/') || u.pathname.endsWith('/') || u.pathname.endsWith('.html') || u.pathname.endsWith('.js') || u.pathname.endsWith('.css');
+  if (fresh) e.respondWith(fetch(e.request).then(r => { const c = r.clone(); caches.open(V).then(k => k.put(e.request, c)); return r; }).catch(() => caches.match(e.request)));
+  else e.respondWith(caches.match(e.request).then(m => m || fetch(e.request).then(r => { const c = r.clone(); caches.open(V).then(k => k.put(e.request, c)); return r; })));
+});
+self.addEventListener('push', e => {
+  let d = {}; try { d = e.data.json(); } catch (x) { d = { title: 'Acopiara Transparente', body: e.data ? e.data.text() : 'Nova publicação no site.' }; }
+  e.waitUntil(self.registration.showNotification(d.title || 'Acopiara Transparente', { body: d.body || '', icon: 'img/icon-192.png', badge: 'img/icon-96.png', data: { url: d.url || '/' } }));
+});
+self.addEventListener('notificationclick', e => { e.notification.close(); const url = (e.notification.data && e.notification.data.url) || '/'; e.waitUntil(clients.matchAll({ type: 'window' }).then(ws => { for (const w of ws) if ('focus' in w) { w.navigate(url); return w.focus(); } return clients.openWindow(url); })); });

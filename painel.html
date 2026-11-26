@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel · Acopiara Transparente</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="img/logo-mark.svg" type="image/svg+xml">
+<script>try{var t=localStorage.getItem('tema');if(t)document.documentElement.dataset.theme=t;else if(matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.dataset.theme='dark'}catch(e){}</script>
+<style>
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--g)}
+.kpi{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--verde);border-radius:var(--r);padding:var(--s2) var(--s3)}
+.kpi:nth-child(2n){border-top-color:var(--azul)}
+.kpi b{display:block;font:800 30px/1.1 var(--serif)}
+.kpi span{font-size:13px;color:var(--muted)}
+.live{display:inline-flex;align-items:center;gap:8px}.live i{width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 var(--ok);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 60%,transparent)}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:var(--s3)}
+.chart svg{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font:12px var(--sans)}
+.legend{display:flex;gap:var(--s2);font-size:13px;color:var(--muted);margin-bottom:var(--s1)}
+.legend i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
+.den{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:var(--s2) var(--s3);margin-bottom:var(--s2)}
+.den header{display:flex;justify-content:space-between;gap:var(--s2);flex-wrap:wrap;font-size:13px;color:var(--muted);margin-bottom:var(--s1)}
+.den p{white-space:pre-wrap;margin:0 0 var(--s1)}
+@media(max-width:900px){.kpis{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header class="top"><div class="flagbar"><i></i><i></i><i></i></div><div class="wrap topin"><a class="brand" href="/"><img class="logomark" src="img/logo-mark.svg" alt="" width="40" height="40"><span><b>Painel</b><small>Acesso restrito</small></span></a>
+<div class="tools" style="margin-left:auto"><span class="live" id="live" hidden><i></i><b id="online">0</b>&nbsp;online agora</span><button class="btn ghost" id="sair" hidden>Sair</button></div></div></header>
+<main class="wrap" style="padding-top:var(--s4);padding-bottom:var(--s6)">
+  <section id="login" class="box" style="max-width:480px;margin:var(--s5) auto">
+    <h2>Entrar no painel</h2><p class="muted">Use a chave de acesso definida na Vercel (variável ADMIN_TOKEN). Ela fica salva só nesta aba.</p>
+    <form id="fl" class="form"><input class="field" id="tk" type="password" placeholder="Chave de acesso" autocomplete="current-password"><button class="btn solid" type="submit">Entrar</button><div id="err"></div></form>
+  </section>
+  <div id="app" hidden>
+    <div class="sec-head"><div><div class="kicker">Visão geral</div><h1 style="font-size:36px;margin:0">Audiência e participação</h1></div><button class="btn ghost" id="rel">Atualizar</button></div>
+    <div class="kpis" id="kpis"></div>
+    <div class="row" style="margin-top:var(--s3)">
+      <div class="c8 chart"><h4>Visualizações e visitantes únicos · últimos 30 dias</h4><div class="legend"><span><i style="background:var(--verde)"></i>visualizações</span><span><i style="background:var(--azul)"></i>visitantes únicos</span><span><i style="background:var(--ocre)"></i>compartilhamentos</span></div><div id="ch1"></div></div>
+      <div class="c4 chart"><h4>Compartilhamentos por formato</h4><div id="ch2"></div></div>
+    </div>
+    <div class="row" style="margin-top:var(--s3)">
+      <div class="c12 chart"><h4>Páginas mais vistas</h4><div id="ch3"></div></div>
+    </div>
+    <div class="row" style="margin-top:var(--s3)">
+      <div class="c8"><div class="sec-head" style="margin-top:var(--s3)"><h2>Denúncias e mensagens</h2><select class="field" id="fst" style="width:auto"><option value="">Todas</option><option value="nova">Novas</option><option value="em análise">Em análise</option><option value="publicada">Publicadas</option><option value="arquivada">Arquivadas</option></select></div><div id="dens"></div></div>
+      <div class="c4"><div class="box" style="margin-top:var(--s3)"><h4>Enviar notificação</h4><p class="muted" style="font-size:14px">Vai para todos que ativaram as notícias no celular ou no computador.</p>
+        <form id="fp" class="form" style="gap:12px"><input class="field" name="title" maxlength="80" placeholder="Título" required><textarea class="field" name="body" maxlength="200" placeholder="Texto curto" style="min-height:90px"></textarea><input class="field" name="url" placeholder="Endereço, ex.: /#/noticia/..."><button class="btn solid" type="submit">Enviar</button><div id="pres"></div></form></div></div>
+    </div>
+  </div>
+</main>
+<script>
+(function(){
+  const $=s=>document.querySelector(s), esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  let TK=sessionStorage.getItem('tk')||'', D=null, timer=null;
+  const api=(m,b)=>fetch('/api/admin',{method:m||'GET',headers:{Authorization:'Bearer '+TK,'Content-Type':'application/json'},body:b?JSON.stringify(b):undefined}).then(async r=>({st:r.status,j:await r.json().catch(()=>({}))}));
+  $('#fl').onsubmit=async e=>{e.preventDefault();TK=$('#tk').value.trim();await load(true)};
+  $('#sair').onclick=()=>{sessionStorage.removeItem('tk');location.reload()};
+  $('#rel').onclick=()=>load();
+  async function load(first){
+    const r=await api(); if(r.st===401){$('#err').innerHTML='<div class="alert err">Chave incorreta.</div>';TK='';sessionStorage.removeItem('tk');return}
+    if(r.j.off){$('#err').innerHTML='<div class="alert err">'+esc(r.j.erro||'Banco não configurado.')+'</div>';return}
+    sessionStorage.setItem('tk',TK); D=r.j; $('#login').hidden=true; $('#app').hidden=false; $('#sair').hidden=false; $('#live').hidden=false; draw();
+    if(!timer) timer=setInterval(load,30000);
+  }
+  const n=v=>Number(v||0).toLocaleString('pt-BR');
+  function draw(){
+    const t=D.total; $('#online').textContent=n(t.online);
+    $('#kpis').innerHTML=[['Visualizações',t.views],['Visitantes únicos',t.unicos],['Compartilhamentos',t.shares],['Denúncias recebidas',t.denuncias],['Curtidas',t.like],['Não curtidas',t.dislike],['Inscritos nas notificações',t.inscritos],['Online agora',t.online]].map(([a,b])=>`<div class="kpi"><b>${n(b)}</b><span>${a}</span></div>`).join('');
+    // série de 30 dias
+    const S=D.serie, W=760, H=240, pl=40, pb=26, mx=Math.max(1,...S.map(s=>Math.max(s.views,s.unicos,s.shares))), x=i=>pl+i*(W-pl-10)/(S.length-1), y=v=>H-pb-(v/mx)*(H-pb-10);
+    const line=(k,c)=>`<polyline fill="none" stroke="${c}" stroke-width="2.5" points="${S.map((s,i)=>x(i)+','+y(s[k])).join(' ')}"/>`;
+    const ticks=[0,.5,1].map(f=>`<line x1="${pl}" x2="${W-10}" y1="${y(mx*f)}" y2="${y(mx*f)}" stroke="var(--line)"/><text x="${pl-6}" y="${y(mx*f)+4}" text-anchor="end">${n(Math.round(mx*f))}</text>`).join('');
+    const lab=S.map((s,i)=>i%5===0||i===S.length-1?`<text x="${x(i)}" y="${H-6}" text-anchor="middle">${s.dia.slice(8)}/${s.dia.slice(5,7)}</text>`:'').join('');
+    $('#ch1').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfico de linhas">${ticks}${line('views','var(--verde)')}${line('unicos','var(--azul)')}${line('shares','var(--ocre)')}${lab}</svg>`;
+    // formatos
+    const F=Object.entries(D.porFormato||{}).sort((a,b)=>b[1]-a[1]), fm=Math.max(1,...F.map(f=>f[1]));
+    const nomes={story:'Stories (enviado)',feed:'Feed (enviado)','story-download':'Stories (baixado)','feed-download':'Feed (baixado)',whatsapp:'WhatsApp',link:'Link copiado'};
+    $('#ch2').innerHTML=F.length?F.map(([k,v])=>`<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:14px"><span>${esc(nomes[k]||k)}</span><b>${n(v)}</b></div><div class="bar" style="margin-top:4px"><i style="width:${100*v/fm}%;transform:none"></i></div></div>`).join(''):'<p class="muted">Ainda sem compartilhamentos.</p>';
+    // páginas
+    const P=D.paginas.slice(0,20), pm=Math.max(1,...P.map(p=>p.views));
+    $('#ch3').innerHTML=P.length?`<div class="tscroll"><table class="t"><thead><tr><th>Página</th><th style="min-width:200px">Visualizações</th><th class="num">Curtidas</th><th class="num">Não curtidas</th><th class="num">Compart.</th></tr></thead><tbody>${P.map(p=>`<tr><td><a href="/#/${esc(p.p==='inicio'?'':p.p)}" target="_blank">${esc(p.p)}</a></td><td><div style="display:flex;gap:10px;align-items:center"><div class="bar" style="flex:1"><i style="width:${100*p.views/pm}%;transform:none"></i></div><b style="min-width:48px;text-align:right">${n(p.views)}</b></div></td><td class="num">${n(p.like)}</td><td class="num">${n(p.dislike)}</td><td class="num">${n(p.shares)}</td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">Ainda sem visitas registradas.</p>';
+    dens();
+  }
+  function dens(){
+    const f=$('#fst').value, L=D.denuncias.filter(d=>!f||d.status===f);
+    const tipos={denuncia:'Denúncia',reclamacao:'Reclamação',noticia:'Notícia',correcao:'Correção',outro:'Outro'};
+    $('#dens').innerHTML=L.length?L.map(d=>`<article class="den"><header><span><b>${esc(tipos[d.tipo]||d.tipo)}</b> · ${esc(d.area||'sem área')} · ${new Date(d.em).toLocaleString('pt-BR')}</span><span>${esc(d.protocolo)}</span></header>
+      ${d.local||d.quando?`<p class="muted" style="font-size:14px">${esc(d.local)}${d.local&&d.quando?' · ':''}${esc(d.quando)}</p>`:''}<p>${esc(d.texto)}</p>${d.links?`<p style="font-size:14px">${esc(d.links).replace(/(https?:\/\/\S+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>')}</p>`:''}
+      <p style="font-size:14px">${d.anonimo?'<span class="chip">anônimo</span>':'Contato: '+esc(d.contato||'—')}</p>
+      <select class="field" data-p="${esc(d.protocolo)}" style="width:auto;height:36px">${['nova','em análise','publicada','arquivada'].map(s=>`<option ${s===d.status?'selected':''}>${s}</option>`).join('')}</select></article>`).join(''):'<p class="muted">Nada por aqui.</p>';
+    document.querySelectorAll('#dens select').forEach(s=>s.onchange=async()=>{await api('POST',{acao:'den-status',protocolo:s.dataset.p,status:s.value});const d=D.denuncias.find(x=>x.protocolo===s.dataset.p);if(d)d.status=s.value});
+  }
+  $('#fst').onchange=()=>D&&dens();
+  $('#fp').onsubmit=async e=>{e.preventDefault();const b=Object.fromEntries(new FormData(e.target));b.acao='push';$('#pres').innerHTML='<p class="muted">Enviando…</p>';const r=await api('POST',b);$('#pres').innerHTML=r.j.erro?`<div class="alert err">${esc(r.j.erro)}</div>`:`<div class="alert ok">Enviada a ${n(r.j.enviados)} de ${n(r.j.total)} inscritos.</div>`};
+  if(TK) load(true);
+})();
+</script>
+</body>
+</html>
