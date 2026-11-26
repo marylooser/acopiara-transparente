@@ -627,20 +627,50 @@
     if (x.fato) return { kicker: 'Notícia · ' + x.veiculo + ' · ' + fmtData(x.data), titulo: x.titulo, resumo: x.analise[0], cena: cenaKey(x.cena), link: SITE + '/#/noticia/' + x.id, fonte: x.veiculo + ' e documentos públicos', cta: 'Leia a análise completa:', nome: 'acopiara-noticia-' + x.id };
     return { kicker: x.area + (x.periodo ? ' · ' + per(x.periodo) : ''), titulo: x.titulo, valor: x.valor, valor_rotulo: x.valor_rotulo, resumo: x.resumo, status: x.status, cena: cenaKey(x.cena || x.area), link: SITE + '/#/caso/' + x.id, fonte: (x.fontes && x.fontes[0] && x.fontes[0].tipo) || 'documentos públicos', nome: 'acopiara-caso-' + x.id };
   }
+
+  function slidesDe(x, link) {
+    const m = x.materia || {}, cut = (t, n) => { t = String(t || ''); return t.length > n ? t.slice(0, t.lastIndexOf(' ', n - 1)) + '…' : t; }, S = [];
+    const fatos = x.fato || (x.o_que_aconteceu || []).filter(p => !/^[a-z]\) /.test(p))[0];
+    S.push({ secao: 'O problema', titulo: 'O que está errado', texto: cut(m.problema || x.resumo, 420) });
+    if (fatos) S.push({ secao: 'Os fatos', titulo: 'O que os documentos mostram', texto: cut(fatos, 520) });
+    const pes = (x.pessoas || []).slice(0, 4).map(p => p.nome + (p.papel ? ' — ' + cut(p.papel, 70) : ''));
+    if (pes.length) S.push({ secao: 'Quem está envolvido', titulo: 'Os responsáveis', lista: pes });
+    if ((m.direitos || []).length) S.push({ secao: 'Direitos atingidos', titulo: 'O que a Constituição garante', lista: m.direitos.slice(0, 4).map(d => d.t) });
+    if (m.efeitos_coletivos) S.push({ secao: 'O que isso causa a você', titulo: 'O preço para a cidade', texto: cut(m.efeitos_coletivos, 420) });
+    const cab = (m.cabiveis || []).slice(0, 3).map(t => cut(t, 120));
+    if (cab.length) S.push({ secao: 'O que pode ser feito', titulo: 'Medidas cabíveis', lista: cab });
+    if (m.conclusao) S.push({ secao: 'Conclusão crítica', titulo: '', texto: cut(m.conclusao, 560), tema: 'escuro' });
+    S.push({ secao: 'Fiscalize', titulo: 'Leia completo, com os documentos', texto: 'No link: ' + link + '. Cada informação tem a fonte oficial. Compartilhe. Cobrar é direito.', tema: 'escuro' });
+    const total = S.length + 1; S.forEach((s, i) => { s.n = i + 2; s.total = total; s.link = link; });
+    return S;
+  }
   async function openShare(x, p) {
     const it = shareItem(x), m = $('#modal'); let fmt = 'story';
     const url = 'https://' + it.link, txt = x.titulo + ' — ' + url;
     m.innerHTML = `<div class="in" role="dialog" aria-label="Compartilhar"><div class="mh"><h3>Compartilhar</h3><button class="ibtn" data-x aria-label="Fechar">${ic('x')}</button></div><div class="mb"><div class="share">
       <div class="pv"><canvas id="cv" aria-label="Prévia da imagem"></canvas></div>
-      <div><div class="seg" role="tablist"><button class="on" data-f="story">Stories · 9:16</button><button data-f="feed">Feed · 4:5</button></div>
+      <div><div class="seg" role="tablist" id="sh-modo"><button class="on" data-m="uma">Uma imagem</button><button data-m="seq">Sequência</button></div><div class="seg" role="tablist" id="sh-fmt" style="margin-top:8px"><button class="on" data-f="story">Stories · 9:16</button><button data-f="feed">Feed · 4:5</button></div>
         <p class="muted" style="font-size:15px" id="sh-dim">Imagem vertical de 2160 × 3840 px, pronta para Instagram, WhatsApp e Facebook. O texto fica centralizado e a ilustração do caso vai no topo.</p>
-        <div class="acts"><button class="btn solid" id="sh-img">${ic('share')}Compartilhar imagem</button><button class="btn" id="sh-dl">${ic('baixar')}Baixar imagem</button>
+        <div class="thumbs" id="sh-th" hidden></div><div class="acts"><button class="btn solid" id="sh-img">${ic('share')}Compartilhar imagem</button><button class="btn" id="sh-dl">${ic('baixar')}Baixar imagem</button>
         <a class="btn" id="sh-wa" href="https://wa.me/?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar link pelo WhatsApp</a><button class="btn ghost" id="sh-cp">${ic('link')}Copiar link</button></div></div></div></div></div>`;
     m.hidden = false; closeable(m);
-    const cv = $('#cv'), draw = async () => { $('#sh-dim').textContent = fmt === 'story' ? 'Imagem vertical de 2160 × 3840 px (9:16), pronta para os stories do Instagram, WhatsApp e Facebook.' : 'Imagem vertical de 2160 × 2700 px (4:5), o formato que ocupa mais espaço no feed do Instagram e do Facebook.'; await CARDS.render(cv, it, fmt); };
-    $$('.seg button', m).forEach(b => b.onclick = async () => { fmt = b.dataset.f; $$('.seg button', m).forEach(x => x.classList.toggle('on', x === b)); await draw(); });
-    $('#sh-img').onclick = async () => { const r = await CARDS.share(cv, it.nome + '-' + fmt, x.titulo); if (r !== 'cancel') API.share(p, fmt).then(r => r && !r.off && $$(`[data-eng] [data-c="shares"]`).forEach(e => e.textContent = Number(r.shares).toLocaleString('pt-BR'))); };
-    $('#sh-dl').onclick = async () => { await CARDS.save(cv, it.nome + '-' + fmt); API.share(p, fmt + '-download'); };
+    let modo = 'uma', seqCv = [];
+    const cv = $('#cv'), draw = async () => {
+      $('#sh-th').hidden = modo !== 'seq';
+      $('#sh-img').innerHTML = ic('share') + (modo === 'seq' ? 'Compartilhar a sequência' : 'Compartilhar imagem'); $('#sh-dl').innerHTML = ic('baixar') + (modo === 'seq' ? 'Baixar todas' : 'Baixar imagem');
+      const pvx = $('#pvimg'); if (pvx) pvx.remove(); cv.style.display = '';
+      await CARDS.render(cv, it, fmt);
+      if (modo === 'uma') { $('#sh-dim').textContent = fmt === 'story' ? 'Imagem vertical de 2160 × 3840 px (9:16), pronta para os stories do Instagram, WhatsApp e Facebook.' : 'Imagem vertical de 2160 × 2700 px (4:5), o formato que ocupa mais espaço no feed do Instagram e do Facebook.'; return; }
+      const S = slidesDe(x, it.link); seqCv = [cv];
+      for (const s of S) { const c = document.createElement('canvas'); await CARDS.slide(c, s, fmt); seqCv.push(c); }
+      const pv0 = $('#pvimg'); if (pv0) pv0.remove(); cv.style.display = '';
+      $('#sh-th').innerHTML = ''; seqCv.forEach((c, i) => { const t = document.createElement('img'); t.src = c.toDataURL('image/jpeg', .5); t.alt = 'Imagem ' + (i + 1); t.onclick = () => { let pv = $('#pvimg'); if (!pv) { pv = document.createElement('img'); pv.id = 'pvimg'; pv.style.cssText = 'width:100%;height:auto;display:block'; cv.after(pv); } pv.src = c.toDataURL('image/jpeg', .85); cv.style.display = 'none'; $$('#sh-th img').forEach(z => z.classList.toggle('on', z === t)); }; $('#sh-th').appendChild(t); });
+      $('#sh-dim').textContent = `${seqCv.length} imagens em sequência (${fmt === 'story' ? 'stories 9:16' : 'carrossel do feed 4:5'}). No celular, toque em "Compartilhar a sequência" e escolha o Instagram: no feed elas viram um carrossel; nos stories, entram uma depois da outra. No computador, as imagens são baixadas numeradas.`;
+    };
+    $$('#sh-modo button', m).forEach(b => b.onclick = async () => { modo = b.dataset.m; $$('#sh-modo button', m).forEach(x => x.classList.toggle('on', x === b)); await draw(); });
+    $$('#sh-fmt button', m).forEach(b => b.onclick = async () => { fmt = b.dataset.f; $$('#sh-fmt button', m).forEach(x => x.classList.toggle('on', x === b)); await draw(); });
+    $('#sh-img').onclick = async () => { const r = modo === 'seq' ? await CARDS.shareMany(seqCv, it.nome + '-' + fmt, x.titulo) : await CARDS.share($('#cv'), it.nome + '-' + fmt, x.titulo); if (r !== 'cancel') API.share(p, fmt).then(r => r && !r.off && $$(`[data-eng] [data-c="shares"]`).forEach(e => e.textContent = Number(r.shares).toLocaleString('pt-BR'))); };
+    $('#sh-dl').onclick = async () => { if (modo === 'seq') await CARDS.saveMany(seqCv, it.nome + '-' + fmt); else await CARDS.save($('#cv'), it.nome + '-' + fmt); API.share(p, fmt + '-download'); };
     $('#sh-wa').onclick = () => { API.share(p, 'whatsapp'); };
     $('#sh-cp').onclick = async () => { try { await navigator.clipboard.writeText(url); toast('Link copiado'); } catch (e) { prompt('Copie o link:', url); } API.share(p, 'link'); };
     await draw();

@@ -84,5 +84,53 @@ window.CARDS = (function () {
   }
   async function save(canvas, nome) { download(await blob(canvas), nome + '.jpg'); }
   function download(b, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); }
-  return { render, share, save, fmtPer, brl };
+
+  // ---- sequência (carrossel do feed ou stories em série) ----
+  // s: { n, total, secao, titulo, texto, lista[], link }
+  async function slide(canvas, s, formato) {
+    const F = FMT[formato] || FMT.story, H = F.H, story = formato === 'story';
+    try { await Promise.all(['800 80px Fraunces', '700 30px Inter', '400 40px Inter'].map(f => document.fonts.load(f))); } catch (e) { }
+    canvas.width = W * K; canvas.height = H * K; const ctx = canvas.getContext('2d'); ctx.setTransform(K, 0, 0, K, 0, 0);
+    const dark = s.tema === 'escuro';
+    ctx.fillStyle = dark ? V : P; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = V; ctx.fillRect(0, 0, W / 3, 16); ctx.fillStyle = '#fff'; ctx.fillRect(W / 3, 0, W / 3, 16); ctx.fillStyle = A; ctx.fillRect(2 * W / 3, 0, W / 3, 16);
+    // cabeçalho: contador e seção
+    const hy = story ? 150 : 110;
+    ctx.font = '700 28px Inter, Arial'; ctx.fillStyle = dark ? M : A; ctx.fillText((s.secao || '').toUpperCase(), L, hy);
+    const cnt = s.n + '/' + s.total; ctx.textAlign = 'right'; ctx.fillStyle = dark ? '#C9D6CF' : C; ctx.fillText(cnt, R, hy); ctx.textAlign = 'left';
+    ctx.fillStyle = dark ? M : M; ctx.fillRect(L, hy + 24, 90, 8);
+    // rodapé
+    const fy = H - (story ? 200 : 150);
+    ctx.fillStyle = dark ? 'rgba(255,255,255,.25)' : '#DAD8CF'; ctx.fillRect(L, fy, MW, 2);
+    const lg = await load('img/logo-mark.svg'), ls = story ? 96 : 80; if (lg) ctx.drawImage(lg, L, fy + 30, ls, ls);
+    ctx.font = '800 32px Fraunces, Georgia, serif'; ctx.fillStyle = dark ? '#fff' : T; ctx.fillText('Acopiara Transparente', L + ls + 24, fy + 30 + ls / 2 - 4);
+    let fs = 26; ctx.font = '600 ' + fs + 'px Inter, Arial'; while (ctx.measureText(s.link).width > MW - ls - 24 && fs > 16) { fs -= 2; ctx.font = '600 ' + fs + 'px Inter, Arial'; }
+    ctx.fillStyle = dark ? '#C9D6CF' : C; ctx.fillText(s.link, L + ls + 24, fy + 30 + ls / 2 + 34);
+    if (s.n < s.total) { ctx.font = '700 28px Inter, Arial'; ctx.fillStyle = dark ? M : V; ctx.textAlign = 'right'; ctx.fillText('arraste →', R, fy - 28); ctx.textAlign = 'left'; }
+    // conteúdo centralizado e ajustado
+    const zt = hy + 90, zb = fy - 80, avail = zb - zt;
+    let ts = story ? 86 : 68, bs = story ? 48 : 38, plan;
+    for (let i = 0; i < 40; i++) { plan = lay(ts, bs); if (plan.h <= avail) break; if (bs > 26) bs -= 2; else if (ts > 44) ts -= 4; else break; }
+    let y = zt + Math.max(0, (avail - plan.h) / 2); plan.ops.forEach(o => o(y));
+    return canvas;
+    function lay(ts, bs) {
+      const ops = []; let h = 0; const add = (dh, fn) => { const y0 = h; ops.push(b => fn(b + y0)); h += dh; };
+      if (s.titulo) { ctx.font = `800 ${ts}px Fraunces, Georgia, serif`; const tl = wrap(ctx, s.titulo, MW), lh = Math.round(ts * 1.12);
+        add(tl.length * lh, y => { ctx.fillStyle = dark ? '#fff' : T; ctx.font = `800 ${ts}px Fraunces, Georgia, serif`; tl.forEach((l, i) => ctx.fillText(l, L, y + ts + i * lh)); }); h += 40; }
+      if (s.destaque) { const vs = Math.round(ts * 1.2); ctx.font = `800 ${vs}px Fraunces, Georgia, serif`; const vw = Math.min(ctx.measureText(s.destaque).width, MW);
+        add(vs + 30, y => { ctx.fillStyle = M; ctx.fillRect(L - 10, y + vs * .12, vw + 20, vs * .98); ctx.fillStyle = T; ctx.font = `800 ${vs}px Fraunces, Georgia, serif`; ctx.fillText(s.destaque, L, y + vs * .9); }); }
+      if (s.texto) { ctx.font = `400 ${bs}px Inter, Arial`; const bl = wrap(ctx, s.texto, MW), lh = Math.round(bs * 1.42);
+        add(bl.length * lh, y => { ctx.fillStyle = dark ? '#E8EFEA' : '#2A332E'; ctx.font = `400 ${bs}px Inter, Arial`; bl.forEach((l, i) => ctx.fillText(l, L, y + bs + i * lh)); }); h += 24; }
+      (s.lista || []).forEach(it => { ctx.font = `500 ${bs}px Inter, Arial`; const bl = wrap(ctx, it, MW - 50), lh = Math.round(bs * 1.38);
+        add(bl.length * lh + 22, y => { ctx.fillStyle = dark ? M : V; ctx.fillRect(L, y + bs * .45, 18, 18); ctx.fillStyle = dark ? '#fff' : T; ctx.font = `500 ${bs}px Inter, Arial`; bl.forEach((l, i) => ctx.fillText(l, L + 50, y + bs + i * lh)); }); });
+      return { ops, h };
+    }
+  }
+  async function shareMany(canvases, nome, titulo) {
+    const files = await Promise.all(canvases.map(async (cv, i) => new File([await blob(cv)], `${nome}-${String(i + 1).padStart(2, '0')}.jpg`, { type: 'image/jpeg' })));
+    if (navigator.canShare && navigator.canShare({ files })) { try { await navigator.share({ files, title: titulo }); return 'shared'; } catch (e) { if (e.name === 'AbortError') return 'cancel'; } }
+    for (const f of files) { download(f, f.name); await new Promise(r => setTimeout(r, 400)); } return 'download';
+  }
+  async function saveMany(canvases, nome) { for (let i = 0; i < canvases.length; i++) { download(await blob(canvases[i]), `${nome}-${String(i + 1).padStart(2, '0')}.jpg`); await new Promise(r => setTimeout(r, 400)); } }
+  return { render, share, save, slide, shareMany, saveMany, fmtPer, brl };
 })();
