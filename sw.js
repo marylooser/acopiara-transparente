@@ -1,5 +1,5 @@
 // Service worker: funciona offline com o que já foi visto e recebe notificações.
-const V = 'at-v12';
+const V = 'at-v13';
 const CORE = ['./', 'index.html', 'assets/styles.css', 'assets/app.js', 'assets/api.js', 'assets/cards.js', 'assets/scenes.js', 'assets/doodles.js', 'img/favicon.svg', 'data/casos.json', 'data/site.json', 'data/noticias.json', 'data/perfis.json', 'data/dinheiro.json', 'data/processos.json'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => Promise.all(CORE.map(u => c.add(u).catch(() => 0)))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
