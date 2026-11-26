@@ -511,3 +511,5 @@ body.m .vb span{font-size:10.5px}
 .tl .yr:before{content:"";position:absolute;left:calc(-1*var(--s4) + 3px);top:50%;width:15px;height:15px;border-radius:3px;background:var(--verde);transform:translateY(-50%)}
 body.m .tl .yr{margin-left:0}
 body.m .tl .yr:before{left:-21px}
+
+.capa{margin:0}.capa img{display:block;width:100%;height:auto;border-radius:var(--r)}.capa figcaption{font:600 11.5px/1.4 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:8px;text-align:center}

@@ -232,7 +232,7 @@
       <h1>O dinheiro é público.<span>A informação também.</span></h1>
       <p class="lead">${esc(X.intro)}</p>
       <div class="btns"><a class="btn solid" href="#/casos">Ver todos os casos</a><a class="btn" href="#/noticias">Notícias e análises</a><a class="btn azul" href="#/denuncie">Envie uma denúncia</a></div>
-      </div><div class="c5 heroart">${M ? '' : CIDADE()}</div></div>${M ? `<div class="heroart m">${CIDADE()}</div>` : ''}
+      </div><div class="c5 heroart">${M ? '' : `<figure class="capa"><img src="img/cenas/capa-acopiara.jpg" alt="Ilustração de Acopiara: Arco da Santa, Igreja Matriz do Perpétuo Socorro, Igreja de São Francisco, Barragem Dr. Tibúrcio Soares e Polo de Lazer" width="1568" height="660"><figcaption>Arco da Santa · Matriz do Perpétuo Socorro · São Francisco · Barragem Dr. Tibúrcio Soares · Polo de Lazer</figcaption></figure>`}</div></div>${M ? `<div class="heroart m"><figure class="capa"><img src="img/cenas/capa-acopiara.jpg" alt="Ilustração de Acopiara: Arco da Santa, Igreja Matriz do Perpétuo Socorro, Igreja de São Francisco, Barragem Dr. Tibúrcio Soares e Polo de Lazer" width="1568" height="660"><figcaption>Arco da Santa · Matriz do Perpétuo Socorro · São Francisco · Barragem Dr. Tibúrcio Soares · Polo de Lazer</figcaption></figure></div>` : ''}
       <div class="stats">${(X.numeros || []).slice(0, 5).map(n => `<div class="stat"><b>${nb(n.valor)}</b><span>${esc(n.rotulo)}</span></div>`).join('')}</div>
     </div></section>
     <section class="block"><div class="wrap"><div class="sec-head"><div><div class="kicker">Comece por aqui</div><h2>Os casos que mais pesam no bolso de Acopiara</h2></div>${M ? '' : `<a class="btn ghost" href="#/casos">Todos os ${CASOS.length} casos</a>`}</div>
