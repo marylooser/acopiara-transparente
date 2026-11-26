@@ -212,9 +212,9 @@ body.m.has-mbar{padding-bottom:calc(120px + env(safe-area-inset-bottom))}
 .flow text{fill:var(--ink)}
 
 /* ---------- tabelas ---------- */
-.tscroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.tscroll{overflow:visible;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
 table.t{width:100%;border-collapse:collapse;font-size:14.5px}
-table.t th{background:var(--ink);color:var(--bg);text-align:left;padding:10px 12px;font-weight:600;white-space:nowrap}
+table.t th{background:var(--ink);color:var(--bg);text-align:left;padding:10px 12px;font-weight:600}
 table.t td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 table.t td.num,table.t th.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 table.t tr:hover td{background:color-mix(in srgb,var(--verde-2) 50%,transparent)}
@@ -445,7 +445,7 @@ body.m .estcards{grid-template-columns:1fr}
 body.m .xgrid{grid-template-columns:1fr}
 #etb td:nth-child(7){font-size:12.5px;min-width:260px}
 .aside{max-height:calc(100vh - var(--top) - 48px);overflow:auto}
-#el .tscroll{max-height:560px;overflow:auto}#el thead th{position:sticky;top:0;z-index:1}
+
 
 .caps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--g);margin:var(--s3) 0}
 .cap{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
@@ -513,3 +513,12 @@ body.m .tl .yr{margin-left:0}
 body.m .tl .yr:before{left:-21px}
 
 .capa{margin:0}.capa img{display:block;width:100%;height:auto;border-radius:var(--r)}.capa figcaption{font:600 11.5px/1.4 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:8px;text-align:center}
+
+/* tabelas sem barra de rolagem: o conteúdo quebra dentro da célula */
+table.t{table-layout:auto}
+table.t td,table.t th{overflow-wrap:anywhere;hyphens:auto}
+table.t td.num,table.t th.num{overflow-wrap:normal}
+table.t.wide{font-size:13px}table.t.wide td,table.t.wide th{padding:8px 8px}
+table.t td.obj{font-size:12px;line-height:1.4;color:var(--ink-2);min-width:180px}
+tr.mais{display:none}.tscroll.aberta tr.mais{display:table-row}
+.vermais{margin-top:8px}
