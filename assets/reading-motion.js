@@ -56,7 +56,7 @@
   function scan(scope) {
     for (const el of live.keys()) if (!el.isConnected) { observer.unobserve(el); live.delete(el); }
     scope.querySelectorAll('.materia > .sec,.reading-section,.rights-section,.card,.lrow,.tut,.proc,.est').forEach(el => observe(el, 'section'));
-    scope.querySelectorAll('.stat b,.bigval .mk,.kpi b,.card .val,.lrow .val,.est .v,.bigs b,.financial-summary dd').forEach(el => { if (/^R\$/.test(el.textContent.trim())) observe(el, 'money'); });
+    scope.querySelectorAll('.stat b,.bigval .mk,.kpi b,.card .val,.lrow .val,.est .v,.bigs b,.financial-summary dd,.scope-number').forEach(el => { if (/^R\$/.test(el.textContent.trim())) observe(el, 'money'); });
     scope.querySelectorAll('.chart .bar i,.chart .vb i').forEach(el => observe(el, 'bar'));
   }
   function finish() { running.forEach(a => a.finish()); counters.forEach(done => done()); }

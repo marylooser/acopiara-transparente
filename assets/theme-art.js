@@ -83,7 +83,7 @@
         if (!wanted || state.retries.has(wanted)) return;
         state.retries.add(wanted);
         const version = ++state.version, url = new URL(wanted, document.baseURI);
-        url.searchParams.set('artretry', '23');
+        url.searchParams.set('artretry', '24');
         preload(url.href).then(() => {
           if (el.isConnected && state.version === version && target(el) === wanted) el.src = url.href;
         }).catch(() => { /* Keep meaningful alt text if the retry also fails. */ });
@@ -100,7 +100,7 @@
     preload(src).then(() => src).catch(async () => {
       if (state.retries.has(src) || !el.isConnected || version !== state.version) throw new Error('Image unavailable');
       state.retries.add(src);
-      const url = new URL(src, document.baseURI); url.searchParams.set('artretry', '23');
+      const url = new URL(src, document.baseURI); url.searchParams.set('artretry', '24');
       await preload(url.href); return url.href;
     }).then(async loadedSrc => {
       if (!el.isConnected || version !== state.version || target(el) !== src) return;

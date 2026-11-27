@@ -20,10 +20,12 @@
   const toast = t => { const d = document.createElement('div'); d.className = 'toast'; d.setAttribute('role', 'status'); d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); };
 
   document.body.classList.toggle('m', M);
-  const j = u => fetch(u).then(r => r.ok ? r.json() : []).catch(() => []);
+  const j = u => fetch(u, { cache: 'no-cache' }).then(r => r.ok ? r.json() : []).catch(() => []);
   Promise.all([j('data/casos.json'), j('data/site.json'), j('data/noticias.json'), j('data/perfis.json'), j('data/dinheiro.json'), j('data/processos.json')]).then(([c, x, n, p, d, pr]) => {
     DIN = d || {}; PROC = pr || [];
     CASOS = c; X = x; NOT = (n || []).sort((a, b) => b.data.localeCompare(a.data)); PERF = p || [];
+    (X.numeros || []).forEach(n => { if (n.chave === 'casos') n.valor = String(CASOS.length); });
+    (X.balanco?.numeros || []).forEach(n => { if (n.chave === 'casos') n.n = CASOS.length; });
     $('#footdoodle').innerHTML = SCENES.footer(); route(); animate($('.foot')); chrome();
   });
   window.addEventListener('hashchange', route);
@@ -280,6 +282,7 @@
     const b = X.balanco || {};
     return `<section class="balanco"><div class="wrap"><div class="kicker">O balanço</div><h2 style="font-size:clamp(28px,4vw,44px)">${esc(b.titulo)}</h2><p class="lead">${esc(b.intro)}</p>
       <div class="bigs">${(b.numeros || []).map(n => `<div><b data-n="${n.n}" data-pre="${esc(n.pre || '')}" data-suf="${esc(n.suf || '')}" data-dec="${n.dec || 0}">${esc(n.pre || '')}0${esc(n.suf || '')}</b><span>${esc(n.rotulo)}</span></div>`).join('')}</div>
+      ${b.base_financeira ? `<p class="balance-method">Os ${b.base_financeira.casos} casos com notas de empenho reúnem ${b.base_financeira.registros_unicos} registros únicos: ${fmtN(b.base_financeira.bruto)} brutos, ${fmtN(b.base_financeira.anulado)} anulados, ${fmtN(b.base_financeira.liquido)} líquidos e ${fmtN(b.base_financeira.pago)} pagos. O total descreve o volume das notas desses casos, com corte em setembro de 2026; não é uma estimativa de prejuízo. <a href="#/dinheiro">Entenda os recortes e confira as contas →</a></p>` : ''}
       <h3 style="font-size:24px;margin-top:var(--s5)">O padrão que os documentos mostram</h3>
       <ol class="padrao">${(b.padrao || []).map(p => `<li><b>${esc(p.t)}</b><br>${esc(p.d)}${p.casos ? `<span class="plinks">${p.casos.map(id => { const c = CASOS.find(x => x.id === id); if (!c) return ''; const t = c.titulo.split(':')[0]; return `<a href="#/caso/${id}">${esc(t.length > 60 ? t.slice(0, t.lastIndexOf(' ', 58)) + '…' : t)} →</a>`; }).join('')}</span>` : ''}</li>`).join('')}</ol>
       <p class="quote" style="margin-top:var(--s5)">${esc(b.frase)}</p><p style="color:#C9C7BF;max-width:760px">${esc(b.fecho)}</p></div></section>`;
@@ -449,6 +452,23 @@
   function wrapSvg(t, n) { const ws = String(t).split(' '), out = []; let c = ''; ws.forEach(w => { if ((c + ' ' + w).trim().length > n) { out.push(c.trim()); c = w; } else c += ' ' + w; }); if (c.trim()) out.push(c.trim()); return out; }
 
   /* ---------- DINHEIRO: o que chega × o que vira serviço ---------- */
+  function federalOverview(d) {
+    const u = d.universo;
+    if (!u) return '';
+    const rows = [
+      ['Programas comparados nesta página','jan./2025 a set./2026',brlAud(u.programas_comparados)],
+      ['FPM, royalties e outras constitucionais','jan./2025 a set./2026, na base',brlAud(u.constitucionais)],
+      ['Fundeb','jan./2025 a set./2026, na base',brlAud(u.fundeb)],
+      ['Outras ações fora do quadro de programas','jan./2025 a set./2026',brlAud(u.outras_acoes)],
+      ['Registros adicionais de outubro e novembro','out./2026 a nov./2026, parcial',brlAud(u.outubro_novembro)],
+      ['Total identificado na base','jan./2025 a nov./2026, parcial',brlAud(u.total)]
+    ];
+    return `<section class="money-scope" aria-labelledby="d-contexto"><div class="kicker">O tamanho da conta</div><h2 id="d-contexto">O total das transferências e o recorte da comparação</h2>
+      <p>A base federal analisada identifica ${fmtN(u.total)} destinados a Acopiara, seus fundos e unidades. O quadro de aplicação abaixo compara ${fmtN(u.programas_comparados)} de programas selecionados, até setembro de 2026. FPM, Fundeb, outras ações e os registros de meses posteriores explicam a diferença.</p>
+      <dl class="scope-totals"><div><dt>Total na base federal</dt><dd class="scope-number">${brlAud(u.total)}</dd><small>${esc(u.periodo)}</small></div><div><dt>Programas comparados</dt><dd class="scope-number">${brlAud(u.programas_comparados)}</dd><small>jan./2025 a set./2026</small></div></dl>
+      <details class="scope-details"><summary>Veja a conta que liga os dois valores</summary>${tabela([['Parcela','Período','Valor'],...rows])}<p>As outras ações incluem dinheiro direto na escola, cultura, defesa civil, agricultura, saneamento, infraestrutura escolar e transferências especiais. Receita recebida, valor de contrato e pagamento são etapas diferentes: somá-los entre si contaria o mesmo dinheiro mais de uma vez.</p></details>
+      <p class="note">Fonte: base mensal de transferências do Portal da Transparência/CGU, coletada em 24/11/2026. Novembro é parcial e a cobertura temporal varia por ação. <a href="${esc(u.csv)}" download>Baixar a base resumida por mês e ação (CSV)</a> · <a href="${esc(u.fonte_url)}" target="_blank" rel="noopener">Consultar a fonte oficial ↗</a></p></section>`;
+  }
   function dinheiro() {
     const d = X.dinheiro || { linhas: [] }, D = DIN || {};
     const tot = d.linhas.reduce((a, l) => ({ r: a.r + l.recebido, p: a.p + l.pago, g: a.g + l.lacuna }), { r: 0, p: 0, g: 0 });
@@ -463,6 +483,7 @@
       <div class="kpis" style="margin-top:var(--s4)"><div class="kpi"><b>${fmtN(tot.g)}</b><span>da União sem gasto registrado com a fonte correspondente (jan./2025 a set./2026)</span></div><div class="kpi"><b>${fmtN(saldo)}</b><span>saldo da comparação do diesel com a referência de Iguatu; ${acima.length} de ${comb.length} meses ficaram acima</span></div><div class="kpi"><b>${fmtN(genTot)}</b><span>em notas fiscais sem item identificado: remédios "de A a Z", peças e materiais "diversos"</span></div></div>
       <nav class="chips" style="margin:var(--s2) 0 var(--s4)"><a class="chip" href="#/dinheiro" data-jump="d-uniao">1. União</a><a class="chip" href="#/dinheiro" data-jump="d-estado">2. Estado</a><a class="chip" href="#/dinheiro" data-jump="d-preco">3. Comparação do diesel</a><a class="chip" href="#/dinheiro" data-jump="d-gen">4. Compras sem item</a><a class="chip" href="#/dinheiro" data-jump="d-forn">5. Fornecedores e pagamentos</a></nav>
       <div class="prose" style="max-width:none">
+      ${federalOverview(d)}
       <h2 id="d-uniao">1. O que a União mandou e o que foi aplicado</h2><p>${esc(d.intro)}</p>
       ${chartBars({ titulo: 'Recebido da União × pago com o mesmo recurso (R$, jan./2025 a set./2026)', dados: [['Recebido', tot.r], ['Pago com a fonte correspondente', tot.p], ['Sem gasto registrado', tot.g]] })}
       ${uniao}<p class="note">${esc(d.nota)}</p>
