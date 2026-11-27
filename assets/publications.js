@@ -51,5 +51,20 @@ window.PUBLICATIONS = (() => {
     }
     box.append(title,info,actions,message);root.replaceChildren(box);
   }
-  return {mount};
+  let history;
+  async function dates(root,route){
+    if(!/^(caso|noticia)\//.test(route||''))return;
+    history ||= fetch('data/historico-publicacoes.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>{history=null;return null;});
+    const data=await history,item=data?.entries?.[route],target=root.querySelector('.casehead .c8');
+    if(!item||!target||decodeURIComponent(location.hash.replace(/^#\/?/,'').split('?')[0])!==route)return;
+    target.querySelector('.publication-history')?.remove();
+    const date=s=>new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Fortaleza',day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(s)).replace(',',' às');
+    const box=document.createElement('div');box.className='publication-history';
+    const add=(label,value)=>{const line=document.createElement('span');line.append(label+' ');const time=document.createElement('time');time.dateTime=value;time.textContent=date(value);line.append(time);box.append(line);};
+    add('Registrado em',item.registeredAt);if(item.updatedAt!==item.registeredAt)add('Atualizado em',item.updatedAt);
+    const details=document.createElement('details'),summary=document.createElement('summary'),list=document.createElement('ol');summary.textContent='Histórico da publicação';
+    for(const event of item.events){const li=document.createElement('li'),t=document.createElement('time');t.dateTime=event.at;t.textContent=date(event.at);li.append(t,' — '+event.description);list.append(li);}
+    const note=document.createElement('p');note.textContent=data.basis+' Horários de Fortaleza (UTC−3).';details.append(summary,list,note);box.append(details);target.append(box);
+  }
+  return {mount,dates};
 })();

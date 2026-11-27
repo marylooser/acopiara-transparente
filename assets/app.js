@@ -929,6 +929,7 @@
 
   /* ---------- interações por página ---------- */
   function after(p, a, qs) {
+    window.PUBLICATIONS?.dates(main,p+'/'+a);
     $$('[data-share-page]', main).forEach(b => b.onclick = () => openShare(pageShareItem(b.dataset.sharePage, b.dataset.shareSection)));
     if (p === 'direitos' || p === 'fiscalize') {
       const section = new URLSearchParams(qs || '').get('sec');

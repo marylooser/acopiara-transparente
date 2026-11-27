@@ -1,0 +1,740 @@
+{
+  "timezone": "America/Fortaleza",
+  "basis": "Registro corresponde à primeira versão preservada no histórico verificável do portal; pode ser posterior à elaboração do dossiê. Datas de notícias e atos citados são informadas separadamente.",
+  "entries": {
+    "caso/mcmv-40-familias": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "29b81b90a4dabd663ca2086c0a5b6dd46d75861cb034543f6fea771286154585",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/festeja-2025": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "6eef194689d3e6bd09b59e6961b489ee29bcaf310c781da8826f04a25b778c24",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/festeja-2026-pop-som": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "e188b8dd1446b9357716bf07df681142a66e7e1ae66312a1d5c37072158b119f",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/transporte-escolar-aditivos": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "2c436cf062d200b5b46601e5a1c557f5253da08322d60fb57cec77bc8396391b",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/creches-pro-infancia": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "b96a9ba0aa63f90d20503344b4ec6df495926d8c5c97b66acc1f7474d033a8a6",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/agentes-comunitarios-saude": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "249f34789dc744fb072042fc75a894204bb4f1a6c227f3bbcec3b2dd66363e4f",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/plantoes-integra-med": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "de85d06621ad0c2e8264c863002ba303b0713fb63ee2be1a6e8f6eec7f0a0d5f",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/ex-diretor-concorrencia": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "9750cfb801c624c7392bb01cb92367512ff47b5f9673460fbf416c54c05d9db0",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/servidor-credenciado-veterinaria": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "76930f7822532bff4adaa04378b397db96386568a6843ae7742a4dde63146065",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/terreno-alugado-duas-vezes": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "e8db0c8c703d4326f541534dcf3d5f01ec747c87f3345bc534aab7639b4e48b5",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/material-didatico-multiplus": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "b2d295047b0a8e5771e433ba08b18cd1d6a75e3d21ef8cfc1371bf55b8ebe7d7",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/contabilidade-meritus-metodo": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "345f3d5519c4d52e9f2a90000ca048d60134a6cbeaf42d3e54ae2a74528672db",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T13:33:35-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/dispensas-fracionadas": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "c40a45c662db575cdf9bead8054cb940e9949aabeb78beb7fd7da5a9888d3c3d",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/limpeza-urbana": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "f2b2cb3722c296a1d355a17efb4031a5b0effa1d87452ae25f097d4f2ea84e23",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/outros-fatos": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "8b989b03fb78628c61434d95c1f0effc98386e57ef72ec7d9020b1bb2b6e5ae2",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/so-no-papel": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "05da7666d33557d112a4fa4169ece4a74eca8c07596127a9bc31bfc43d0bc5ce",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/pncp-publicidade": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "e5d4cca447e7a7340baca15b483197ac0711eece41382fbc9cebe0ea43ccb755",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/padroes-processos-judiciais": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "1c1609b81a8cc13466a09482a5284cc9d64d019df3af8f2b71dc066f9ab6c2d9",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/redes-sociais-oficiais": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "5481ad22f6a9a816b429a9f50d062de38de1b0d59d2eaa01c51b62efd76d3ec0",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/afirmacoes-confrontadas": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "357ecb7dfdcc28177cd9de9a6fef5c70483b138bcdb0e124d3e8c261ba15d37d",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/turismo": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "27247fb06279f558b41308b75fbd931f90f7f978fc0280a2867e5d4794695e54",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/familia-no-poder": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T19:46:55-03:00",
+      "contentHash": "a40e24f8465063e9fbfa16cc694a9a6726a9c8cb46c77ddc84c392f8161f684f",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T19:46:55-03:00",
+          "description": "Amplia o mapa de vínculos familiares, identifica a origem dos parentescos e distingue cargos e formas de ingresso."
+        }
+      ]
+    },
+    "caso/quanto-veio-para-onde-foi": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "131e4bbf4f10a64b7468b5118944b7071df4d495c1a79da24709c3a03aec6c67",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T13:33:35-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/jornadas-impossiveis": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "fc7800c5185e6a9a1a4195c02fdb9415e8b1b355ce3fd73767dad3a720268524",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/desacato": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "c8256d5d39332fb96aa0b03c2e547aae25eae6ede803eeaed1f2c12b8f340ae3",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/fantasmas-mp-sem-resposta": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "d72e7de0f12ff270806108e47467a96e120c3f600f9c001f9f847d13b09b1fbf",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/donos-das-clinicas": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "85f5535750cab6ec98b8935c3a7da0e0b106f4c3f6c0396d3e304d941ac6b4f9",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/modo-de-operar": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "bc218d85b9ba40e64ca5df1d34abb446cb15d758216e480a5d002ba3dcada716",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/exames-do-estado": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "c9f902016a3f4a40fddb082be7f834aad89d3049895a8238b70eac09b982e8bf",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "caso/diesel-acima-do-mercado": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "b52cbbc796c7a6c09c01811864774cb71480ab25e238f8284735736839e0795b",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "noticia/oncologia-cariri-2026": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "1d13ed4d7705b087b1879d49b8b6f29869d77a012994b123a774f91601ad8e9a",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "noticia/diesel-acima-da-bomba": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "ee67656566d81e6d9c34bbe69c14d7b3320b972cef57b002241169486bb4f30c",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "noticia/mcmv-agendamento-2026": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "b922b669af2e5c62f81840ef09773b79865cd378ce5de623e38a9be2b6135f63",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "noticia/estado-saude-1-2mi-2026": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "c1b2b0b370ba07ea9510d93b71842e29d65fe2fea793ccddf268bbbf80585b6c",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "noticia/agora-tem-especialistas-2026": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "d8ded67c9eeb4ea651e9785b6517ed6b91d047c7088fc8bfd06c7ca6bd53f7be",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "noticia/vice-exonerada-2026": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "9e2bb8b13a236b44a1fc3dae88738a8258aa7babc8b8bae927450baf5957c8a1",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "noticia/mp-anula-selecao-professores-2025": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "d24d9357a0174a30f87323f3e533b5298de4e700087a5d7968cb8d1b2faabdaf",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    },
+    "noticia/sessao-camara-mcmv-2026": {
+      "registeredAt": "2026-11-27T11:49:52-03:00",
+      "updatedAt": "2026-11-27T18:04:53-03:00",
+      "contentHash": "e9ad04e0673e86c6f48729c6ac69136183da8ab0960ca1145387153b3ee16e78",
+      "events": [
+        {
+          "at": "2026-11-27T11:49:52-03:00",
+          "description": "Primeiro registro preservado no histórico verificável do portal."
+        },
+        {
+          "at": "2026-11-27T12:53:30-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        },
+        {
+          "at": "2026-11-27T18:04:53-03:00",
+          "description": "Revisão do conteúdo e das informações da publicação."
+        }
+      ]
+    }
+  }
+}

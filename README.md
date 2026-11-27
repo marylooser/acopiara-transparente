@@ -37,3 +37,11 @@ O manifesto `data/publicacoes.json` relaciona tipo, identificador, data da expor
 Ao alterar o conteúdo de uma publicação, regenere e confira o PDF correspondente e atualize seu registro no manifesto antes da publicação. O exportador e os registros privados de preparação permanecem fora do repositório público. O código `assets/publications.js` integra as ações à interface.
 
 Os pacotes de matéria com documentos só são oferecidos quando houver uma URL de download no Internet Archive efetivamente publicada e verificada. Documentos de prova, backups, chaves de acesso e arquivos privados de revisão não são incluídos automaticamente na publicação do site.
+
+## Datas e histórico das publicações
+
+`data/historico-publicacoes.json` registra a primeira versão preservada e as revisões de conteúdo de cada caso e notícia. A data de registro usa a primeira ocorrência verificável do item no histórico; não é inferida da data de elaboração do dossiê, da notícia original, do ato público ou da geração do PDF. Datas e horários aparecem no fuso America/Fortaleza (UTC−3).
+
+O hash de conteúdo se refere ao objeto editorial da publicação, com chaves ordenadas. A cada revisão editorial, confira esse hash, mantenha a data de registro e acrescente o evento e o horário real de revisão. Alterações somente de interface não mudam a data editorial. Regerar um PDF também não deve, isoladamente, alterar o histórico da matéria.
+
+No mapa de vínculos familiares, cargos e formas de ingresso são conferidos separadamente do parentesco. Informações fornecidas ao portal são identificadas como tal quando não houver comprovação documental independente anexada. Não se equiparam mandato, concurso, contrato temporário e cargo comissionado.
