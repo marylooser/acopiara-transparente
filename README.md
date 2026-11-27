@@ -27,3 +27,13 @@ O serviço não usa cookies de rastreamento no contador. Segundo sua política, 
 ## Funções legadas
 
 A pasta `api/` contém funções para outras possibilidades de backend. O GitHub Pages não as executa. A opção `audience: null` mantém desativado o backend Redis preparado anteriormente. Ele não é utilizado pelo contador Stats4U e não deve ser confundido com um serviço já implantado.
+
+## Matérias em PDF
+
+As 30 matérias de casos e 8 notícias possuem versões completas em `publicacoes/`. O diálogo Compartilhar oferece download do documento e preparação para envio como arquivo PDF nos dispositivos compatíveis. A preparação ocorre sob demanda, sem transferir PDFs quando o visitante escolhe compartilhar somente uma imagem ou link. Onde o envio nativo não é suportado, o download continua disponível.
+
+O manifesto `data/publicacoes.json` relaciona tipo, identificador, data da exportação, páginas, tamanho e SHA-256. O parâmetro de versão deriva do hash para impedir que um PDF antigo seja reutilizado depois de uma atualização. As versões contêm os textos das seções, tabelas, recortes e referências; tabelas largas usam páginas em paisagem. Arquivos não são pré-carregados pelo aplicativo.
+
+Ao alterar o conteúdo de uma publicação, regenere e confira o PDF correspondente e atualize seu registro no manifesto antes da publicação. O exportador e os registros privados de preparação permanecem fora do repositório público. O código `assets/publications.js` integra as ações à interface.
+
+Os pacotes de matéria com documentos só são oferecidos quando houver uma URL de download no Internet Archive efetivamente publicada e verificada. Documentos de prova, backups, chaves de acesso e arquivos privados de revisão não são incluídos automaticamente na publicação do site.

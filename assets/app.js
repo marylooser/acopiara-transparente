@@ -877,7 +877,7 @@
         <p class="muted" style="font-size:15px" id="sh-dim">Imagem vertical de 2160 × 3840 px, pronta para Instagram, WhatsApp e Facebook. O texto fica centralizado e a ilustração vai no topo.</p>
         <div class="share-copy"><label id="sh-copy-label" for="sh-copy-text">Link para a figurinha do story</label><textarea id="sh-copy-text" readonly rows="3" spellcheck="false"></textarea><button class="btn ghost" id="sh-copy-text-btn">Copiar link para o story</button><p class="muted" id="sh-copy-help">Ao baixar ou compartilhar a imagem, tentaremos copiar este link para você colar na figurinha de link.</p></div>
         <div class="thumbs" id="sh-th" hidden></div><div class="acts"><button class="btn solid" id="sh-img">${ic('share')}Compartilhar imagem</button><button class="btn" id="sh-dl">${ic('baixar')}Baixar imagem</button>
-        <a class="btn" id="sh-wa" href="https://wa.me/?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar link pelo WhatsApp</a><button class="btn ghost" id="sh-cp">${ic('link')}Copiar link</button><button class="btn ghost" id="sh-native">${ic('share')}Mais opções para o link</button></div></div></div></div></div>`;
+        <a class="btn" id="sh-wa" href="https://wa.me/?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar link pelo WhatsApp</a><button class="btn ghost" id="sh-cp">${ic('link')}Copiar link</button><button class="btn ghost" id="sh-native">${ic('share')}Mais opções para o link</button></div><div id="sh-doc"></div></div></div></div></div>`;
     if (x.id === 'portal') $('#sh-modo').remove();
     if (!navigator.share) $('#sh-native').remove();
     else $('#sh-native').onclick = async () => {
@@ -885,6 +885,7 @@
       catch (e) { if (e.name !== 'AbortError') toast('Use Copiar link ou envie pelo WhatsApp.'); }
     };
     openLayer(m); closeable(m);
+    window.PUBLICATIONS?.mount($('#sh-doc'), sharePage);
     let modo = 'uma', seqCv = [];
     const syncCopy = () => {
       const story = fmt === 'story';

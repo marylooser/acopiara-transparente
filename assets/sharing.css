@@ -13,6 +13,13 @@
 .share-copy textarea { display: block; resize: vertical; width: 100%; min-width: 0; padding: 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; font: 14px/1.6 var(--sans); overflow-wrap: anywhere; }
 .share-copy .btn { margin-top: 12px; }
 .share-copy p { margin: 10px 0 0; font-size: 12px; line-height: 1.6; }
+.document-export{margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+.document-export h4{font-size:16px;line-height:1.4;margin:0 0 8px}
+.document-export p{font-size:13px;line-height:1.6;margin:0 0 12px}
+.document-export .btns{display:flex;flex-wrap:wrap;gap:8px}
+.document-export .btn{min-height:44px;font-size:14px}
+.document-export-status:empty{display:none}
+.document-export-status{margin-top:10px!important}
 
 /* One quiet action per heading, with a full touch target. */
 .section-share-heading{display:flex;align-items:flex-start;gap:12px;scroll-margin-top:calc(var(--top) + 24px)}
