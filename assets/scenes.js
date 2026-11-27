@@ -116,6 +116,7 @@
     return art(image, eager);
   }
   function source(item) {
+    if (item.shareType === 'page' && item.id === 'portal') return activeSource(collection().cover);
     const image = record(item), key = IMG[item.cena || item.area];
     const category = (collection().categories || {})[key];
     return image ? activeSource(image) : category ? activeSource(category) : key ? 'img/cenas/' + key + '.jpg' : null;

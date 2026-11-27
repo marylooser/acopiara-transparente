@@ -4,6 +4,7 @@
   const brl = v => v == null ? '' : 'R$ ' + Number(v).toLocaleString('pt-BR', { maximumFractionDigits: 0 });
   const valorLegivel = s => String(s ?? '').replace(/(\d+(?:[.,]\d+)?)\s+mi\b/g, (m, n) => n + (Number(n.replace(',', '.')) === 1 ? ' milhão' : ' milhões'));
   const nb = s => esc(valorLegivel(s)).replace(/R\$ /g, () => 'R$\u00a0').replace(/(\d) (h|km|mil)\b/g, (m, a, u) => a + '\u00a0' + u);
+  const summaryValue = s => String(s).replace(/\s+(milhões|milhão)\b/i, '\n$1');
   const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const ic = n => `<svg aria-hidden="true"><use href="#i-${n}"/></svg>`;
   const SITE = 'www.acopiaratransparente.com.br';
@@ -55,9 +56,10 @@
     root.classList.add('in');
     $$('svg.cena,.cena-img,svg.draw,.pr,.chart,.tl,.mk', root).forEach(el => el.classList.add('in'));
     $$('[data-n]', root).forEach(b => {
-      b.textContent = (b.dataset.pre || '') + Number(b.dataset.n).toLocaleString('pt-BR', {
+      const value = (b.dataset.pre || '') + Number(b.dataset.n).toLocaleString('pt-BR', {
         minimumFractionDigits: +b.dataset.dec || 0, maximumFractionDigits: +b.dataset.dec || 0
       }) + (b.dataset.suf || '');
+      b.textContent = b.classList.contains('summary-value') ? summaryValue(value) : value;
     });
     window.READING_MOTION?.scan(root);
   }
@@ -263,10 +265,10 @@
       <h1>O dinheiro é público.<span>A informação também.</span></h1>
       <p class="lead">${esc(opening)}</p>
       ${context ? `<details class="hero-details"><summary>O que você encontra neste dossiê</summary><p>${esc(context)}</p></details>` : ''}
-      <div class="btns hero-actions"><a class="btn solid" href="#/casos">Explorar os casos <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#/noticias">Notícias e análises</a></div>
+      <div class="btns hero-actions"><a class="btn solid" href="#/casos">Explorar os casos <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#/noticias">Notícias e análises</a><button class="btn ghost portal-share" data-share-page="inicio" data-share-section="">${ic('share')}Compartilhar portal</button></div>
       <a class="source-note" href="#/sobre">${ic('casos')}Documentos públicos. Fontes para conferir.<span aria-hidden="true">→</span></a>
       </div><div class="c5 heroart">${M ? '' : `<figure class="capa">${SCENES.cover()}<figcaption>Arco da Santa · entrada de Acopiara</figcaption></figure>`}</div></div>${M ? `<div class="heroart m"><figure class="capa">${SCENES.cover()}<figcaption>Arco da Santa · entrada de Acopiara</figcaption></figure></div>` : ''}
-      <div class="stats" aria-label="O dossiê em números">${(X.numeros || []).map(n => `<div class="stat"><b>${nb(n.valor)}</b><span>${esc(n.rotulo)}</span></div>`).join('')}</div>
+      <div class="stats" aria-label="O dossiê em números">${(X.numeros || []).map(n => `<div class="stat"><b class="summary-value">${nb(summaryValue(n.valor))}</b><span>${esc(n.rotulo)}</span></div>`).join('')}</div>
     </div></section>
     <section class="block"><div class="wrap"><div class="sec-head"><div><div class="kicker">Comece por aqui</div><h2>Os casos que mais pesam no bolso de Acopiara</h2></div>${M ? '' : `<a class="btn ghost" href="#/casos">Todos os ${CASOS.length} casos</a>`}</div>
       ${list(destaques.slice(0, M ? 6 : 9), cardCaso)}${M ? `<p style="margin-top:16px"><a class="btn block" href="#/casos">Todos os ${CASOS.length} casos</a></p>` : ''}</div></section>
@@ -281,7 +283,7 @@
   function balanco() {
     const b = X.balanco || {};
     return `<section class="balanco"><div class="wrap"><div class="kicker">O balanço</div><h2 style="font-size:clamp(28px,4vw,44px)">${esc(b.titulo)}</h2><p class="lead">${esc(b.intro)}</p>
-      <div class="bigs">${(b.numeros || []).map(n => `<div><b data-n="${n.n}" data-pre="${esc(n.pre || '')}" data-suf="${esc(n.suf || '')}" data-dec="${n.dec || 0}">${esc(n.pre || '')}0${esc(n.suf || '')}</b><span>${esc(n.rotulo)}</span></div>`).join('')}</div>
+      <div class="bigs">${(b.numeros || []).map(n => `<div><b class="summary-value" data-n="${n.n}" data-pre="${esc(n.pre || '')}" data-suf="${esc(n.suf || '')}" data-dec="${n.dec || 0}">${esc(n.pre || '')}0${esc(n.suf || '')}</b><span>${esc(n.rotulo)}</span></div>`).join('')}</div>
       ${b.base_financeira ? `<p class="balance-method">Os ${b.base_financeira.casos} casos com notas de empenho reúnem ${b.base_financeira.registros_unicos} registros únicos: ${fmtN(b.base_financeira.bruto)} brutos, ${fmtN(b.base_financeira.anulado)} anulados, ${fmtN(b.base_financeira.liquido)} líquidos e ${fmtN(b.base_financeira.pago)} pagos. O total descreve o volume das notas desses casos, com corte em setembro de 2026; não é uma estimativa de prejuízo. <a href="#/dinheiro">Entenda os recortes e confira as contas →</a></p>` : ''}
       <h3 style="font-size:24px;margin-top:var(--s5)">O padrão que os documentos mostram</h3>
       <ol class="padrao">${(b.padrao || []).map(p => `<li><b>${esc(p.t)}</b><br>${esc(p.d)}${p.casos ? `<span class="plinks">${p.casos.map(id => { const c = CASOS.find(x => x.id === id); if (!c) return ''; const t = c.titulo.split(':')[0]; return `<a href="#/caso/${id}">${esc(t.length > 60 ? t.slice(0, t.lastIndexOf(' ', 58)) + '…' : t)} →</a>`; }).join('')}</span>` : ''}</li>`).join('')}</ol>
@@ -720,6 +722,11 @@
   }
   // Os trechos vêm do próprio conteúdo da página; páginas informativas não usam contadores de casos.
   function pageShareItem(page, section) {
+    if (page === 'inicio') return { shareType: 'page', id: 'portal', route: '',
+      titulo: 'O dinheiro é público. A informação também.',
+      resumo: 'Conheça o Acopiara Transparente: casos documentados, notícias e análises sobre o dinheiro público da cidade. Confira as fontes, acompanhe os casos e saiba como exercer seus direitos.',
+      area: 'Conheça o portal', fonte: 'Documentos públicos · fontes em cada publicação', slides: [] };
+
     const index = section === '' || section == null ? null : Number(section);
     const rights = page === 'direitos', d = X.direitos || {};
     const all = rights ? (d.secoes || []) : (X.tutoriais || []);
@@ -756,13 +763,13 @@
       if (status) parts.push('Situação: ' + status + '.');
       if (m.impactos_editoriais?.populacao) parts.push('Por que importa: ' + trim(m.impactos_editoriais.populacao, 550));
     }
-    const ending = 'Leia a publicação e confira as fontes:\n' + url + '\n\nAcopiara Transparente · Dossiê da Reconstrução';
+    const ending = (x.id === 'portal' ? 'Conheça o portal e confira as fontes:\n' : 'Leia a publicação e confira as fontes:\n') + url + '\n\nAcopiara Transparente · Dossiê da Reconstrução';
     return trim(parts.filter(Boolean).join('\n\n'), 2150 - ending.length) + '\n\n' + ending;
   }
   function shareItem(x) {
     const theme = x.theme || document.documentElement.dataset.theme || 'light';
     if (x.shareType === 'page') return { kicker: x.area, titulo: x.titulo, resumo: x.resumo, imagem: SCENES.source(x), theme,
-      link: shareBase() + '/#/' + x.route, fonte: x.fonte, cta: 'Leia o guia completo:', nome: 'acopiara-' + x.id + (x.route.includes('?') ? '-trecho-' + x.route.split('=')[1] : '') };
+      link: x.id === 'portal' ? 'acopiaratransparente.com.br/' : shareBase() + '/#/' + x.route, fonte: x.fonte, cta: x.id === 'portal' ? 'Explore o portal:' : 'Leia o guia completo:', nome: 'acopiara-' + x.id + (x.route.includes('?') ? '-trecho-' + x.route.split('=')[1] : '') };
     if (x.fato) return { theme, kicker: 'Notícia · ' + x.veiculo + ' · ' + fmtData(x.data), titulo: x.titulo, resumo: (x.analise || [])[0] || x.fato, cena: cenaKey(x.cena), imagem: SCENES.source(x), link: shareBase() + '/#/noticia/' + x.id, fonte: x.veiculo + ' e documentos públicos', cta: 'Leia a análise completa:', nome: 'acopiara-noticia-' + x.id };
     return { theme, kicker: x.area + (x.periodo ? ' · ' + per(x.periodo) : ''), titulo: x.titulo, valor: x.valor, valor_rotulo: x.valor_rotulo, resumo: x.resumo, status: x.status, cena: cenaKey(x.cena || x.area), imagem: SCENES.source(x), link: shareBase() + '/#/caso/' + x.id, fonte: (x.fontes && x.fontes[0] && x.fontes[0].tipo) || 'documentos públicos', nome: 'acopiara-caso-' + x.id };
   }
@@ -813,6 +820,7 @@
         <div class="share-copy"><label id="sh-copy-label" for="sh-copy-text">Link para a figurinha do story</label><textarea id="sh-copy-text" readonly rows="3" spellcheck="false"></textarea><button class="btn ghost" id="sh-copy-text-btn">Copiar link para o story</button><p class="muted" id="sh-copy-help">Ao baixar ou compartilhar a imagem, tentaremos copiar este link para você colar na figurinha de link.</p></div>
         <div class="thumbs" id="sh-th" hidden></div><div class="acts"><button class="btn solid" id="sh-img">${ic('share')}Compartilhar imagem</button><button class="btn" id="sh-dl">${ic('baixar')}Baixar imagem</button>
         <a class="btn" id="sh-wa" href="https://wa.me/?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar link pelo WhatsApp</a><button class="btn ghost" id="sh-cp">${ic('link')}Copiar link</button></div></div></div></div></div>`;
+    if (x.id === 'portal') $('#sh-modo').remove();
     openLayer(m); closeable(m);
     let modo = 'uma', seqCv = [];
     const syncCopy = () => {

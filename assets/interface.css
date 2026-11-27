@@ -349,3 +349,10 @@ main[data-page="dinheiro"] .prose :is(p, li) { max-width: none; }
 .scope-totals small{font-size:12px;color:var(--muted)}.scope-details{margin:20px 0}.scope-details summary{cursor:pointer;font-weight:600}.scope-details[open] summary{margin-bottom:18px}
 .balance-method{max-width:1000px;color:var(--ink-2);font-size:15px;line-height:1.8;margin:24px 0}.balance-method a{color:var(--azul)}
 @media(max-width:760px){.money-scope{padding:18px}.scope-totals{grid-template-columns:minmax(0,1fr);gap:12px}}
+
+/* Keep the currency amount and its unit on deliberate, stable lines. */
+.summary-value{white-space:pre-line}
+.stats .summary-value{min-height:2.4em}
+.bigs .summary-value{min-height:2em}
+.hero-actions .portal-share{gap:8px}
+@media(max-width:760px){.hero-actions .portal-share{grid-column:1/-1}}
