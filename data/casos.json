@@ -1888,7 +1888,7 @@
   {
     "id": "creches-pro-infancia",
     "secao": "6.5",
-    "titulo": "Creches: obra de R$ 8 milhões ganhou R$ 3,3 milhões em quatro meses",
+    "titulo": "Creches: aditivo de R$ 351,7 mil em Moreiras",
     "subtitulo": "Creches Pró-Infância",
     "area": "Educação",
     "secretaria": "Secretaria de Educação",
@@ -1896,8 +1896,8 @@
       "inicio": "2025-09",
       "fim": "2026-01"
     },
-    "valor": 3299903.15,
-    "valor_rotulo": "acréscimo de 41% registrado quatro meses após o contrato",
+    "valor": 351660.27,
+    "valor_rotulo": "acréscimo publicado para a creche de Moreiras; valores por unidade a reconciliar",
     "status": "indício a apurar",
     "pessoas": [
       {
@@ -1905,13 +1905,17 @@
         "papel": "empresa"
       }
     ],
-    "resumo": "A conclusão de três creches paradas desde 2012 foi contratada por R$ 8 milhões. Quatro meses depois, o portal registra acréscimo de R$ 3,3 milhões (41%), e depois outro aditivo sem valor publicado.",
+    "resumo": "O extrato do primeiro aditivo informa acréscimo de R$ 351.660,27 para Moreiras e novo valor global de R$ 3.299.903,15. É preciso reconciliar esses números com o contrato de R$ 8.049.489,21 que reúne as três creches, antes de calcular qualquer percentual de aumento.",
     "o_que_aconteceu": [
-      "A Concorrência CE-020/2025 contratou a WU Construções e Serviços (CNPJ 10.932.123/0001-14) para concluir três creches paradas desde os termos de compromisso PAC 2 nºs 2599/2012 e 7198/2013 e o convênio FNDE 655688, pelo contrato 2025.09.09.01, de R$ 8.049.489,21. Em 23/01/2026, quatro meses depois, o portal registra acréscimo de R$ 3.299.903,15 (+41%), e em 14/09/2026, novo acréscimo sem valor publicado. O SIM registra um licitante e desconto inferior a 2%. Foram empenhados R$ 3.518.018,44 do FNDE e R$ 2.760.051,12 próprios."
+      "A Concorrência CE-020/2025 contratou a WU Construções e Serviços (CNPJ 10.932.123/0001-14) para concluir três creches ligadas aos termos de compromisso PAC 2 nºs 2599/2012 e 7198/2013 e ao convênio FNDE 655688. O extrato original do contrato 2025.09.09.01 informa R$ 8.049.489,21 para as unidades de Moreiras, Vila Esperança e Nova Acopiara.",
+      "O extrato do primeiro aditivo, assinado em 23/01/2026 e publicado no Diário Oficial de 27/01/2026, edição 3892, página 5, código E3E5E129, registra acréscimo de R$ 351.660,27 e novo valor global de R$ 3.299.903,15. O objeto do aditivo identifica a creche Pró-Infância do bairro Moreiras.",
+      "O novo valor global informado nesse extrato não é o montante acrescentado. Também não pode ser comparado diretamente ao valor que reúne as três unidades sem conferir os contratos, os lotes e as planilhas de cada creche. Essa reconciliação deve identificar a base de cálculo, os serviços adicionados e o custo de cada unidade; com os documentos aqui conferidos, não há base suficiente para publicar um percentual de aumento do conjunto.",
+      "Em 14/09/2026, o portal registra novo acréscimo sem valor publicado. O SIM registra um licitante e desconto inferior a 2%. Foram empenhados R$ 3.518.018,44 do FNDE e R$ 2.760.051,12 próprios.",
+      "Nota de revisão — 27/11/2026: corrigimos a leitura do campo do portal com base no extrato oficial do aditivo. O valor apresentado como novo total havia sido tratado como se fosse o acréscimo. A análise passa a distinguir os dois valores e a explicitar a necessidade de conferir a composição por unidade."
     ],
     "tabelas": [],
     "por_que_importa": [],
-    "o_que_diz_a_lei": "O acréscimo supera o limite legal. Obras inacabadas há mais de uma década e retomadas com aditivo de 41% em quatro meses indicam projeto deficiente ou sobrepreço. A verba é federal e sujeita a prestação de contas ao FNDE (SIMEC).",
+    "o_que_diz_a_lei": "A avaliação de uma alteração contratual exige identificar o acréscimo efetivo, o valor inicial atualizado e o objeto ao qual cada valor se refere. O extrato de Moreiras, isoladamente, não demonstra um aumento do conjunto acima do limite legal nem comprova sobrepreço. A conferência precisa do termo aditivo integral, das planilhas por unidade e das medições. Os recursos federais continuam sujeitos à prestação de contas ao FNDE e ao acompanhamento da execução no SIMEC.",
     "avaliacao": "Gravidade média. Representação ao MPF, ao FNDE e à CGU, com pedido das medições e do termo aditivo.",
     "o_que_falta_explicar": [],
     "datas": [
@@ -1921,20 +1925,25 @@
       },
       {
         "data": "2026-01-23",
-        "evento": "Acréscimo de R$ 3,3 milhões nas creches"
+        "evento": "1º aditivo: acréscimo de R$ 351.660,27 identificado no extrato de Moreiras"
       }
     ],
     "fontes": [
       {
         "titulo": "Anexo 05 (publicações da CE-020/2025 e quadro de aditivos); Anexo 11 (empenhos).",
         "tipo": "documentos do dossiê"
+      },
+      {
+        "titulo": "Diário Oficial dos Municípios, 27/01/2026, edição 3892, p. 5, código E3E5E129: extrato do primeiro aditivo ao contrato 2025.09.09.01.",
+        "tipo": "publicação oficial",
+        "url": "https://www-storage.voxtecnologia.com.br/?f=764&i=publicado_116751_2026-01-26_5be7e518306c0992fdd7019f878a8434.pdf&m=sigpub.publicacao"
       }
     ],
     "recortes": [
       {
-        "img": "img/recortes/creches-pro-infancia-2.jpg",
-        "legenda": "Creches: acréscimo de R$ 3.299.903,15 (41%) em 23/01/2026",
-        "doc": "Anexo 05 · Portal de Contratos da Prefeitura, p. 8"
+        "img": "img/recortes/creches-aditivo-moreiras-20260123.jpg",
+        "legenda": "Extrato do 1º aditivo: R$ 351.660,27 de acréscimo; R$ 3.299.903,15 é o novo valor global informado. O objeto identifica a creche de Moreiras.",
+        "doc": "Diário Oficial dos Municípios · 27/01/2026 · edição 3892 · p. 5 · código E3E5E129"
       }
     ],
     "na_pratica": [],
@@ -2184,8 +2193,8 @@
       "A maior parte do dinheiro saiu da Secretaria de Educação, sob a gestão de Maria Ivânia de Araújo Ferreira (100% do valor), segundo o cadastro de gestores enviado ao TCE-CE."
     ],
     "materia": {
-      "intro": "Três creches paradas desde 2012. Contratadas para conclusão por R$ 8 milhões, ganharam R$ 3,3 milhões a mais em quatro meses.",
-      "problema": "O acréscimo de 41% em quatro meses, seguido de outro aditivo sem valor publicado, indica projeto mal dimensionado ou contrato que muda depois de assinado.",
+      "intro": "Uma mesma obra reúne registros com abrangências diferentes. No aditivo de Moreiras, o valor acrescentado e o novo total precisam ser lidos separadamente para que a cobrança sobre o custo das creches parta da base correta.",
+      "problema": "O registro do portal precisa ser lido junto com o extrato oficial. Tratar o novo valor global como acréscimo altera a interpretação do custo da obra; falta reconciliar o que pertence a cada creche e a cada lote.",
       "direitos": [
         {
           "t": "Direito à educação de qualidade",
@@ -2206,7 +2215,7 @@
       ],
       "efeitos_coletivos": "As crianças de Acopiara pagam a conta em transporte, material e estrutura. A escola pública é o caminho de quem não tem outro; quando o recurso escoa por contratos mal feitos, a desigualdade de origem se torna desigualdade de destino.",
       "efeitos_bem_publico": "Fundeb e recursos do FNDE são carimbados. Aditivos acima do limite legal e compras sem justificativa consistente reduzem o que sobra para professor, merenda e sala de aula.",
-      "consequencias": "O acréscimo supera o limite legal. Obras inacabadas há mais de uma década e retomadas com aditivo de 41% em quatro meses indicam projeto deficiente ou sobrepreço. A verba é federal e sujeita a prestação de contas ao FNDE (SIMEC).",
+      "consequencias": "A avaliação de uma alteração contratual exige identificar o acréscimo efetivo, o valor inicial atualizado e o objeto ao qual cada valor se refere. O extrato de Moreiras, isoladamente, não demonstra um aumento do conjunto acima do limite legal nem comprova sobrepreço. A conferência precisa do termo aditivo integral, das planilhas por unidade e das medições. Os recursos federais continuam sujeitos à prestação de contas ao FNDE e ao acompanhamento da execução no SIMEC.",
       "tomadas": [],
       "cabiveis": [
         "Pedido de informação pela Lei de Acesso (prazo de 20 dias, prorrogável por 10) para obter os documentos que faltam.",
@@ -2214,13 +2223,13 @@
         "Requerimento de informações e convocação do secretário pela Câmara Municipal.",
         "Ação popular, por qualquer eleitor, para anular o ato e obter o ressarcimento."
       ],
-      "conclusao": "Creche é vaga para mãe trabalhar e para criança aprender. Uma obra que espera catorze anos e encarece 41% em quatro meses exige medições públicas e explicação técnica. Sem elas, o atraso vira negócio, e a criança continua sem vaga.",
+      "conclusao": "A conferência deve ligar o acréscimo publicado de R$ 351.660,27 aos serviços previstos para Moreiras e reconciliar os contratos por unidade. Planilhas, medições e cronograma permitirão acompanhar o custo e a entrega das três creches, sem transformar o novo valor global de um extrato em um aumento que ele não registra.",
       "leitura_editorial": {
-        "titulo": "O avanço da obra deve aparecer nas medições e nas vagas entregues",
+        "titulo": "O aditivo precisa ser entendido por unidade e por serviço",
         "paragrafos": [
-          "O aumento de R$ 3,3 milhões em quatro meses precisa ser ligado a itens concretos da obra. Planilhas, medições e justificativas técnicas permitem distinguir serviços adicionais, correções de projeto e alterações de preço. Sem essa relação, a população conhece o novo custo, mas não consegue identificar o que receberá em contrapartida.",
-          "O histórico de atraso amplia a importância do cronograma. Uma nova previsão de conclusão só pode ser acompanhada quando apresenta etapas, responsáveis e condições para a abertura da creche. Terminar a construção e disponibilizar vagas exigem providências relacionadas, que precisam estar previstas de maneira compatível.",
-          "O acompanhamento deve comparar o que foi contratado, medido e pago com o que existe no local. Esse confronto sustenta uma avaliação mais precisa do aditivo e de sua execução. Para as famílias, o resultado esperado é uma unidade funcionando, com prazo e capacidade de atendimento que possam ser conferidos."
+          "O extrato de Moreiras informa o que foi acrescentado e qual é o novo valor global nele declarado. São grandezas diferentes: R$ 351.660,27 de acréscimo e R$ 3.299.903,15 de novo total. Para avaliar a alteração, a planilha deve mostrar quais serviços correspondem ao acréscimo, suas quantidades e os preços utilizados.",
+          "O contrato original reúne três creches por R$ 8.049.489,21. Antes de relacionar esse montante ao total do extrato de Moreiras, é preciso demonstrar a composição por unidade e por lote. Essa conferência também deve esclarecer a relação entre os registros do portal, os contratos assinados e os demais aditivos, sem presumir que valores de abrangências diferentes sejam comparáveis.",
+          "O controle da obra continua necessário: comparar o contratado, o medido e o pago com o que foi entregue, além de acompanhar o cronograma e as condições de funcionamento das unidades. Essa documentação permite discutir custo, prazo e vagas com uma base verificável. A correção da leitura do aditivo melhora a precisão dessa cobrança."
         ]
       }
     }
