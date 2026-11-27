@@ -356,3 +356,7 @@ main[data-page="dinheiro"] .prose :is(p, li) { max-width: none; }
 .bigs .summary-value{min-height:2em}
 .hero-actions .portal-share{gap:8px}
 @media(max-width:760px){.hero-actions .portal-share{grid-column:1/-1}}
+
+.foot .automation-note{font-size:13px;line-height:1.7;margin-top:14px}.foot .automation-note a{font-size:inherit;display:inline;padding:0;text-decoration:underline;text-underline-offset:3px}
+
+.counter-frame iframe{display:block;border:0;width:220px;max-width:100%;height:70px}.counter-frame{max-width:100%}#provider-audience{display:flex;align-items:center;flex-wrap:wrap;gap:12px 20px}#provider-audience details{flex:1 1 250px;margin:0}.audience[hidden]{display:none!important}[data-theme="dark"] .counter-frame iframe{filter:invert(.9) hue-rotate(180deg)}

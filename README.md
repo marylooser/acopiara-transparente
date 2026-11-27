@@ -1,32 +1,29 @@
 # Acopiara Transparente
 
-Portal estático com rotas por fragmento (`#/`), publicado no GitHub Pages e no domínio `acopiaratransparente.com.br`. O GitHub Pages não executa as funções Node.js da pasta `api/`.
+Portal estático publicado no GitHub Pages, no domínio `acopiaratransparente.com.br`. Não depende de Vercel para a hospedagem ou para o contador de audiência em uso.
 
-## Compartilhamento
+## Conteúdo e redação
 
-O início compartilha o portal. As demais páginas oferecem compartilhamento da página inteira. Seções editoriais e quadros da página O dinheiro têm uma ação junto ao título, com endereço que abre o trecho correspondente. Os guias de direitos e fiscalização mantêm suas ações por trecho.
+Os dados ficam em `data/`. A redação deve seguir `DIRETRIZES_EDITORIAIS.md`: linguagem clara, crítica forte, análise fundamentada e distinção entre fatos, inferências e lacunas de prova. Valores previstos, contratados, recebidos, empenhados e pagos não são equivalentes. A nota sobre automação e limites de precisão está em Sobre e correções e tem referência no rodapé.
 
-Stories usam link para a figurinha; feed usa legenda contextual. Há exportação de imagem, WhatsApp, cópia do link e compartilhamento nativo quando disponível. Cancelar o compartilhamento nativo não registra um envio.
+## Compartilhamento e movimento
 
-## Registro de audiência
+O portal compartilha páginas, perfis e trechos, com links para as seções, artes e legendas. Os trechos preservam a classificação do caso. Stories oferecem link; feed oferece legenda. Há cópia, WhatsApp e compartilhamento nativo quando suportado.
 
-A integração permanece desativada enquanto `data/services.json` tiver `"audience": null`. Não há números de demonstração nem contagens locais apresentadas como totais globais.
+`assets/reading-motion.js` aplica entradas de leitura, barras de gráficos e contagem progressiva de valores. A preferência de movimento reduzido e a navegação por teclado finalizam ou dispensam esses efeitos.
 
-Para ativar, hospede `api/audience.js` e `api/_db.js` em um serviço Node.js e conecte Redis REST com suporte a Lua/EVAL. Configure no ambiente do servidor `KV_REST_API_URL` e `KV_REST_API_TOKEN`, ou `UPSTASH_REDIS_REST_URL` e `UPSTASH_REDIS_REST_TOKEN`. As chaves nunca vão para o navegador ou repositório.
+## Audiência: Stats4U
 
-Teste o serviço real antes da ativação: duplicidade de eventos, requisições simultâneas, navegação, expiração da presença e exportação diária. Depois coloque somente o endereço HTTPS público da função no campo `audience` de `data/services.json`. O serviço aceita os domínios oficiais do portal; localhost só é aceito fora de produção. Esse serviço pode ser separado da hospedagem estática, preservando o domínio.
+O serviço ativo é Stats4U. O código público do contador fica em `data/services.json` e `contador.html`. O endereço de administração e o acesso aos relatórios privados são credenciais e não pertencem aos arquivos publicados.
 
-Critérios:
+O carregador `assets/audience.js` só cria o componente no domínio oficial, respeitando Do Not Track e Global Privacy Control. Navegadores automatizados e prévias locais não registram acessos. Os testes usam respostas locais de demonstração e bloqueiam a contagem real do provedor.
 
-- **Visita:** sessão de navegador, renovada após 30 minutos sem atividade. Abas do mesmo navegador compartilham a sessão temporária.
-- **Visualização:** abertura ou mudança de página. Redimensionar a janela ou saltar entre trechos da mesma página não gera visualização adicional.
-- **Online:** sessão com sinal de uma aba visível nos últimos 90 segundos. É uma estimativa de navegadores ativos, não de pessoas identificadas.
-- **Registro:** totais gerais persistentes, visualizações por página e totais diários. O CSV público oferece os últimos 31 dias. Dados diários têm retenção de 400 dias; totais gerais são preservados.
+O código fornecido pelo serviço é carregado em `contador.html`, dentro de um iframe isolado. O componente só conhece seu endereço fixo, e não a rota da matéria, os nomes dos perfis ou os formulários do portal. O conteúdo do iframe não pode acessar o documento principal. A política de conteúdo limita script, imagens e conexões ao próprio provedor.
 
-Essa base não grava IP, nome de visitante, email, agente do navegador, origem de navegação ou parâmetros da URL. O identificador temporário é convertido em código pelo servidor e expira. A infraestrutura de hospedagem pode manter seus próprios registros operacionais, fora dessa base de audiência.
+O widget apresenta total de acessos e estimativa de presença recente segundo os critérios do Stats4U. Os números visíveis correspondem à consulta feita ao abrir o portal; a atualização automática da imagem não foi liberada pelo provedor. O painel privado permite acompanhar o histórico. Não há preenchimento fictício de visitas anteriores.
 
-O novo registro respeita Do Not Track e Global Privacy Control. Testes automatizados em produção apenas leem os totais. Indicadores ficam ocultos quando o serviço está indisponível. A data inicial representa a ativação real, sem reconstrução fictícia de visitas anteriores.
+O serviço não usa cookies de rastreamento no contador. Segundo sua política, o IP participa de um hash diário com salt, retido por dois dias, e pode permanecer no log operacional por 14 dias; agregados ficam 400 dias. Os relatórios detalhados deste portal são privados. A descrição pública e a política do provedor estão referenciadas em Sobre e correções.
 
-## Outros serviços
+## Funções legadas
 
-Contadores de casos, reações, denúncias, painel e notificações têm funções separadas em `api/`. Sua disponibilidade depende da hospedagem e configuração correspondentes. O painel usa `ADMIN_TOKEN`; notificações usam chaves VAPID. Publicar os arquivos no GitHub Pages não ativa essas funções.
+A pasta `api/` contém funções para outras possibilidades de backend. O GitHub Pages não as executa. A opção `audience: null` mantém desativado o backend Redis preparado anteriormente. Ele não é utilizado pelo contador Stats4U e não deve ser confundido com um serviço já implantado.

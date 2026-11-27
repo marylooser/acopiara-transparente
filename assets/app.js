@@ -633,7 +633,7 @@
   /* ---------- SOBRE ---------- */
   function sobre() {
     return `<section class="block"><div class="wrap"><div class="row"><div class="c8"><div class="kicker">Sobre o projeto</div><h1>${esc(X.sobre?.titulo)}</h1>
-      <div class="prose">${(X.sobre?.secoes || []).map(s => `<h2>${esc(s.titulo)}</h2>${s.paragrafos.map(p => `<p>${esc(p)}</p>`).join('')}`).join('')}
+      <div class="prose">${(X.sobre?.secoes || []).map(s => `<h2${s.id ? ` id="${esc(s.id)}"` : ''}>${esc(s.titulo)}</h2>${s.paragrafos.map(p => `<p>${esc(p)}</p>`).join('')}`).join('')}
       <h2>Linha editorial</h2><p>Nossos princípios, metas e a estrutura que toda matéria segue estão em <a href="#/editorial">Linha editorial</a>.</p><h2>Correções e direito de resposta</h2><p>Se você é citado, encontrou um erro ou tem um documento que muda a leitura de um caso, envie pelo <a href="#/denuncie">formulário</a>, escolhendo "Pedido de correção". A manifestação é analisada e, quando procedente, o caso é corrigido com registro da data.</p></div></div></div></div></section>`;
   }
 
