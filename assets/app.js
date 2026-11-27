@@ -2,7 +2,8 @@
   const $ = (s, el) => (el || document).querySelector(s), $$ = (s, el) => [...(el || document).querySelectorAll(s)];
   const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const brl = v => v == null ? '' : 'R$ ' + Number(v).toLocaleString('pt-BR', { maximumFractionDigits: 0 });
-  const nb = s => esc(s).replace(/R\$ /g, () => 'R$\u00a0').replace(/(\d) (h|km|mil|mi)\b/g, (m, a, u) => a + '\u00a0' + u);
+  const valorLegivel = s => String(s ?? '').replace(/(\d+(?:[.,]\d+)?)\s+mi\b/g, (m, n) => n + (Number(n.replace(',', '.')) === 1 ? ' milhão' : ' milhões'));
+  const nb = s => esc(valorLegivel(s)).replace(/R\$ /g, () => 'R$\u00a0').replace(/(\d) (h|km|mil)\b/g, (m, a, u) => a + '\u00a0' + u);
   const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const ic = n => `<svg aria-hidden="true"><use href="#i-${n}"/></svg>`;
   const SITE = 'www.acopiaratransparente.com.br';
@@ -40,6 +41,7 @@
     $$('.tabbar [data-r]').forEach(n => n.classList.toggle('on', n.dataset.r === p || (p === 'caso' && n.dataset.r === 'casos') || (p === 'noticia' && n.dataset.r === 'noticias')));
     closeLayer($('#sheet'), false); closeLayer($('#modal'), false); document.body.classList.remove('has-mbar');
     const v = { '': home, casos, caso: () => caso(a), noticias, noticia: () => noticia(a), 'linha-do-tempo': tempo, dinheiro, pessoas, pessoa: () => pessoa(a), fiscalize, direitos, denuncie, sobre, processos, editorial, busca: () => { setTimeout(() => openSearch(new URLSearchParams(qs || '').get('q') || ''), 0); return home(); } }[p] || home;
+    main.dataset.page = p || 'inicio';
     main.innerHTML = v(); if (keep !== true) { window.scrollTo({ top: 0, behavior: 'instant' }); main.focus({ preventScroll: true }); }
     after(p, a, qs); animate(main);
     $('#footdoodle').innerHTML = SCENES.footer(); animate($('.foot'));
@@ -55,10 +57,11 @@
         minimumFractionDigits: +b.dataset.dec || 0, maximumFractionDigits: +b.dataset.dec || 0
       }) + (b.dataset.suf || '');
     });
+    window.READING_MOTION?.scan(root);
   }
 
   /* ---------- gráficos (SVG, cores do tema) ---------- */
-  const fmtN = v => v >= 1e6 ? 'R$\u00a0' + (v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + (v / 1e6 === 1 ? ' milhão' : ' milhões') : v >= 1e4 ? 'R$\u00a0' + Math.round(v / 1e3).toLocaleString('pt-BR') + '\u00a0mil' : 'R$\u00a0' + Math.round(v).toLocaleString('pt-BR');
+  const fmtN = v => v >= 1e6 ? 'R$\u00a0' + (v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + (v === 1e6 ? ' milhão' : ' milhões') : v >= 1e4 ? 'R$\u00a0' + Math.round(v / 1e3).toLocaleString('pt-BR') + '\u00a0mil' : 'R$\u00a0' + Math.round(v).toLocaleString('pt-BR');
   function chartBars(g) {
     const d = g.dados, mx = Math.max(...d.map(x => x[1])), money = g.moeda !== false && mx > 999;
     return `<figure class="chart"><figcaption>${esc(g.titulo)}</figcaption><div class="hbars">${d.map((x, i) => `<div class="hb"><span class="hlab">${esc(x[0])}</span><div class="bar ${i === 0 && g.destaque ? '' : ''}"><i style="width:${(100 * x[1] / mx).toFixed(1)}%;--d:${(i * .08).toFixed(2)}s"></i></div><b>${money ? fmtN(x[1]) : Number(x[1]).toLocaleString('pt-BR')}</b></div>`).join('')}</div>${g.fonte ? `<p class="cf">${esc(g.fonte)}</p>` : ''}</figure>`;
@@ -177,6 +180,10 @@
 
   /* ---------- estrutura editorial ---------- */
   function secao(n, t, html) { return html && String(html).replace(/<[^>]+>/g, '').trim() ? `<section class="sec"><h2><span class="sn">${n}</span>${esc(t)}</h2>${html}</section>` : ''; }
+  function impactoEditorial(item, key) {
+    const m = item.materia || {}, value = m.impactos_editoriais?.[key] || m[key === 'populacao' ? 'efeitos_coletivos' : 'efeitos_bem_publico'] || '';
+    return `<div class="impacto-editorial" data-impacto="${key}"><p>${esc(value)}</p></div>`;
+  }
   function leituraEditorial(item) {
     const m = item.materia || {}, leitura = m.leitura_editorial;
     if (leitura?.paragrafos?.length) return `<div class="concl"><span class="tag">Nossa leitura</span><h3 class="leitura-title">${esc(leitura.titulo)}</h3><div class="leitura-body">${leitura.paragrafos.map(p => `<p>${esc(p)}</p>`).join('')}</div></div>`;
@@ -221,12 +228,12 @@
     const identifier = h => /(?:processo|cpf|cnpj|c[óo]digo|protocolo|matr[ií]cula|documento|^n[úu]mero|^n[º°.]|^id$|data|^ano$|^m[eê]s$|per[ií]odo)/i.test(h);
     const numCol = head.map((h, i) => {
       const values = rows.map(r => String(r[i] ?? '').trim()).filter(v => v && !/^[–—-]$/.test(v));
-      return !identifier(h) && values.length > 0 && values.every(v => /^(?:R\$\s*)?[+−–-]?\d[\d\s.,]*(?:\s*(?:%|h|horas?|km|mil|mi|meses))?$/.test(v));
+      return !identifier(h) && values.length > 0 && values.every(v => /^(?:R\$\s*)?[+−–-]?\d[\d\s.,]*(?:\s*(?:%|h|horas?|km|mil|milhão|milhões|meses))?$/.test(v));
     });
     const cellClass = i => numCol[i] ? 'num' : identifier(head[i]) ? 'identifier' : 'text';
     if (M) return `<div class="recs" ${opts && opts.id ? `id="${opts.id}"` : ''}>${rows.map(r => `<div class="rec"${opts && opts.data ? ` data-t="${esc(norm(r.join(' ')))}"` : ''}><div class="h">${nb(r[0])}</div><dl>${head.slice(1).map((h, i) => `<dt>${esc(h)}</dt><dd class="${cellClass(i + 1)}">${nb(r[i + 1])}</dd>`).join('')}</dl></div>`).join('')}</div>`;
     const objI = head.findIndex(h => /objeto/i.test(h)), lim = opts && opts.lim, cut = s => { s = String(s || ''); return s.length > 160 ? s.slice(0, s.lastIndexOf(' ', 155)) + '…' : s; };
-    const trs = rows.map((r, k) => `<tr class="${lim && k >= lim ? 'mais' : ''}"${opts && opts.data ? ` data-t="${esc(norm(r.join(' ')))}"` : ''}>${r.map((x, i) => i === objI ? `<td class="obj" title="${esc(x)}">${nb(x)}</td>` : `<td class="${cellClass(i)}">${nb(x)}</td>`).join('')}</tr>`).join('');
+    const trs = rows.map((r, k) => `<tr class="${lim && k >= lim ? 'mais' : ''}"${opts && opts.data ? ` data-t="${esc(norm(r.join(' ')))}"` : ''}>${r.map((x, i) => i === objI ? `<td data-label="${esc(head[i])}" class="obj" title="${esc(x)}">${nb(x)}</td>` : `<td data-label="${esc(head[i])}" class="${cellClass(i)}">${nb(x)}</td>`).join('')}</tr>`).join('');
     return `<div class="tscroll" tabindex="0" role="region" aria-label="Tabela; deslize para ver todas as colunas"><table class="t${head.length > 5 ? ' wide' : ''}" ${opts && opts.id ? `id="${opts.id}"` : ''}><thead><tr>${head.map((h, i) => `<th scope="col" class="${cellClass(i)}">${esc(h)}</th>`).join('')}</tr></thead><tbody>${trs}</tbody></table></div>${lim && rows.length > lim ? `<button class="btn ghost vermais" onclick="const t=this.previousElementSibling;t.classList.toggle('aberta');this.textContent=t.classList.contains('aberta')?'Mostrar menos':'Mostrar todos os ${rows.length}'">Mostrar todos os ${rows.length}</button>` : ''}`;
   }
   function engage(p) {
@@ -263,10 +270,10 @@
       ${list(destaques.slice(0, M ? 6 : 9), cardCaso)}${M ? `<p style="margin-top:16px"><a class="btn block" href="#/casos">Todos os ${CASOS.length} casos</a></p>` : ''}</div></section>
     ${NOT.length ? `<section class="block"><div class="wrap"><div class="sec-head"><div><div class="kicker">Notícias</div><h2>O que saiu na imprensa, e o que os documentos dizem</h2></div>${M ? '' : `<a class="btn ghost" href="#/noticias">Todas as notícias</a>`}</div>${list(NOT.slice(0, 3), cardNot)}</div></section>` : ''}
     ${balanco()}
-    <section class="block"><div class="wrap"><div class="row">
-      <div class="c6"><div class="kicker">Como ler este site</div><h2>Comprovado, indício ou em juízo</h2>${(X.como_ler || []).map(p => `<p>${p}</p>`).join('')}</div>
-      <div class="c6"><div class="kicker">Por áreas</div><h2>Escolha um assunto</h2><div class="grid g2">${areas().map(a => `<a class="card" href="#/casos?area=${encodeURIComponent(a.nome)}">${M ? '' : `<div class="media">${img(a.nome)}</div>`}<div class="body"><h3>${esc(a.nome)}</h3><p>${a.n} caso${a.n > 1 ? 's' : ''}</p></div></a>`).join('')}</div></div>
-    </div></div></section>
+    <section class="block home-guide"><div class="wrap section-flow">
+      <div class="reading-guide"><div class="sec-head"><div><div class="kicker">Como ler este site</div><h2>Comprovado, indício ou em juízo</h2></div></div><div class="reading-notes">${(X.como_ler || []).map((p, i) => `<div class="${i < 3 ? 'reading-note' : 'reading-source'}"><p>${p}</p></div>`).join('')}</div></div>
+      <div class="topic-directory"><div class="sec-head"><div><div class="kicker">Por áreas</div><h2>Escolha um assunto</h2></div></div><div class="grid topics-grid">${areas().map(a => `<a class="card topic-card" href="#/casos?area=${encodeURIComponent(a.nome)}">${M ? '' : `<div class="media">${img(a.nome)}</div>`}<div class="body"><h3>${esc(a.nome)}</h3><p>${a.n} caso${a.n > 1 ? 's' : ''}</p></div></a>`).join('')}</div></div>
+    </div></section>
     ${chamada()}`;
   }
   function balanco() {
@@ -362,8 +369,8 @@
         ${secao(3, 'Quem está envolvido', envolvidos)}
         ${secao(4, 'Os fatos', reviewNotes(c) + fatos)}
         ${secao(5, 'Os direitos atingidos', direitosBloco(m.direitos))}
-        ${secao(6, 'O que isso causa à população', `<p>${esc(m.efeitos_coletivos || '')}</p>${(c.por_que_importa || []).flatMap(chunk).map(p => `<p>${esc(p)}</p>`).join('')}`)}
-        ${secao(7, 'O que isso causa ao patrimônio público', `<p>${esc(m.efeitos_bem_publico || '')}</p>${c.valor ? `<p>Valor envolvido: <span class="mk">${brl(c.valor)}</span>${c.valor_rotulo ? ' (' + esc(c.valor_rotulo) + ')' : ''}.</p>` : ''}`)}
+        ${secao(6, 'O que isso causa à população', `${impactoEditorial(c, 'populacao')}${(c.por_que_importa || []).flatMap(chunk).map(p => `<p>${esc(p)}</p>`).join('')}`)}
+        ${secao(7, 'O que isso causa ao patrimônio público', `${impactoEditorial(c, 'patrimonio')}${c.valor ? `<p>Valor envolvido: <span class="mk">${brl(c.valor)}</span>${c.valor_rotulo ? ' (' + esc(c.valor_rotulo) + ')' : ''}.</p>` : ''}`)}
         ${secao(8, 'Consequências administrativas e jurídicas', `<div class="lei">${String(m.consequencias || '').split('\n').flatMap(chunk).map(p => `<p>${esc(p)}</p>`).join('')}</div>`)}
         ${secao(9, 'Medidas já tomadas e medidas cabíveis', medidasBloco(m))}
     ${secao(10, 'Conclusão crítica', leituraEditorial(c))}
@@ -396,7 +403,7 @@
     const E = engage('noticia/' + id), rel = (n.casos || []).map(i => CASOS.find(c => c.id === i)).filter(Boolean);
     const m = n.materia || {}, H3 = h => h.replace(/<h2([ >])/g, '<h3$1').replace(/<\/h2>/g, '</h3>');
     const sx = n.sessao ? (CASOS.find(c => c.sessao) || {}).sessao : null;
-    const fatos = H3(`<p>${esc(n.fato)}</p>${(n.contexto || []).map(p => `<p>${esc(p)}</p>`).join('')}<p class="muted" style="font-size:15px">Fonte: <a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.veiculo)}, ${fmtData(n.data)} ↗</a></p>
+    const fatos = H3(`${(m.fatos_editoriais || [n.fato, ...(n.contexto || [])]).map(p => `<p>${esc(p)}</p>`).join('')}<p class="muted" style="font-size:15px">Fonte: <a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.veiculo)}, ${fmtData(n.data)} ↗</a></p>
       ${n.grafico ? `<h2>Os números</h2>${chart(n.grafico)}` : ''}
       ${sessaoBloco(sx)}
       ${n.cruzamentos?.length ? `<h2>O que os documentos oficiais mostram</h2><div class="xgrid">${n.cruzamentos.map((x, i) => `<div class="xcard"><span class="xn">${i + 1}</span><h4>${esc(x.t)}</h4><p>${esc(x.d)}</p><small>Fonte: ${esc(x.fonte)}</small></div>`).join('')}</div>` : ''}
@@ -407,8 +414,8 @@
       ${secao(3, 'Quem está envolvido', H3(agentesBloco(n.agentes, 'Agentes públicos')) || '<p class="muted">A notícia não individualiza agentes públicos.</p>')}
       ${secao(4, 'Os fatos', reviewNotes(n) + fatos)}
       ${secao(5, 'Os direitos atingidos', direitosBloco(m.direitos))}
-      ${secao(6, 'O que isso causa à população', `<p>${esc(m.efeitos_coletivos || '')}</p>`)}
-      ${secao(7, 'O que isso causa ao patrimônio público', `<p>${esc(m.efeitos_bem_publico || '')}</p>`)}
+      ${secao(6, 'O que isso causa à população', impactoEditorial(n, 'populacao'))}
+      ${secao(7, 'O que isso causa ao patrimônio público', impactoEditorial(n, 'patrimonio'))}
       ${secao(8, 'Consequências administrativas e jurídicas', `<div class="lei"><p>${esc(m.consequencias || '')}</p></div>`)}
       ${secao(9, 'Medidas já tomadas e medidas cabíveis', `${n.perguntas?.length ? `<h3>O que a Prefeitura precisa responder</h3><ul class="q">${n.perguntas.map(q => `<li>${esc(q)}</li>`).join('')}</ul>` : ''}${medidasBloco(m)}`)}
     ${secao(10, 'Conclusão crítica', `<div class="analise">${(n.analise || []).map(p => `<p>${esc(p)}</p>`).join('')}</div>${leituraEditorial(n)}`)}
@@ -451,8 +458,8 @@
     const uniao = M ? `<div class="recs">${d.linhas.map(l => `<div class="rec"><div class="h">${esc(l.area)}</div><div class="muted" style="font-size:13px;margin-bottom:8px">${esc(l.recurso)}</div><dl><dt>Recebido</dt><dd>${brl(l.recebido)}</dd><dt>Pago</dt><dd>${brl(l.pago)}</dd><dt>Sem registro</dt><dd><b>${brl(l.lacuna)}</b></dd></dl>${l.equivale ? `<p style="font-size:14px;margin:10px 0 0">${esc(l.equivale)}</p>` : ''}</div>`).join('')}</div>`
       : `<div class="tscroll"><table class="t"><thead><tr><th>Área e recurso</th><th class="num">Recebido</th><th class="num">Pago</th><th class="num">Sem registro de gasto</th><th style="min-width:160px">Proporção</th><th>Isso daria para…</th></tr></thead><tbody>
       ${d.linhas.map(l => `<tr><td><b>${esc(l.area)}</b><br><span class="muted">${esc(l.recurso)}</span></td><td class="num">${brl(l.recebido)}</td><td class="num">${brl(l.pago)}</td><td class="num"><b>${brl(l.lacuna)}</b></td><td><div class="bar"><i style="width:${(100 * l.pago / l.recebido).toFixed(1)}%"></i></div><div class="muted" style="font-size:12px;margin-top:4px">${Math.round(100 * l.pago / l.recebido)}% aplicado</div></td><td>${esc(l.equivale || '')}</td></tr>`).join('')}</tbody></table></div>`;
-    return `<section class="block"><div class="wrap"><div class="kicker">O dinheiro</div><h1>O que chega a Acopiara, e o que chega à população</h1>
-      <p class="lead">A União e o Estado destinam recursos para saúde, educação, assistência e obras. Esta página confronta repasses com pagamentos identificados, compara o preço do diesel com uma referência regional e mostra compras sem descrição suficiente dos itens. Na consulta por fornecedor, distingue a reserva bruta, as anulações, o empenhado líquido e os pagamentos.</p>
+    return `<section class="block"><div class="wrap"><div class="overview-intro"><div><div class="kicker">O dinheiro</div><h1>O que chega a Acopiara, e o que chega à população</h1>
+      <p class="lead">A União e o Estado destinam recursos para saúde, educação, assistência e obras. Esta página confronta repasses com pagamentos identificados, compara o preço do diesel com uma referência regional e mostra compras sem descrição suficiente dos itens. Na consulta por fornecedor, distingue a reserva bruta, as anulações, o empenhado líquido e os pagamentos.</p></div><div class="overview-art">${SCENES.get('Dinheiro')}</div></div>
       <div class="kpis" style="margin-top:var(--s4)"><div class="kpi"><b>${fmtN(tot.g)}</b><span>da União sem gasto registrado com a fonte correspondente (jan./2025 a set./2026)</span></div><div class="kpi"><b>${fmtN(saldo)}</b><span>saldo da comparação do diesel com a referência de Iguatu; ${acima.length} de ${comb.length} meses ficaram acima</span></div><div class="kpi"><b>${fmtN(genTot)}</b><span>em notas fiscais sem item identificado: remédios "de A a Z", peças e materiais "diversos"</span></div></div>
       <nav class="chips" style="margin:var(--s2) 0 var(--s4)"><a class="chip" href="#/dinheiro" data-jump="d-uniao">1. União</a><a class="chip" href="#/dinheiro" data-jump="d-estado">2. Estado</a><a class="chip" href="#/dinheiro" data-jump="d-preco">3. Comparação do diesel</a><a class="chip" href="#/dinheiro" data-jump="d-gen">4. Compras sem item</a><a class="chip" href="#/dinheiro" data-jump="d-forn">5. Fornecedores e pagamentos</a></nav>
       <div class="prose" style="max-width:none">
@@ -559,11 +566,11 @@
   /* ---------- FISCALIZE ---------- */
   function fiscalize() {
     return `<section class="block"><div class="wrap"><div class="row"><div class="c8"><div class="kicker">Fiscalize você também</div><h1>Como conferir tudo isso sozinho</h1>
-      <p class="lead">${esc(X.fiscalize_intro)}</p>${pageShareButton('fiscalize', '', 'Compartilhar este guia')}
+      <p class="lead">${esc(X.fiscalize_intro)}</p>${pageShareButton('fiscalize', '', 'Compartilhar este guia')}<div class="guide-tools"><div><h3>Pesquise nos portais</h3><p>A busca do site também procura nos portais oficiais.</p></div><button class="btn solid" data-open-search>${ic('busca')}Pesquisar</button></div>
       <div style="margin-top:var(--s4)">${(X.tutoriais || []).map((t, i) => `<details class="tut" id="tut-${i}"><summary><span class="n">${i + 1}</span>${esc(t.titulo)}</summary><div class="in">
         <p>${esc(t.para_que)}</p>${t.link ? `<p><a class="btn azul" href="${esc(t.link)}" target="_blank" rel="noopener">Abrir ${esc(t.site)} ↗</a></p>` : ''}
         <ol>${t.passos.map(s => `<li>${esc(s)}</li>`).join('')}</ol>${t.dica ? `<p class="lei"><b>Dica:</b> ${esc(t.dica)}</p>` : ''}${pageShareButton('fiscalize', i, 'Compartilhar este passo a passo')}</div></details>`).join('')}</div></div>
-      <aside class="c4 aside"><div class="box"><h4>Pesquise nos portais</h4><p style="font-size:15px">A busca do site também procura nos portais oficiais.</p><button class="btn solid block" data-open-search>${ic('busca')}Pesquisar</button></div></aside></div></div></section>`;
+</div></div></section>`;
   }
 
   /* ---------- DENUNCIE ---------- */
@@ -710,12 +717,33 @@
       area: rights ? 'Seus direitos' : 'Fiscalize você também', cena: rights ? 'Direitos do cidadão' : 'Administração',
       fonte: rights ? 'Seus direitos · referências no texto' : 'Guia de consulta aos portais públicos', slides: blocks };
   }
+  function shareBase() {
+    return location.protocol === 'https:' ? location.host + location.pathname.replace(/\/(?:index\.html)?$/, '') : SITE;
+  }
+  function feedCaption(x, url) {
+    const trim = (value, limit) => {
+      const text = String(value || '').trim();
+      if (text.length <= limit) return text;
+      const part = text.slice(0, limit - 1), end = part.lastIndexOf(' ');
+      return part.slice(0, end > 0 ? end : part.length).trimEnd() + '…';
+    };
+    const parts = [trim(x.titulo, 250)], m = x.materia || {};
+    parts.push(trim(x.fato || x.resumo, x.shareType === 'page' ? 1400 : 650));
+    if (x.shareType !== 'page') {
+      const status = { comprovado: 'Comprovado nos documentos', indicio: 'Indício a apurar', juizo: 'Em discussão na Justiça' }[x.status];
+      if (x.valor) parts.push((x.valor_rotulo || 'Valor indicado nos documentos') + ': ' + brl(x.valor) + '.');
+      if (status) parts.push('Situação: ' + status + '.');
+      if (m.impactos_editoriais?.populacao) parts.push('Por que importa: ' + trim(m.impactos_editoriais.populacao, 550));
+    }
+    const ending = 'Leia a publicação e confira as fontes:\n' + url + '\n\nAcopiara Transparente · Dossiê da Reconstrução';
+    return trim(parts.filter(Boolean).join('\n\n'), 2150 - ending.length) + '\n\n' + ending;
+  }
   function shareItem(x) {
     const theme = x.theme || document.documentElement.dataset.theme || 'light';
     if (x.shareType === 'page') return { kicker: x.area, titulo: x.titulo, resumo: x.resumo, imagem: SCENES.source(x), theme,
-      link: SITE + '/#/' + x.route, fonte: x.fonte, cta: 'Leia o guia completo:', nome: 'acopiara-' + x.id + (x.route.includes('?') ? '-trecho-' + x.route.split('=')[1] : '') };
-    if (x.fato) return { theme, kicker: 'Notícia · ' + x.veiculo + ' · ' + fmtData(x.data), titulo: x.titulo, resumo: (x.analise || [])[0] || x.fato, cena: cenaKey(x.cena), imagem: SCENES.source(x), link: SITE + '/#/noticia/' + x.id, fonte: x.veiculo + ' e documentos públicos', cta: 'Leia a análise completa:', nome: 'acopiara-noticia-' + x.id };
-    return { theme, kicker: x.area + (x.periodo ? ' · ' + per(x.periodo) : ''), titulo: x.titulo, valor: x.valor, valor_rotulo: x.valor_rotulo, resumo: x.resumo, status: x.status, cena: cenaKey(x.cena || x.area), imagem: SCENES.source(x), link: SITE + '/#/caso/' + x.id, fonte: (x.fontes && x.fontes[0] && x.fontes[0].tipo) || 'documentos públicos', nome: 'acopiara-caso-' + x.id };
+      link: shareBase() + '/#/' + x.route, fonte: x.fonte, cta: 'Leia o guia completo:', nome: 'acopiara-' + x.id + (x.route.includes('?') ? '-trecho-' + x.route.split('=')[1] : '') };
+    if (x.fato) return { theme, kicker: 'Notícia · ' + x.veiculo + ' · ' + fmtData(x.data), titulo: x.titulo, resumo: (x.analise || [])[0] || x.fato, cena: cenaKey(x.cena), imagem: SCENES.source(x), link: shareBase() + '/#/noticia/' + x.id, fonte: x.veiculo + ' e documentos públicos', cta: 'Leia a análise completa:', nome: 'acopiara-noticia-' + x.id };
+    return { theme, kicker: x.area + (x.periodo ? ' · ' + per(x.periodo) : ''), titulo: x.titulo, valor: x.valor, valor_rotulo: x.valor_rotulo, resumo: x.resumo, status: x.status, cena: cenaKey(x.cena || x.area), imagem: SCENES.source(x), link: shareBase() + '/#/caso/' + x.id, fonte: (x.fontes && x.fontes[0] && x.fontes[0].tipo) || 'documentos públicos', nome: 'acopiara-caso-' + x.id };
   }
 
   function slidesDe(x, link) {
@@ -741,7 +769,7 @@
     const pes = (x.pessoas || []).slice(0, 4).map(p => p.nome + (p.papel ? ' — ' + cut(p.papel, 70) : ''));
     if (pes.length) S.push({ secao: 'Quem está envolvido', titulo: 'Os responsáveis', lista: pes });
     if ((m.direitos || []).length) S.push({ secao: 'Direitos atingidos', titulo: 'O que a Constituição garante', lista: m.direitos.slice(0, 4).map(d => d.t) });
-    if (m.efeitos_coletivos) S.push({ secao: 'O que isso causa a você', titulo: 'O preço para a cidade', texto: cut(m.efeitos_coletivos, 420) });
+    if (m.impactos_editoriais?.populacao || m.efeitos_coletivos) S.push({ secao: 'O que isso causa a você', titulo: 'O efeito na vida da população', texto: m.impactos_editoriais?.populacao || cut(m.efeitos_coletivos, 420) });
     const cab = (m.cabiveis || []).slice(0, 3).map(t => cut(t, 120));
     if (cab.length) S.push({ secao: 'O que pode ser feito', titulo: 'Medidas cabíveis', lista: cab });
     if (m.leitura_editorial?.paragrafos?.length) {
@@ -761,14 +789,30 @@
       <div class="pv"><canvas id="cv" aria-label="Prévia da imagem para compartilhar"></canvas></div>
       <div><div class="seg" role="tablist" id="sh-modo"><button class="on" data-m="uma">Uma imagem</button><button data-m="seq">Sequência</button></div><div class="seg" role="tablist" id="sh-fmt" style="margin-top:8px"><button class="on" data-f="story">Stories · 9:16</button><button data-f="feed">Feed · 4:5</button></div>
         <p class="muted" style="font-size:15px" id="sh-dim">Imagem vertical de 2160 × 3840 px, pronta para Instagram, WhatsApp e Facebook. O texto fica centralizado e a ilustração vai no topo.</p>
+        <div class="share-copy"><label id="sh-copy-label" for="sh-copy-text">Link para a figurinha do story</label><textarea id="sh-copy-text" readonly rows="3" spellcheck="false"></textarea><button class="btn ghost" id="sh-copy-text-btn">Copiar link para o story</button><p class="muted" id="sh-copy-help">Ao baixar ou compartilhar a imagem, tentaremos copiar este link para você colar na figurinha de link.</p></div>
         <div class="thumbs" id="sh-th" hidden></div><div class="acts"><button class="btn solid" id="sh-img">${ic('share')}Compartilhar imagem</button><button class="btn" id="sh-dl">${ic('baixar')}Baixar imagem</button>
         <a class="btn" id="sh-wa" href="https://wa.me/?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar link pelo WhatsApp</a><button class="btn ghost" id="sh-cp">${ic('link')}Copiar link</button></div></div></div></div></div>`;
     openLayer(m); closeable(m);
     let modo = 'uma', seqCv = [];
+    const syncCopy = () => {
+      const story = fmt === 'story';
+      $('#sh-copy-label').textContent = story ? 'Link para a figurinha do story' : 'Legenda para a publicação no feed';
+      $('#sh-copy-text').value = story ? url : feedCaption(x, url);
+      $('#sh-copy-text').rows = story ? 3 : 7;
+      $('#sh-copy-text-btn').textContent = story ? 'Copiar link para o story' : 'Copiar legenda';
+      $('#sh-copy-help').textContent = story ? 'Ao baixar ou compartilhar a imagem, tentaremos copiar este link para você colar na figurinha de link.' : 'Ao baixar ou compartilhar a imagem, tentaremos copiar esta legenda para você colar na publicação.';
+    };
+    const copyText = async () => {
+      try { await navigator.clipboard.writeText($('#sh-copy-text').value); toast(fmt === 'story' ? 'Link copiado para usar no story' : 'Legenda copiada para o feed'); return true; }
+      catch (_) { $('#sh-copy-help').textContent = 'A cópia automática não foi permitida. Use o botão de copiar ou selecione o texto acima.'; return false; }
+    };
+    $('#sh-copy-text-btn').onclick = async () => { if (!await copyText()) { $('#sh-copy-text').focus(); $('#sh-copy-text').select(); } };
+    syncCopy();
     const cv = $('#cv'), draw = async () => {
       const controls = $$('#sh-modo button, #sh-fmt button, #sh-img, #sh-dl', m);
       controls.forEach(b => b.disabled = true); cv.setAttribute('aria-busy', 'true');
       try {
+      syncCopy();
       $('#sh-th').hidden = modo !== 'seq';
       $('#sh-img').innerHTML = ic('share') + (modo === 'seq' ? 'Compartilhar a sequência' : 'Compartilhar imagem'); $('#sh-dl').innerHTML = ic('baixar') + (modo === 'seq' ? 'Baixar todas' : 'Baixar imagem');
       const pvx = $('#pvimg'); if (pvx) pvx.remove(); cv.style.display = '';
@@ -783,8 +827,8 @@
     };
     $$('#sh-modo button', m).forEach(b => b.onclick = async () => { modo = b.dataset.m; $$('#sh-modo button', m).forEach(x => x.classList.toggle('on', x === b)); await draw(); });
     $$('#sh-fmt button', m).forEach(b => b.onclick = async () => { fmt = b.dataset.f; $$('#sh-fmt button', m).forEach(x => x.classList.toggle('on', x === b)); await draw(); });
-    $('#sh-img').onclick = async () => { const r = modo === 'seq' ? await CARDS.shareMany(seqCv, it.nome + '-' + fmt, x.titulo) : await CARDS.share($('#cv'), it.nome + '-' + fmt, x.titulo); if (r !== 'cancel') recordShare(fmt).then(r => r && !r.off && $$(`[data-eng] [data-c="shares"]`).forEach(e => e.textContent = Number(r.shares).toLocaleString('pt-BR'))); };
-    $('#sh-dl').onclick = async () => { if (modo === 'seq') await CARDS.saveMany(seqCv, it.nome + '-' + fmt); else await CARDS.save($('#cv'), it.nome + '-' + fmt); recordShare(fmt + '-download'); };
+    $('#sh-img').onclick = async () => { const copied = copyText(); const r = modo === 'seq' ? await CARDS.shareMany(seqCv, it.nome + '-' + fmt, x.titulo) : await CARDS.share($('#cv'), it.nome + '-' + fmt, x.titulo); await copied; if (r !== 'cancel') recordShare(fmt).then(r => r && !r.off && $$(`[data-eng] [data-c="shares"]`).forEach(e => e.textContent = Number(r.shares).toLocaleString('pt-BR'))); };
+    $('#sh-dl').onclick = async () => { await copyText(); if (modo === 'seq') await CARDS.saveMany(seqCv, it.nome + '-' + fmt); else await CARDS.save($('#cv'), it.nome + '-' + fmt); recordShare(fmt + '-download'); };
     $('#sh-wa').onclick = () => { recordShare('whatsapp'); };
     $('#sh-cp').onclick = async () => { try { await navigator.clipboard.writeText(url); toast('Link copiado'); } catch (e) { prompt('Copie o link:', url); } recordShare('link'); };
     await draw();

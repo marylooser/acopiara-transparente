@@ -241,6 +241,88 @@ button.chip { min-height: 40px; padding-inline: 14px; font-size: 12px; }
 .concl .leitura-body p { font-weight: 400; line-height: 1.8; margin: 0 0 18px; }
 .concl .leitura-body p:last-child { margin-bottom: 0; }
 
+/* Content with different lengths follows a shared vertical sequence. */
+.section-flow { display: grid; gap: 56px; }
+.reading-notes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.reading-note { padding: 20px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+.reading-note p { margin: 0; font-size: 15px; line-height: 1.75; }
+.reading-note .chip { display: table; margin-bottom: 12px; }
+.reading-source { grid-column: 1 / -1; max-width: 78ch; color: var(--muted); }
+.reading-source p { margin: 0; font-size: 14px; }
+.topics-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
+.topic-card .media { aspect-ratio: 2 / 1; }
+.topic-card .body { gap: 8px; padding: 20px; }
+.topic-card .body h3, .topic-card .body p { margin: 0; }
+.card .body > :last-child { margin-bottom: 0; }
+.casehead .row { align-items: center; }
+.foot .doodle-row { width: 100%; margin: 0 auto 40px; }
+.foot .footer-art { width: min(100%, 1000px); max-height: none; aspect-ratio: 3 / 1; margin-inline: auto; }
+.footer-grid { grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)); gap: 40px; }
+.footer-grid > * { grid-column: auto; }
+.footer-grid h4 { margin-bottom: 18px; }
+.concl .tag { color: #24523d; }
+@media (max-width: 1000px) {
+  .reading-notes { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .reading-note { padding: 18px 20px; }
+  .topics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+  .footer-grid > :first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  .section-flow { gap: 36px; }
+  body.m .topics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .topic-card .body { padding: 16px; }
+  .topic-card h3 { font-size: 18px; }
+  body.m .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.m .footer-grid > * { grid-column: auto; }
+  body.m .footer-grid > :first-child { grid-column: 1 / -1; }
+  .foot .doodle-row { margin-bottom: 28px; }
+}
+@media (max-width: 359px) { body.m .topics-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Full currency units need a comfortable, predictable indicator grid. */
+@media (min-width: 761px) {
+  .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .stat { padding: 24px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .stat:nth-child(3n) { border-right: 0; }
+  .stat:nth-child(3n+1) { padding-left: 0; }
+  .stat:nth-last-child(-n+3) { border-bottom: 0; }
+}
+@media (max-width: 760px) { .stat b { min-height: 2.4em; } }
+
+/* Shared page widths follow the task: reading, reference guide or data report. */
+main:is([data-page="sobre"], [data-page="editorial"], [data-page="direitos"]) > .block > .wrap { max-width: calc(860px + 2 * var(--pad)); }
+main:is([data-page="sobre"], [data-page="editorial"], [data-page="direitos"], [data-page="fiscalize"], [data-page="denuncie"]) > .block > .wrap > .row { grid-template-columns: minmax(0, 1fr); }
+main:is([data-page="sobre"], [data-page="editorial"], [data-page="direitos"], [data-page="fiscalize"], [data-page="denuncie"]) > .block > .wrap > .row > * { grid-column: 1 / -1; }
+main:is([data-page="fiscalize"], [data-page="denuncie"]) > .block > .wrap { max-width: calc(960px + 2 * var(--pad)); }
+main:is([data-page="sobre"], [data-page="editorial"], [data-page="direitos"], [data-page="fiscalize"], [data-page="denuncie"]) :is(.lead, .prose p, .prose li) { max-width: none; }
+main[data-page="denuncie"] .aside { position: static; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-height: none; }
+main[data-page="denuncie"] .aside .box { margin: 0; }
+.guide-tools { display: flex; gap: 24px; justify-content: space-between; align-items: center; margin-top: 28px; padding: 20px 24px; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r); }
+.guide-tools h3 { font-size: 18px; margin-bottom: 8px; }
+.guide-tools p { font-size: 14px; margin: 0; }
+.guide-tools .btn { flex-shrink: 0; }
+main[data-page="dinheiro"] > .block > .wrap { max-width: calc(1040px + 2 * var(--pad)); }
+main[data-page="dinheiro"] .prose :is(p, li) { max-width: none; }
+.overview-intro { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: center; gap: 40px; }
+.overview-intro h1 { font-size: clamp(34px, 3.4vw, 48px); }
+.overview-intro .lead { max-width: none; font-size: 18px; }
+.overview-art { min-width: 0; }
+.overview-art img { display: block; width: 100%; border-radius: var(--r); }
+.sec-head { align-items: flex-end; }
+.hb b { min-width: 0; font-variant-numeric: tabular-nums; }
+@media (max-width: 900px) {
+  .overview-intro { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .overview-art { width: min(100%, 560px); justify-self: center; }
+}
+@media (max-width: 600px) {
+  .guide-tools { align-items: stretch; flex-direction: column; gap: 16px; padding: 20px; }
+  main[data-page="denuncie"] .aside { grid-template-columns: minmax(0, 1fr); }
+  .sec-head { align-items: stretch; }
+}
+
+.money-accessible { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
 /* Valores financeiros conciliados: leitura por etapa, sem colunas adicionais. */
 .financial-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0}
 .financial-summary>div{padding:14px;border:1px solid var(--line);border-radius:8px;min-width:0}
@@ -252,6 +334,7 @@ button.chip { min-height: 40px; padding-inline: 14px; font-size: 12px; }
 .financial-detail dl{display:grid;grid-template-columns:1fr;gap:2px;margin:12px 0 0;font-size:12px;line-height:1.5}
 .financial-detail dd{margin:0 0 8px;overflow-wrap:anywhere}
 .financial-detail dt{color:var(--muted)}
+.bigval .mk{background:none;color:var(--verde);transition:none}
 .review-note{margin:20px 0;padding:20px;border:1px solid var(--line);border-left:3px solid var(--verde);border-radius:8px;font-size:14px;line-height:1.75}
 .review-note h3{font-size:17px;margin-top:0}.review-note p:last-child{margin-bottom:0}
 @media(max-width:380px){.financial-summary{grid-template-columns:1fr}}
