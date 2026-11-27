@@ -76,18 +76,36 @@
     }
     let state = states.get(el);
     if (!state) {
-      states.set(el, { version: 0, overlay: null, timer: 0 });
+      state = { version: 0, overlay: null, timer: 0, retries: new Set() };
+      states.set(el, state);
+      const recover = () => {
+        const wanted = target(el);
+        if (!wanted || state.retries.has(wanted)) return;
+        state.retries.add(wanted);
+        const version = ++state.version, url = new URL(wanted, document.baseURI);
+        url.searchParams.set('artretry', '22');
+        preload(url.href).then(() => {
+          if (el.isConnected && state.version === version && target(el) === wanted) el.src = url.href;
+        }).catch(() => { /* Keep meaningful alt text if the retry also fails. */ });
+      };
+      el.addEventListener('error', recover);
       // New route images must match the selected theme before the next paint.
       if (el.getAttribute('src') !== src) el.setAttribute('src', src);
+      if (el.complete && !el.naturalWidth) recover();
       return;
     }
     const version = ++state.version;
     clearOverlay(state);
     if (el.getAttribute('src') === src) return;
-    preload(src).then(async () => {
+    preload(src).then(() => src).catch(async () => {
+      if (state.retries.has(src) || !el.isConnected || version !== state.version) throw new Error('Image unavailable');
+      state.retries.add(src);
+      const url = new URL(src, document.baseURI); url.searchParams.set('artretry', '22');
+      await preload(url.href); return url.href;
+    }).then(async loadedSrc => {
       if (!el.isConnected || version !== state.version || target(el) !== src) return;
       const old = !immediate() && el.complete && el.naturalWidth ? previousImage(el, state) : null;
-      el.setAttribute('src', src);
+      el.setAttribute('src', loadedSrc);
       if (!old) return;
       try { await el.decode(); } catch (_) { /* Preload already confirmed availability. */ }
       if (version !== state.version || state.overlay !== old) return;

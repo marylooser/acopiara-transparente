@@ -58,7 +58,7 @@
   }
 
   /* ---------- gráficos (SVG, cores do tema) ---------- */
-  const fmtN = v => v >= 1e6 ? 'R$\u00a0' + (v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '\u00a0mi' : v >= 1e4 ? 'R$\u00a0' + Math.round(v / 1e3).toLocaleString('pt-BR') + '\u00a0mil' : 'R$\u00a0' + Math.round(v).toLocaleString('pt-BR');
+  const fmtN = v => v >= 1e6 ? 'R$\u00a0' + (v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + (v / 1e6 === 1 ? ' milhão' : ' milhões') : v >= 1e4 ? 'R$\u00a0' + Math.round(v / 1e3).toLocaleString('pt-BR') + '\u00a0mil' : 'R$\u00a0' + Math.round(v).toLocaleString('pt-BR');
   function chartBars(g) {
     const d = g.dados, mx = Math.max(...d.map(x => x[1])), money = g.moeda !== false && mx > 999;
     return `<figure class="chart"><figcaption>${esc(g.titulo)}</figcaption><div class="hbars">${d.map((x, i) => `<div class="hb"><span class="hlab">${esc(x[0])}</span><div class="bar ${i === 0 && g.destaque ? '' : ''}"><i style="width:${(100 * x[1] / mx).toFixed(1)}%;--d:${(i * .08).toFixed(2)}s"></i></div><b>${money ? fmtN(x[1]) : Number(x[1]).toLocaleString('pt-BR')}</b></div>`).join('')}</div>${g.fonte ? `<p class="cf">${esc(g.fonte)}</p>` : ''}</figure>`;
@@ -85,24 +85,36 @@
     const MS = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'], lb = r => MS[+r.mes.slice(5) - 1] + '/' + r.mes.slice(2, 4);
     return chartLine({ titulo: 'Diesel: preço por litro pago pela Prefeitura × preço médio nos postos de Iguatu (ANP)', dec: 2, fonte: 'Fontes: notas fiscais informadas ao TCE-CE (SIM) e levantamento de preços da ANP. Elaboração própria.' }, [{ nome: 'Prefeitura de Acopiara', cor: 'var(--alerta)', pts: s.map(r => [lb(r), r.pago_medio]) }, { nome: 'Postos de Iguatu (bomba)', cor: 'var(--azul)', pts: s.map(r => [lb(r), r.iguatu]) }]);
   }
+  const brlAud = v => 'R$\u00a0' + Number(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  function financialSummary(v) {
+    if (!v) return '';
+    return `<dl class="financial-summary">${[['bruto','Empenhado bruto'],['anulado','Anulado'],['liquido','Empenhado líquido'],['pago','Pago, sem estornos']].map(([k,t]) => `<div><dt>${t}</dt><dd>${brlAud(v[k])}</dd></div>`).join('')}</dl>`;
+  }
+  function financialDetail(v) {
+    if (!v) return '';
+    return `<details class="financial-detail"><summary><b>${brlAud(v.liquido)}</b><span>Empenhado líquido · ver composição</span></summary><dl><dt>Bruto</dt><dd>${brlAud(v.bruto)}</dd><dt>Anulado</dt><dd>${brlAud(v.anulado)}</dd><dt>Pago, sem estornos</dt><dd>${brlAud(v.pago)}</dd></dl></details>`;
+  }
+  function reviewNotes(item) {
+    return item.conferencia?.length ? `<section class="review-note" aria-label="Conferência documental"><h3>O que foi conferido e o que ainda falta</h3>${item.conferencia.map(t => `<p>${esc(t)}</p>`).join('')}</section>` : '';
+  }
   function serieCaso(c) {
     if (!c.serie || !c.serie.meses?.length) return '';
     const MS = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
     const ms = c.serie.meses, tot = ms.reduce((a, b) => a + b[1], 0), mx = Math.max(...ms.map(m => m[1]));
-    return `<h2>O dinheiro mês a mês</h2><p>Empenhos (dinheiro reservado para pagar) às empresas deste caso, segundo o que a Prefeitura informou ao Tribunal de Contas. Total: <b>${brl(tot)}</b>.</p>
-      <figure class="chart"><figcaption>Valores empenhados por mês (R$)</figcaption><div class="vbars">${ms.map((m, i) => `<div class="vb" title="${esc(m[0])}: ${brl(m[1])}"><i style="height:${(100 * m[1] / mx).toFixed(1)}%;--d:${(i * .03).toFixed(2)}s"></i><span>${MS[+m[0].slice(5) - 1]}<br>${m[0].slice(2, 4)}</span></div>`).join('')}</div>
+    return `<h2>O dinheiro mês a mês</h2><p>Empenhos líquidos após as anulações parciais deste recorte, segundo os registros do SIM/TCE-CE. Total: <b>${brl(tot)}</b>.</p>
+      <figure class="chart"><figcaption>Empenhos líquidos por mês (R$)</figcaption><div class="vbars">${ms.map((m, i) => `<div class="vb" title="${esc(m[0])}: ${brl(m[1])}"><i style="height:${(100 * m[1] / mx).toFixed(1)}%;--d:${(i * .03).toFixed(2)}s"></i><span>${MS[+m[0].slice(5) - 1]}<br>${m[0].slice(2, 4)}</span></div>`).join('')}</div>
       ${c.serie.por_empresa?.length > 1 ? `<div class="hbars" style="margin-top:16px">${c.serie.por_empresa.map(p => `<div class="hb"><span class="hlab">${esc(p[0])}</span><div class="bar"><i style="width:${(100 * p[1] / c.serie.por_empresa[0][1]).toFixed(1)}%"></i></div><b>${fmtN(p[1])}</b></div>`).join('')}</div>` : ''}
-      <p class="cf">Fonte: TCE-CE, Sistema de Informações Municipais (SIM), empenhos de jan./2025 a set./2026, sem os anulados.</p></figure>`;
+      <p class="cf">Fonte: TCE-CE, Sistema de Informações Municipais (SIM), empenhos de jan./2025 a set./2026, excluídas as notas totalmente anuladas e descontadas as anulações parciais até 30/09/2026.</p></figure>`;
   }
 
   function agentesBloco(nomes, titulo) {
     const ps = (nomes || []).map(n => PERF.find(p => norm(p.nome) === norm(n)) || { nome: n, cargo: '' });
     if (!ps.length) return '';
-    return `<h2>${titulo || 'Agentes públicos envolvidos'}</h2><div class="grid ${M ? '' : 'g2'}">${ps.map(p => `<a class="card agente" href="#/pessoa/${encodeURIComponent(p.nome)}"><div class="body"><div class="perfil">${avatar(p)}<div><h3 style="font-size:17px">${esc(p.nome)}</h3><div class="meta" style="margin-top:6px">${esc(p.cargo || '')}</div></div></div>${p.historico?.length ? `<p style="margin-top:12px;font-size:14px">${esc(p.historico[p.historico.length - 1])}</p>` : ''}${p.gestao ? `<p style="font-size:14px"><b>${fmtN(p.gestao.total)}</b> empenhados na unidade sob sua gestão</p>` : ''}</div></a>`).join('')}</div>`;
+    return `<h2>${titulo || 'Agentes públicos envolvidos'}</h2><div class="grid ${M ? '' : 'g2'}">${ps.map(p => `<a class="card agente" href="#/pessoa/${encodeURIComponent(p.nome)}"><div class="body"><div class="perfil">${avatar(p)}<div><h3 style="font-size:17px">${esc(p.nome)}</h3><div class="meta" style="margin-top:6px">${esc(p.cargo || '')}</div></div></div>${p.historico?.length ? `<p style="margin-top:12px;font-size:14px">${esc(p.historico[p.historico.length - 1])}</p>` : ''}${p.gestao ? `<p style="font-size:14px"><b>${fmtN(p.gestao.total)}</b> empenhos líquidos na unidade sob sua gestão</p>` : ''}</div></a>`).join('')}</div>`;
   }
   function ordenadoresBloco(c) {
     const o = c.serie && c.serie.ordenadores; if (!o || !o.length) return '';
-    return `<h2>Quem respondia pelas despesas</h2><p>Gestores das secretarias na data de cada empenho deste caso, segundo o cadastro que a Prefeitura envia ao Tribunal de Contas. O gestor da unidade é quem autoriza a despesa.</p>${tabela([['Secretaria', 'Gestor(a) na data do empenho', 'Valor empenhado'], ...o.map(r => [r[0], r[1], brl(r[2])])])}<p class="muted" style="font-size:13px;margin-top:8px">${o.map(r => PERF.find(p => norm(p.nome) === norm(r[1])) ? `<a href="#/pessoa/${encodeURIComponent(PERF.find(p => norm(p.nome) === norm(r[1])).nome)}">Perfil de ${esc(r[1])} →</a>` : '').filter(Boolean).join(' · ')}</p>`;
+    return `<h2>Quem respondia pelas despesas</h2><p>Gestores das secretarias na data de cada empenho deste caso, segundo o cadastro que a Prefeitura envia ao Tribunal de Contas. O gestor da unidade é quem autoriza a despesa.</p>${tabela([['Secretaria', 'Gestor(a) na data do empenho', 'Empenhado líquido'], ...o.map(r => [r[0], r[1], brl(r[2])])])}<p class="muted" style="font-size:13px;margin-top:8px">${o.map(r => PERF.find(p => norm(p.nome) === norm(r[1])) ? `<a href="#/pessoa/${encodeURIComponent(PERF.find(p => norm(p.nome) === norm(r[1])).nome)}">Perfil de ${esc(r[1])} →</a>` : '').filter(Boolean).join(' · ')}</p>`;
   }
 
   function capturasBloco(c) {
@@ -117,11 +129,11 @@
   }
   function empenhosBloco(c) {
     if (!c.empenhos?.length) return '';
-    const rows = c.empenhos, tot = rows.reduce((a, r) => a + r[4], 0);
-    return `<h2>Os empenhos, um a um</h2><p>${c.n_empenhos} empenho${c.n_empenhos > 1 ? 's' : ''} ligados a este caso, somando <b>${brl(tot)}</b>${c.n_empenhos > rows.length ? ` (mostrando os ${rows.length} primeiros)` : ''}. Empenho é a reserva do dinheiro para pagar: cada linha tem data, secretaria, quem a geria e o objeto declarado.</p>
-      <input class="field" id="eq" type="search" placeholder="Filtrar empenhos por palavra, mês ou valor…" style="margin-bottom:12px">
-      <div id="el">${tabela([['Data', 'Recebedor', 'Secretaria', 'Gestor(a)', 'Valor', 'Forma', 'Objeto declarado'], ...rows.map(r => [fmtData(r[0]), r[1], r[2], r[3], brl(r[4]), r[5], r[6]])], { id: 'etb', data: 1, lim: 10 })}</div>
-      <p class="muted" style="font-size:13px;margin-top:8px">Fonte: TCE-CE, Sistema de Informações Municipais (SIM), jan./2025 a set./2026, sem empenhos anulados.</p>`;
+    const rows = c.empenhos;
+    return `<h2>Os empenhos, um a um</h2><p>${rows.length} registros vinculados ao recorte deste caso. Reserva orçamentária, anulação e pagamento são etapas diferentes; os valores abaixo as distinguem.</p>${financialSummary(c.financeiro)}
+      <label class="muted" for="ef">Filtrar registros</label><input id="ef" type="search" placeholder="Fornecedor, secretaria, objeto…" style="width:100%;margin:12px 0">
+      <div id="el">${tabela([['Data','Fornecedor','Secretaria','Gestor(a)','Composição do registro','Forma','Objeto declarado'], ...rows.map(r => [fmtData(r[0]),r[1],r[2],r[3],`Líquido: ${brlAud(r[8] ?? r[4])}; bruto: ${brlAud(r[4])}; anulado: ${brlAud(r[7] || 0)}; pago: ${brlAud(r[9] || 0)}`,r[5],r[6]])],{id:'etb',data:1,lim:10})}</div>
+      <p class="note">Fonte: SIM/TCE-CE. Notas do recorte publicado, anulações até 30/09/2026 e pagamentos válidos ligados às mesmas notas. Uma anulação não é prova de prejuízo; pode corresponder a ajuste de fonte ou relançamento.</p>`;
   }
   function relacionadosBloco(c) {
     const r = (c.relacionados || []).map(id => CASOS.find(x => x.id === id)).filter(Boolean); if (!r.length) return '';
@@ -348,7 +360,7 @@
         ${secao(1, 'Introdução', `<p class="intro">${esc(m.intro || c.resumo)}</p>`)}
         ${secao(2, 'O problema', `<p>${esc(m.problema || c.resumo)}</p>`)}
         ${secao(3, 'Quem está envolvido', envolvidos)}
-        ${secao(4, 'Os fatos', fatos)}
+        ${secao(4, 'Os fatos', reviewNotes(c) + fatos)}
         ${secao(5, 'Os direitos atingidos', direitosBloco(m.direitos))}
         ${secao(6, 'O que isso causa à população', `<p>${esc(m.efeitos_coletivos || '')}</p>${(c.por_que_importa || []).flatMap(chunk).map(p => `<p>${esc(p)}</p>`).join('')}`)}
         ${secao(7, 'O que isso causa ao patrimônio público', `<p>${esc(m.efeitos_bem_publico || '')}</p>${c.valor ? `<p>Valor envolvido: <span class="mk">${brl(c.valor)}</span>${c.valor_rotulo ? ' (' + esc(c.valor_rotulo) + ')' : ''}.</p>` : ''}`)}
@@ -393,7 +405,7 @@
       ${secao(1, 'Introdução', `<p class="intro">${esc(m.intro || n.fato)}</p>`)}
       ${secao(2, 'O problema', `<p>${esc(m.problema || '')}</p>`)}
       ${secao(3, 'Quem está envolvido', H3(agentesBloco(n.agentes, 'Agentes públicos')) || '<p class="muted">A notícia não individualiza agentes públicos.</p>')}
-      ${secao(4, 'Os fatos', fatos)}
+      ${secao(4, 'Os fatos', reviewNotes(n) + fatos)}
       ${secao(5, 'Os direitos atingidos', direitosBloco(m.direitos))}
       ${secao(6, 'O que isso causa à população', `<p>${esc(m.efeitos_coletivos || '')}</p>`)}
       ${secao(7, 'O que isso causa ao patrimônio público', `<p>${esc(m.efeitos_bem_publico || '')}</p>`)}
@@ -433,34 +445,34 @@
   function dinheiro() {
     const d = X.dinheiro || { linhas: [] }, D = DIN || {};
     const tot = d.linhas.reduce((a, l) => ({ r: a.r + l.recebido, p: a.p + l.pago, g: a.g + l.lacuna }), { r: 0, p: 0, g: 0 });
-    const comb = (D.combustivel || []).filter(r => r.prod === 'DIESEL S10'), acima = comb.filter(r => r.dif > 0), excesso = acima.reduce((a, r) => a + r.dif, 0);
+    const comb = (D.combustivel || []).filter(r => r.prod === 'DIESEL S10'), acima = comb.filter(r => r.dif > 0), excesso = acima.reduce((a, r) => a + r.dif, 0), abaixo = -comb.filter(r => r.dif < 0).reduce((a,r)=>a+r.dif,0), saldo = excesso - abaixo;
     const gen = Object.entries(D.genericos || {}), genTot = gen.reduce((a, g) => a + g[1].total, 0);
     const est = D.estado || [], estTot = est.reduce((a, e) => a + e.valor, 0);
     const uniao = M ? `<div class="recs">${d.linhas.map(l => `<div class="rec"><div class="h">${esc(l.area)}</div><div class="muted" style="font-size:13px;margin-bottom:8px">${esc(l.recurso)}</div><dl><dt>Recebido</dt><dd>${brl(l.recebido)}</dd><dt>Pago</dt><dd>${brl(l.pago)}</dd><dt>Sem registro</dt><dd><b>${brl(l.lacuna)}</b></dd></dl>${l.equivale ? `<p style="font-size:14px;margin:10px 0 0">${esc(l.equivale)}</p>` : ''}</div>`).join('')}</div>`
       : `<div class="tscroll"><table class="t"><thead><tr><th>Área e recurso</th><th class="num">Recebido</th><th class="num">Pago</th><th class="num">Sem registro de gasto</th><th style="min-width:160px">Proporção</th><th>Isso daria para…</th></tr></thead><tbody>
       ${d.linhas.map(l => `<tr><td><b>${esc(l.area)}</b><br><span class="muted">${esc(l.recurso)}</span></td><td class="num">${brl(l.recebido)}</td><td class="num">${brl(l.pago)}</td><td class="num"><b>${brl(l.lacuna)}</b></td><td><div class="bar"><i style="width:${(100 * l.pago / l.recebido).toFixed(1)}%"></i></div><div class="muted" style="font-size:12px;margin-top:4px">${Math.round(100 * l.pago / l.recebido)}% aplicado</div></td><td>${esc(l.equivale || '')}</td></tr>`).join('')}</tbody></table></div>`;
     return `<section class="block"><div class="wrap"><div class="kicker">O dinheiro</div><h1>O que chega a Acopiara, e o que chega à população</h1>
-      <p class="lead">A União e o Estado mandam dinheiro carimbado para saúde, educação, assistência e obras. Esta página compara o que entrou com o que foi gasto, mostra preços pagos acima do mercado e compras que ninguém consegue conferir, e deixa você consultar quem recebeu da Prefeitura.</p>
-      <div class="kpis" style="margin-top:var(--s4)"><div class="kpi"><b>${fmtN(tot.g)}</b><span>da União sem gasto registrado com a fonte correspondente (jan./2025 a set./2026)</span></div><div class="kpi"><b>${fmtN(excesso)}</b><span>pagos acima do preço da bomba no diesel, em ${acima.length} de ${comb.length} meses</span></div><div class="kpi"><b>${fmtN(genTot)}</b><span>em notas fiscais sem item identificado: remédios "de A a Z", peças e materiais "diversos"</span></div></div>
-      <nav class="chips" style="margin:var(--s2) 0 var(--s4)"><a class="chip" href="#/dinheiro" data-jump="d-uniao">1. União</a><a class="chip" href="#/dinheiro" data-jump="d-estado">2. Estado</a><a class="chip" href="#/dinheiro" data-jump="d-preco">3. Preço acima do mercado</a><a class="chip" href="#/dinheiro" data-jump="d-gen">4. Compras sem item</a><a class="chip" href="#/dinheiro" data-jump="d-forn">5. Consulte quem recebeu</a></nav>
+      <p class="lead">A União e o Estado destinam recursos para saúde, educação, assistência e obras. Esta página confronta repasses com pagamentos identificados, compara o preço do diesel com uma referência regional e mostra compras sem descrição suficiente dos itens. Na consulta por fornecedor, distingue a reserva bruta, as anulações, o empenhado líquido e os pagamentos.</p>
+      <div class="kpis" style="margin-top:var(--s4)"><div class="kpi"><b>${fmtN(tot.g)}</b><span>da União sem gasto registrado com a fonte correspondente (jan./2025 a set./2026)</span></div><div class="kpi"><b>${fmtN(saldo)}</b><span>saldo da comparação do diesel com a referência de Iguatu; ${acima.length} de ${comb.length} meses ficaram acima</span></div><div class="kpi"><b>${fmtN(genTot)}</b><span>em notas fiscais sem item identificado: remédios "de A a Z", peças e materiais "diversos"</span></div></div>
+      <nav class="chips" style="margin:var(--s2) 0 var(--s4)"><a class="chip" href="#/dinheiro" data-jump="d-uniao">1. União</a><a class="chip" href="#/dinheiro" data-jump="d-estado">2. Estado</a><a class="chip" href="#/dinheiro" data-jump="d-preco">3. Comparação do diesel</a><a class="chip" href="#/dinheiro" data-jump="d-gen">4. Compras sem item</a><a class="chip" href="#/dinheiro" data-jump="d-forn">5. Fornecedores e pagamentos</a></nav>
       <div class="prose" style="max-width:none">
       <h2 id="d-uniao">1. O que a União mandou e o que foi aplicado</h2><p>${esc(d.intro)}</p>
       ${chartBars({ titulo: 'Recebido da União × pago com o mesmo recurso (R$, jan./2025 a set./2026)', dados: [['Recebido', tot.r], ['Pago com a fonte correspondente', tot.p], ['Sem gasto registrado', tot.g]] })}
       ${uniao}<p class="note">${esc(d.nota)}</p>
       ${(d.textos || []).map(t => `<h3 style="margin-top:var(--s3)">${esc(t.titulo)}</h3>${t.paragrafos.map(p => `<p>${esc(p)}</p>`).join('')}`).join('')}
-      <div class="concl"><span class="tag">Nossa leitura</span><p>Falta dinheiro para ambulância, agente de saúde e merenda? Os números dizem que não. Cerca de R$ 12 milhões federais chegaram e não têm gasto registrado com a fonte certa, R$ 8,4 milhões só na saúde. Ou o dinheiro está parado em conta enquanto o serviço falta, ou foi gasto sem a identificação exigida. Nos dois casos, a Prefeitura deve explicar.</p></div>
+      <div class="concl"><span class="tag">Nossa leitura</span><p>A diferença de ${fmtN(tot.g)} entre repasses e pagamentos identificados exige conciliação por programa e fonte. Ela não é saldo bancário nem prova de desvio ou disponibilidade livre: pode envolver saldo anterior, prazo de execução, classificação ou relançamento. Extratos, restos a pagar e registros da execução devem mostrar o destino de cada recurso.</p></div>
 
-      <h2 id="d-estado">2. O que o Estado mandou</h2><p>Convênios e repasses do Governo do Ceará que o próprio Município informou ao Tribunal de Contas: ${fmtN(estTot)} em transporte escolar, saúde, educação e obras.</p>
+      <h2 id="d-estado">2. Convênios e repasses registrados do Estado</h2><p>Valores pactuados em convênios e repasses estaduais registrados pelo Município no Tribunal de Contas: ${fmtN(estTot)} em transporte escolar, saúde, educação e obras. O valor pactuado não demonstra, sozinho, liberação integral ou pagamento; é necessário conferir as parcelas efetivamente transferidas.</p>
       </div><div class="estcards">${est.map(e => `<div class="est"><span class="muted" style="font-size:12.5px">${fmtData(e.data)} · ${esc(e.orgao)}</span><div class="v">${brl(e.valor)}</div><div class="o">${esc(e.objeto)}</div><p>${esc(e.nota)}</p>${e.caso ? `<a href="#/caso/${e.caso}" style="font-size:14px;margin-top:auto">Ver o caso relacionado →</a>` : ''}</div>`).join('')}</div>
       <div class="prose" style="max-width:none">
       <div class="concl" style="margin-top:var(--s3)"><span class="tag">Nossa leitura</span><p>O Estado paga transporte, saúde e obras em Acopiara, mas os planos de trabalho e as prestações de contas desses convênios não estão no portal da Prefeitura. Quem paga a conta, a população, tem o direito de ver obra por obra e repasse por repasse.</p></div>
 
-      <h2 id="d-preco">3. Preço pago acima do mercado: o caso do diesel</h2>
-      <p>Cruzamos as notas fiscais de combustível informadas ao TCE-CE com o preço médio que a ANP coleta nos postos de Iguatu, a cidade pesquisada mais próxima. Quem compra em grande quantidade deveria pagar menos que o motorista comum. No diesel, a Prefeitura pagou mais em ${acima.length} de ${comb.length} meses: ${brl(excesso)} acima do preço da bomba. Na gasolina, pagou abaixo na maior parte do tempo, prova de que era possível comprar bem.</p>
+      <h2 id="d-preco">3. Diesel: comparação com a referência de Iguatu</h2>
+      <p>Cruzamos as notas fiscais de combustível informadas ao TCE-CE com o preço médio que a ANP coleta nos postos de Iguatu, a cidade pesquisada mais próxima. Em ${acima.length} de ${comb.length} meses de diesel, a média das notas ficou acima da referência: as diferenças positivas somam ${brl(excesso)}. Nos meses abaixo, a diferença no sentido contrário soma ${brl(abaixo)}; o saldo da comparação é ${brl(saldo)}. Essa conta regional não prova, por si, sobrepreço ou dano; requer confrontar produto, amostra e condições do contrato.</p>
       ${chartComb()}
       ${M ? '' : `<div class="tscroll"><table class="t"><thead><tr><th>Mês</th><th class="num">Litros</th><th class="num">Preço pago (R$/l)</th><th class="num">Bomba em Iguatu (R$/l)</th><th class="num">Diferença no mês</th></tr></thead><tbody>${comb.map(r => `<tr><td>${r.mes.slice(5)}/${r.mes.slice(0, 4)}</td><td class="num">${r.litros.toLocaleString('pt-BR')}</td><td class="num">${r.pago_medio.toFixed(2).replace('.', ',')}</td><td class="num">${r.iguatu.toFixed(2).replace('.', ',')}</td><td class="num" style="color:${r.dif > 0 ? 'var(--alerta)' : 'var(--ok)'}"><b>${r.dif > 0 ? '+' : ''}${brl(r.dif)}</b></td></tr>`).join('')}</tbody></table></div>`}
-      <p class="note">Cálculo conservador: o preço de bomba já inclui o lucro do posto; o preço de atacado seria ainda menor. A ANP não pesquisa preços em Acopiara. Indício a apurar: o contrato pode ter cláusulas que expliquem parte da diferença, e é isso que a Prefeitura deve mostrar.</p>
-      <div class="concl"><span class="tag">Nossa leitura</span><p>Quando o diesel subiu em 2026, o preço do contrato subiu junto. Quando caiu em 2025, o preço da Prefeitura ficou parado em R$ 6,48 por nove meses. A lei permite e exige rever o preço nos dois sentidos. Há indício de que a gestão deixou de pedir a redução e pagou cerca de ${fmtN(excesso)} a mais.</p></div>
+      <p class="note">Referência de varejo: a ANP não pesquisa Acopiara. A comparação utiliza a média de Iguatu e não substitui a análise de logística, condições de fornecimento e representatividade da amostra. As médias e diferenças da série estão arredondadas.</p>
+      <div class="concl"><span class="tag">Nossa leitura</span><p>De junho de 2025 a fevereiro de 2026, as médias municipais ficaram próximas de R$ 6,48 em boa parte do período, com R$ 6,59 em novembro e R$ 6,498 em julho. A revisão deve examinar as cláusulas e as condições de execução, as oscilações de mercado e os pedidos de recomposição, sem tratar uma média regional como prova suficiente de prejuízo.</p></div>
 
       <h2 id="d-gen">4. Compras que ninguém consegue conferir</h2>
       <p>Para saber se um preço é justo, é preciso saber o que foi comprado. Em parte das notas fiscais informadas ao Tribunal de Contas, o item é descrito de forma genérica, sem nome do remédio, da peça ou do material. Assim, não há como comparar com tabelas oficiais, como a de preços máximos de medicamentos (CMED).</p>
@@ -468,11 +480,11 @@
       ${gen.map(g => `<p><b>${esc(g[0])}:</b> ${g[1].forn.slice(0, 4).map(f => `${esc(f[0])} (${fmtN(f[1])})`).join('; ')}.</p>`).join('')}
       <div class="concl"><span class="tag">Nossa leitura</span><p>Comprar "medicamentos de A a Z" ou "peças e demais componentes" sem dizer quais é comprar no escuro. A nota fiscal precisa identificar cada item, quantidade e preço. Sem isso, superfaturamento não pode ser descartado, e o ônus de provar que o preço foi justo é da Prefeitura.</p></div>
 
-      <h2 id="d-forn">5. Consulte quem recebeu da Prefeitura</h2>
-      <p>Todas as empresas e pessoas que receberam empenhos da Prefeitura de janeiro de 2025 a setembro de 2026 (sem folha de pagamento, impostos e repasses entre órgãos). Pesquise pelo nome, pela área ou pelo tipo de contratação.</p></div>
+      <h2 id="d-forn">5. Empenhos e pagamentos por fornecedor</h2>
+      <p>Empresas e pessoas com notas no recorte de janeiro de 2025 a setembro de 2026, sem folha, impostos e repasses entre órgãos. O total em destaque é o empenhado líquido; abra a composição para ver o bruto, as anulações parciais e os pagamentos válidos ligados às mesmas notas. Pesquise por nome, área ou contratação.</p></div>
       <div class="filters" style="grid-template-columns:2fr 1fr 1fr"><input id="dq" type="search" placeholder="Empresa, objeto, CNPJ…"><select id="da"><option value="">Todas as áreas</option>${[...new Set((D.fornecedores || []).map(f => f.area))].sort().map(a => `<option>${esc(a)}</option>`).join('')}</select><select id="dm"><option value="">Qualquer forma de contratação</option>${[...new Set((D.fornecedores || []).map(f => f.modo))].sort().map(a => `<option>${esc(a)}</option>`).join('')}</select></div>
       <div class="count" id="dc"></div><div id="dl"></div><div class="btns" style="margin-top:var(--s2)"><button class="btn ghost" id="dmore">Mostrar mais</button></div>
-      <p class="note">Fonte: TCE-CE, Sistema de Informações Municipais (SIM), notas de empenho de jan./2025 a set./2026, sem os empenhos anulados. Empenho é a reserva do dinheiro; o pagamento pode ser menor.</p>
+      <p class="note">Fonte: TCE-CE, Sistema de Informações Municipais (SIM), notas de jan./2025 a set./2026. Empenhos totalmente anulados foram excluídos; as anulações parciais até 30/09/2026 foram descontadas. Pagamentos estornados foram excluídos. Reserva líquida e pagamento são valores diferentes; o pagamento pode ocorrer em outra competência.</p>
       </div></section>`;
   }
   function bindDin() {
@@ -481,10 +493,10 @@
     const run = () => {
       const q = norm($('#dq').value), a = $('#da').value, m = $('#dm').value;
       const r = F.filter(f => (!a || f.area === a) && (!m || f.modo === m) && (!q || norm(f.nome + ' ' + f.objeto).includes(q)));
-      $('#dc').textContent = `${r.length} recebedores · ${brl(r.reduce((s, f) => s + f.total, 0))} empenhados`;
+      $('#dc').textContent = `${r.length} fornecedores · ${brlAud(r.reduce((s, f) => s + f.total, 0))} em empenhos líquidos`;
       const v = r.slice(0, lim);
-      $('#dl').innerHTML = M ? `<div class="recs">${v.map(f => `<div class="rec"><div class="h">${esc(f.nome)}</div><dl><dt>Total</dt><dd><b>${brl(f.total)}</b></dd><dt>2025</dt><dd>${brl(f.a2025)}</dd><dt>2026</dt><dd>${brl(f.a2026)}</dd><dt>Área</dt><dd>${esc(f.area)}</dd><dt>Contratação</dt><dd>${esc(f.modo)}</dd></dl><p class="muted" style="font-size:13px;margin:8px 0 0">${esc(f.objeto)}</p></div>`).join('')}</div>`
-        : `<div class="tscroll"><table class="t"><thead><tr><th>Recebedor</th><th class="num">Total</th><th class="num">2025</th><th class="num">2026</th><th>Área</th><th>Contratação</th><th>Maior empenho: objeto</th></tr></thead><tbody>${v.map(f => `<tr><td><b>${esc(f.nome)}</b><br><span class="muted" style="font-size:12.5px">${f.n} empenho${f.n > 1 ? 's' : ''}</span></td><td class="num"><b>${brl(f.total)}</b></td><td class="num">${brl(f.a2025)}</td><td class="num">${brl(f.a2026)}</td><td>${esc(f.area)}</td><td>${esc(f.modo)}</td><td style="font-size:13px">${esc(f.objeto)}</td></tr>`).join('')}</tbody></table></div>`;
+      $('#dl').innerHTML = M ? `<div class="recs">${v.map(f => `<div class="rec"><div class="h">${esc(f.nome)}</div><dl><dt>Composição</dt><dd>${financialDetail(f.financeiro)}</dd><dt>2025</dt><dd>${brl(f.a2025)}</dd><dt>2026</dt><dd>${brl(f.a2026)}</dd><dt>Área</dt><dd>${esc(f.area)}</dd><dt>Contratação</dt><dd>${esc(f.modo)}</dd></dl><p class="muted" style="font-size:13px;margin:8px 0 0">${esc(f.objeto)}</p></div>`).join('')}</div>`
+        : `<div class="tscroll"><table class="t"><thead><tr><th>Fornecedor</th><th>Reserva e pagamento</th><th class="num">2025 (líquido)</th><th class="num">2026 (líquido)</th><th>Área</th><th>Contratação</th><th>Maior empenho: objeto</th></tr></thead><tbody>${v.map(f => `<tr><td><b>${esc(f.nome)}</b><br><span class="muted" style="font-size:12.5px">${f.n} empenho${f.n > 1 ? 's' : ''}</span></td><td>${financialDetail(f.financeiro)}</td><td class="num">${brl(f.a2025)}</td><td class="num">${brl(f.a2026)}</td><td>${esc(f.area)}</td><td>${esc(f.modo)}</td><td style="font-size:13px">${esc(f.objeto)}</td></tr>`).join('')}</tbody></table></div>`;
       $('#dmore').hidden = r.length <= lim;
     };
     $('#dmore').onclick = () => { lim += 50; run(); };
@@ -536,7 +548,7 @@
       <div class="row" style="margin-top:var(--s3)"><div class="c8">
       <div class="perfil">${avatar(pf || p)}<div><h1 style="font-size:clamp(28px,3.4vw,40px);margin-bottom:8px">${esc(p.nome)}</h1><p class="lead" style="margin:0">${esc(pf ? pf.cargo + (pf.partido ? ' · ' + pf.partido : '') : [...p.papeis].filter(Boolean).join('; '))}</p></div></div>
       <div class="prose" style="margin-top:var(--s4)">
-      ${pf ? `<h2>Quem é</h2><p>${esc(pf.bio)}</p>${pf.historico?.length ? `<h2>Cargos e funções</h2><ul class="q">${pf.historico.map(h => `<li>${esc(h)}</li>`).join('')}</ul>` : ''}<h2>O que assinou ou decidiu nos documentos</h2><p>${esc(pf.atos)}</p>
+      ${pf ? `<h2>Quem é</h2><p>${esc(pf.bio)}</p>${financialSummary(pf.gestao?.financeiro)}${pf.historico?.length ? `<h2>Cargos e funções</h2><ul class="q">${pf.historico.map(h => `<li>${esc(h)}</li>`).join('')}</ul>` : ''}<h2>O que assinou ou decidiu nos documentos</h2><p>${esc(pf.atos)}</p>
         ${pf.declaracoes?.length ? `<h2>O que disse publicamente</h2>${pf.declaracoes.map(d => `<p><b>${fmtData(d.data)}.</b> ${esc(d.texto)} <a href="${esc(d.url)}" target="_blank" rel="noopener">Fonte ↗</a></p>`).join('')}` : ''}` : ''}
       ${sal.length ? `<h2>Vínculos e jornada (indício a apurar)</h2>${sal.map(r => `<div class="box"><div class="nums">${X.salarios.colunas.map((c, i) => `<div><span>${esc(c)}</span><b>${nb(r[i])}</b></div>`).join('')}</div></div>`).join('')}` : ''}
       <h2>Casos em que aparece</h2>${p.casos.length ? list(p.casos, cardCaso, 'g2') : '<p>Citado em tabela de vínculos ou em ato oficial.</p>'}

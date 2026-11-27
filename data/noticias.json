@@ -12,7 +12,7 @@
     "titulo": "R$ 172 mil para levar pacientes com câncer ao Cariri: quem vai, e quem decide?",
     "fato": "A Prefeitura publicou o Edital 038/2026, com abertura em 26 de novembro de 2026 e valor estimado de R$ 172.376,00, para contratar empresa de hospedagem, alimentação, transporte e apoio logístico a pacientes de Acopiara em tratamento oncológico na região do Cariri.",
     "analise": [
-      "Pacientes com câncer precisam viajar ao Cariri para tratamento, e apoiar essa viagem é obrigação do Município. Os empenhos mostram, porém, que esse apoio quase não existiu: R$ 28 mil em 21 meses, somando casa de apoio, passagens e itens relacionados.",
+      "O edital prevê hospedagem, alimentação, transporte e apoio logístico para tratamento oncológico. No recorte de notas de empenho por objeto, foram identificados R$ 28.249 de janeiro de 2025 a setembro de 2026. Esse subconjunto não mede sozinho todo o apoio prestado: despesas com combustível, veículos, pessoal ou outros contratos podem estar descritas de outra forma. Para avaliar a cobertura, são necessários relatórios de viagens, atendimentos e despesas por serviço, com os dados de pacientes anonimizados.",
       "O novo contrato pode corrigir a omissão, mas também pode virar mais um serviço com lista secreta de quem tem direito. A experiência desta gestão com seleções sem nota e sem critério publicado recomenda cuidado: em saúde, a ordem da fila decide quem se trata a tempo."
     ],
     "perguntas": [
@@ -30,24 +30,24 @@
         "t": "valor estimado do Edital 038/2026"
       },
       {
-        "n": "R$ 28 mil",
-        "t": "empenhados em 21 meses com tratamento fora do domicílio e apoio a pacientes"
+        "n": "R$ 28.249",
+        "t": "empenhos brutos identificados no recorte por objeto; não representam todo o apoio a pacientes"
       },
       {
-        "n": "6x",
-        "t": "o novo contrato equivale a seis vezes o que se gastou nesse apoio até agora"
+        "n": "6,1x",
+        "t": "relação aritmética entre estimativa do edital e empenhos identificados; bases de natureza e período diferentes"
       }
     ],
     "grafico": {
       "tipo": "barras",
-      "titulo": "Apoio a pacientes que tratam fora de Acopiara (R$)",
+      "titulo": "Estimativa de novo edital e empenhos identificados por objeto (bases diferentes; R$)",
       "dados": [
         [
-          "Empenhado de jan./2025 a set./2026",
+          "Recorte de empenhos brutos, jan./2025–set./2026",
           28249
         ],
         [
-          "Novo edital (estimativa)",
+          "Estimativa do edital; contratação a confirmar",
           172376
         ]
       ]
@@ -121,7 +121,10 @@
           "A execução deverá permitir conferir três etapas: o serviço solicitado, a viagem efetivamente realizada e o pagamento correspondente. Esses registros ajudam a distinguir uma ampliação real do atendimento de uma contratação que existe apenas no papel. É essa ligação entre o contrato e a assistência prestada que a Prefeitura precisará demonstrar."
         ]
       }
-    }
+    },
+    "conferencia": [
+      "R$ 172.376 é arredondamento da estimativa de R$ 172.375,56 registrada no PNCP. Não se trata, por si, de contrato assinado nem de pagamento. O recorte de R$ 28.249 não autoriza concluir que o apoio total a pacientes se limitou a esse valor."
+    ]
   },
   {
     "id": "diesel-acima-da-bomba",
@@ -137,8 +140,8 @@
     "fato": "Cruzamos as notas fiscais de combustível que a Prefeitura informou ao TCE-CE com os preços que a Agência Nacional do Petróleo coleta nos postos de Iguatu, a cidade pesquisada mais próxima. Em 15 de 19 meses com compras de diesel, a Prefeitura pagou mais por litro do que o consumidor comum pagava na bomba.",
     "numeros": [
       {
-        "n": "R$ 145 mil",
-        "t": "pagos acima do preço da bomba no diesel"
+        "n": "R$ 108.317",
+        "t": "saldo da comparação dos 19 meses; diferenças positivas somam R$ 145.773"
       },
       {
         "n": "15 de 19",
@@ -151,7 +154,7 @@
     ],
     "grafico": "combustivel",
     "analise": [
-      "Quem compra em grande quantidade deveria pagar menos que o motorista que abastece um tanque. A Prefeitura comprou mais de 576 mil litros de diesel e pagou, na maior parte do tempo, mais caro. Entre junho de 2025 e fevereiro de 2026, o preço nos postos de Iguatu caiu para cerca de R$ 6,10 o litro; o da Prefeitura ficou parado em R$ 6,48.",
+      "Quem compra em grande quantidade deveria pagar menos que o motorista que abastece um tanque. A Prefeitura comprou mais de 576 mil litros de diesel e pagou, na maior parte do tempo, mais caro. Entre junho de 2025 e fevereiro de 2026, o preço nos postos de Iguatu caiu para cerca de R$ 6,10 o litro; o da Prefeitura ficou próximo de R$ 6,48 na maior parte do período.",
       "A lei de licitações permite rever o preço quando o mercado muda, para cima ou para baixo. Quando o preço subiu em 2026, o contrato acompanhou; quando caiu em 2025, não. Na gasolina, a Prefeitura pagou abaixo da bomba na maior parte dos meses, o que mostra que comprar bem era possível.",
       "O cálculo é conservador: compara com o preço de varejo, que já inclui o lucro do posto, e não com o preço de atacado. Os preços de Acopiara não são pesquisados pela ANP; por isso usamos Iguatu, a 60 km."
     ],
@@ -185,7 +188,7 @@
       },
       {
         "t": "Preço parado por nove meses",
-        "d": "Entre junho de 2025 e fevereiro de 2026, o litro de diesel na Prefeitura ficou em R$ 6,48 todos os meses, enquanto em Iguatu oscilou entre R$ 6,09 e R$ 6,15.",
+        "d": "Entre junho de 2025 e fevereiro de 2026, o litro de diesel na Prefeitura ficou próximo de R$ 6,48 na maior parte dos meses, enquanto em Iguatu oscilou entre R$ 6,09 e R$ 6,15.",
         "fonte": "TCE-CE/SIM; ANP"
       }
     ],
@@ -236,7 +239,11 @@
           "O excesso estimado pelo levantamento deve ser tratado como resultado de uma comparação que precisa ser confrontada com os contratos e as notas. A resposta útil não é apenas afirmar que houve licitação: é mostrar por que os preços pagos permaneceram justificáveis ao longo da execução."
         ]
       }
-    }
+    },
+    "conferencia": [
+      "Na série mensal arredondada, os 15 meses acima da referência somam R$ 145.773 de diferenças positivas; os meses abaixo somam R$ 37.456 no sentido contrário. O saldo comparativo dos 19 meses é R$ 108.317. São diferenças de comparação com a média de Iguatu, não dano comprovado. Condições de fornecimento, produto, amostra e execução contratual precisam ser confrontadas.",
+      "Entre junho de 2025 e fevereiro de 2026, as médias mensais da Prefeitura variaram de R$ 6,480 a R$ 6,590. Novembro de 2025 registrou R$ 6,59, e julho R$ 6,498 (R$ 6,50 após arredondamento). Não houve um preço exatamente igual a R$ 6,48 durante os nove meses."
+    ]
   },
   {
     "id": "mcmv-agendamento-2026",
@@ -414,7 +421,7 @@
       "Saúde",
       "Dinheiro"
     ],
-    "titulo": "O Estado mandou R$ 1,2 milhão para manter a saúde funcionando. Onde está o plano?",
+    "titulo": "Convênio de R$ 1,2 milhão para a saúde: onde estão o plano e a execução?",
     "fato": "Em 18 de junho de 2026, o Governo do Ceará firmou convênio com Acopiara para transferir R$ 1,2 milhão destinados à manutenção da rede municipal de serviços de saúde. A informação consta da prestação de contas que o próprio Município envia ao Tribunal de Contas do Estado.",
     "numeros": [
       {
@@ -469,7 +476,7 @@
       ]
     },
     "analise": [
-      "O convênio é dinheiro carimbado para a saúde funcionar: manter postos, equipes e serviços. Ele chegou no mesmo ano em que moradores relatam falta de vaga para exames e consultas e em que a Prefeitura ampliou contratos com clínicas privadas.",
+      "O registro de R$ 1,2 milhão identifica o valor pactuado para a rede de saúde, e não comprova sozinho seu desembolso integral. A conferência precisa do plano de trabalho, do cronograma de liberação e das despesas por fonte e serviço, para verificar como a previsão se transformou em atendimento.",
       "O plano de aplicação não aparece no portal da Prefeitura. Sem ele, não há como saber se o recurso pagou atendimento à população ou apenas cobriu despesas que já existiam. O mesmo vale para os repasses do transporte escolar estadual, que chegam todo ano sem relatório público de rotas e alunos."
     ],
     "conclusao": "Acopiara recebe do Estado para saúde, transporte e obras. A população tem direito de ver, convênio por convênio, quanto chegou, quanto foi gasto e o que foi entregue. Peça o plano de trabalho pela Lei de Acesso à Informação; o prazo de resposta é de 20 dias.",
@@ -514,7 +521,7 @@
       "Maria Ivânia de Araújo Ferreira"
     ],
     "materia": {
-      "intro": "O Governo do Estado mandou R$ 1,2 milhão para manter a saúde funcionando. A população não viu o plano.",
+      "intro": "O convênio prevê apoio à rede municipal de saúde. Para acompanhar sua execução, é preciso conferir o plano, as parcelas liberadas e as despesas realizadas.",
       "problema": "O convênio de 18/06/2026 consta da prestação de contas ao TCE, mas o plano de trabalho não está disponível ao público.",
       "direitos": [
         {
@@ -567,13 +574,13 @@
     "titulo": "Acopiara ganhou médicos especialistas do programa federal. Por que a fila não anda?",
     "fato": "Reportagem sobre o programa federal Agora Tem Especialistas listou Acopiara entre os 23 municípios cearenses que passaram a contar com médicos especialistas pagos pelo programa, em junho de 2026. O objetivo declarado é reduzir a espera por consultas, exames e cirurgias especializadas no SUS.",
     "analise": [
-      "O quadro que o cadastro nacional mostra não é de falta de especialistas. Entre o Hospital Municipal, o Centro de Especialidades e a empresa Integra Med, Acopiara declara cerca de 40 registros de médicos especialistas, além do reforço do programa federal. Somam-se a isso o consórcio da Policlínica de Iguatu, pago pelo Município, e um convênio estadual de R$ 1,2 milhão para manter a rede funcionando.",
-      "Se há médico e há dinheiro, a fila não anda por outro motivo. O primeiro é o vínculo: 33 dos 40 médicos do hospital são temporários e a escala muda conforme o contrato, o que dificulta consulta de retorno e acompanhamento. O segundo é a contratação privada: R$ 2,96 milhões foram para clínicas e laboratórios, uma delas com um sócio que também está no hospital. O terceiro é a regulação: sem fila pública, não há como saber quem foi chamado e por quê.",
+      "O CNES registra especialidades e vínculos declarados, mas não mede sozinho a oferta efetiva de consultas e procedimentos. Para saber se a capacidade atende à demanda, é preciso confrontar cadastro, escalas, produção e regulação, além de confirmar o reforço do programa federal por município e especialidade.",
+      "Vínculos temporários, contratação de clínicas e organização da fila são questões a conferir, sem atribuir a elas, apenas pelo cadastro, a causa da espera. A transparência deve mostrar o número de vagas ofertadas, utilizadas e não utilizadas, o tempo de espera e os critérios de prioridade, sem expor os pacientes.",
       "A gestão da saúde está, desde 18 de novembro de 2025, com a secretária Antonia Norma Teclane Marques Lima, que sucedeu Claudenisia Félix da Silva do Vale. As duas assinaram, como gestoras, os empenhos com as clínicas privadas e com o consórcio. O Prefeito responde pela política de pessoal que mantém a saúde quase toda em contratos temporários."
     ],
     "perguntas": [
       "Quantos médicos do programa Agora Tem Especialistas atuam em Acopiara, em quais especialidades, dias e unidades?",
-      "Por que 33 dos 40 médicos do Hospital Municipal são temporários?",
+      "Por que 33 dos 40 registros médicos (38 nomes distintos) do Hospital Municipal são temporários?",
       "Quantas consultas por mês o Centro de Especialidades oferece em cada área e qual é o tempo de espera?",
       "Quantas vagas da Policlínica de Iguatu Acopiara recebe e quantas usa?"
     ],
@@ -584,8 +591,8 @@
     ],
     "numeros": [
       {
-        "n": "40",
-        "t": "médicos no Hospital Municipal, só 1 efetivo (CNES)"
+        "n": "38",
+        "t": "nomes distintos em 40 registros de ocupação médica no hospital (CNES)"
       },
       {
         "n": "R$ 2,96 mi",
@@ -598,7 +605,7 @@
     ],
     "grafico": {
       "tipo": "barras",
-      "titulo": "Para onde foi o dinheiro de consultas e exames (R$ empenhados, jan./2025 a set./2026)",
+      "titulo": "Empenhos brutos identificados em três recortes de serviços (R$; não são capacidade assistencial)",
       "dados": [
         [
           "Clínicas e laboratórios privados",
@@ -607,10 +614,6 @@
         [
           "Consórcio regional (Policlínica)",
           2507252
-        ],
-        [
-          "Convênio do Estado para a rede de saúde (jun./2026)",
-          1200000
         ],
         [
           "Tratamento fora do domicílio e apoio a pacientes",
@@ -648,8 +651,8 @@
     ],
     "cruzamentos": [
       {
-        "t": "Hospital Municipal: 40 médicos, 33 temporários e 1 efetivo",
-        "d": "O CNES do Hospital Municipal Padre Crisares Sampaio Couto lista 40 médicos: 18 clínicos e 22 especialistas (ginecologia, cirurgia, radiologia, psiquiatria, oftalmologia, anestesia, urologia, ortopedia, proctologia, pediatria e neurologia). Só 1 é efetivo; 33 têm contrato temporário. Há um anestesiologista registrado como bolsista pago por outro ente, o perfil do programa federal.",
+        "t": "Hospital Municipal: 40 registros médicos (38 nomes distintos), 33 registros temporários (31 nomes distintos) e 1 efetivo",
+        "d": "O CNES do Hospital Municipal Padre Crisares Sampaio Couto lista 40 registros médicos (38 nomes distintos): 18 clínicos e 22 especialistas (ginecologia, cirurgia, radiologia, psiquiatria, oftalmologia, anestesia, urologia, ortopedia, proctologia, pediatria e neurologia). Só 1 é efetivo; 33 têm contrato temporário. Há um anestesiologista registrado como bolsista pago por outro ente, o perfil do programa federal.",
         "fonte": "CNES/DataSUS, consulta de 26/11/2026"
       },
       {
@@ -713,7 +716,10 @@
           "A transparência da regulação deve permitir acompanhar entradas, prioridades e atendimentos sem identificar pacientes. Com esses registros, o debate deixa de depender apenas do anúncio de novos médicos ou do relato de falta de vagas e passa a examinar onde o percurso até a consulta está sendo interrompido."
         ]
       }
-    }
+    },
+    "conferencia": [
+      "Duas profissionais aparecem com duas especialidades no cadastro. As horas, os registros de ocupação e as pessoas não são unidades intercambiáveis. O cadastro e o anúncio de reforço federal não demonstram, isoladamente, a capacidade assistencial efetiva nem a causa da fila; são necessárias escalas, produção e dados de regulação."
+    ]
   },
   {
     "id": "vice-exonerada-2026",
@@ -729,7 +735,7 @@
     "fato": "A vice-prefeita Josefa Marli do Nascimento Almeida foi exonerada do comando da secretaria de Trabalho e Desenvolvimento Social por portaria de 15 de maio de 2026. Ela afirmou publicamente que a saída foi uma retaliação por apoiar outro pré-candidato ao Governo do Estado. O Prefeito negou: disse que a exoneração estava prevista havia cerca de dois meses, que foi assinada antes do ato político e que um acordo entre os dois não foi cumprido.",
     "analise": [
       "As duas versões estão registradas: a vice diz que foi punida por apoiar outro pré-candidato ao Governo; o Prefeito diz que a saída estava combinada e que um acordo político não foi cumprido. Nenhuma delas trata do que interessa ao cidadão: quem passou a comandar a assistência social, com qual plano e com que controle sobre o dinheiro do Fundo Nacional de Assistência Social.",
-      "O episódio se encaixa num padrão que os documentos mostram em outras frentes. Em Acopiara, divergir custa caro: a Comarca registrou 13 procedimentos por desacato, desobediência e resistência desde 2025, e as seleções públicas publicam apenas quem passou, sem nota, o que concentra a decisão em quem manda. Quando o cargo depende de alinhamento político, e não de critério, a máquina pública vira moeda.",
+      "A exoneração e as versões políticas apresentadas pelas partes precisam ser examinadas com sua cronologia e com os atos oficiais. Os 13 procedimentos por desacato, desobediência e resistência não demonstram, por si, retaliação política nem relação com esse episódio: a base DataJud não informa o contexto de cada fato. A fiscalização deve cobrar os critérios de gestão da assistência social e os registros administrativos, sem transformar coincidência ou relato em causalidade comprovada.",
       "Também é preciso olhar para trás. Enquanto esteve na secretaria, em 2025, a própria vice-prefeita assinou termos de referência e homologou dispensas de licitação com a Lunatel, pagas com recurso federal da assistência social. Romper com o Prefeito não apaga a responsabilidade por esses atos, e oposição responsável cobra os dois lados."
     ],
     "perguntas": [
@@ -850,11 +856,11 @@
       "Educação",
       "Seleções"
     ],
-    "titulo": "O primeiro aviso: o Ministério Público mandou anular a seleção de professores",
+    "titulo": "O primeiro aviso: Ministério Público recomendou anular a seleção de professores",
     "fato": "Em 17 de fevereiro de 2025, a 1ª Promotoria de Justiça de Acopiara recomendou à Prefeitura que anulasse o processo seletivo simplificado de professores temporários (Edital 001/2025), publicado uma semana antes, por ilegalidades no edital.",
     "analise": [
       "A recomendação do Ministério Público chegou no segundo mês da gestão. O edital previa entrevista subjetiva, dois dias de inscrição e um dia para recurso. Não havia como o candidato saber por que foi aprovado ou reprovado.",
-      "A folha mostra o que veio depois. O número de professores temporários saltou de 2 em fevereiro para 272 em abril de 2025 e passou de 290 em outubro de 2026. Os vínculos caem em julho e em janeiro, nas férias, e voltam no mês seguinte: é o desenho de quem contrata, dispensa e recontrata, ano após ano, em vez de nomear concursados. Isso apesar de uma sentença de dezembro de 2024 que já mandava rescindir os contratos temporários.",
+      "A folha mostra o que veio depois. O número de professores temporários saltou de 1 em fevereiro para 272 em abril de 2025 e passou de 290 em outubro de 2026. Os vínculos caem em julho e em janeiro, nas férias, e voltam no mês seguinte: é o desenho de quem contrata, dispensa e recontrata, ano após ano, em vez de nomear concursados. Isso apesar de uma sentença de dezembro de 2024 que já mandava rescindir os contratos temporários.",
       "O mesmo modo de selecionar reapareceu no Capacita+, suspenso pela Justiça, e no Minha Casa, Minha Vida, com resultado em ordem alfabética."
     ],
     "perguntas": [

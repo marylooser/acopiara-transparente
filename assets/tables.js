@@ -3,6 +3,18 @@
   const seen = new WeakSet();
   const live = new Set();
   function measure(box) {
+    const table = box.querySelector('table');
+    if (!table) return;
+    const heads = [...table.querySelectorAll('thead th')];
+    const comparable = heads.length > 8 && heads.filter(h => h.classList.contains('num')).length >= heads.length * .65;
+    box.dataset.layout = 'table';
+    const needsMoreSpace = table.scrollWidth > box.clientWidth + 1;
+    box.dataset.layout = needsMoreSpace && !comparable ? 'records' : 'table';
+    if (box.dataset.layout === 'records') {
+      table.querySelectorAll('tbody tr').forEach(row => [...row.cells].forEach((cell, i) => {
+        if (!cell.dataset.label) cell.dataset.label = heads[i]?.textContent || '';
+      }));
+    }
     const over = box.scrollWidth > box.clientWidth + 1;
     box.dataset.overflow = String(over);
     if (over) {

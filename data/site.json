@@ -6,7 +6,7 @@
       "rotulo": "casos documentados, com fontes"
     },
     {
-      "valor": "R$ 66 mi",
+      "valor": "R$ 68,6 milhões",
       "rotulo": "recebidos da União nas áreas analisadas (jan./2025 a set./2026)"
     },
     {
@@ -19,7 +19,7 @@
     },
     {
       "valor": "+89,6%",
-      "rotulo": "aditivo no transporte escolar; a lei permite 25%"
+      "rotulo": "variação sob a hipótese de novo total no portal; termos aditivos a conferir"
     },
     {
       "valor": "15",
@@ -88,7 +88,7 @@
     {
       "etapa": "As mudanças",
       "descricao": "Aditivos só até 25% do valor, com justificativa.",
-      "falha": "Transporte escolar +89,6%; nas creches, o extrato de Moreiras informa acréscimo de R$ 351.660,27, a reconciliar com os contratos por unidade."
+      "falha": "Transporte escolar: natureza e base dos aditivos a conferir. Creches: o extrato de Moreiras distingue acréscimo de R$ 351.660,27 e novo total; falta reconciliar os contratos por unidade."
     },
     {
       "etapa": "O pagamento",
@@ -107,89 +107,89 @@
       {
         "area": "Saúde",
         "recurso": "atenção primária, média e alta complexidade e incrementos de emendas",
-        "recebido": 32151587.0,
-        "pago": 25476972.0,
-        "lacuna": 6674615.0,
-        "equivale": "Cerca de 27 ambulâncias pelo preço pago pelo Município em 2026 (R$ 248 mil cada)"
+        "recebido": 32151587.1,
+        "pago": 25293357.51,
+        "lacuna": 6858229.59,
+        "equivale": "Equivalência ilustrativa: cerca de 28 ambulâncias ao preço de R$ 248 mil cada. Recurso vinculado não pode ser livremente transferido entre finalidades."
       },
       {
         "area": "Saúde",
         "recurso": "agentes comunitários e de endemias",
         "recebido": 8509328.0,
-        "pago": 7422216.0,
-        "lacuna": 1087112.0,
+        "pago": 7422215.76,
+        "lacuna": 1087112.24,
         "equivale": "O piso de cerca de 25 agentes por um ano, com 13º (R$ 3.242 por mês)"
       },
       {
         "area": "Saúde",
         "recurso": "estruturação de unidades",
         "recebido": 1046341.0,
-        "pago": 475613.0,
-        "lacuna": 570728.0,
+        "pago": 475612.93,
+        "lacuna": 570728.07,
         "equivale": "Mais de duas ambulâncias"
       },
       {
         "area": "Saúde",
         "recurso": "piso da enfermagem",
-        "recebido": 5789361.0,
-        "pago": 5750634.0,
-        "lacuna": 38727.0,
+        "recebido": 5789360.9,
+        "pago": 5750633.83,
+        "lacuna": 38727.07,
         "equivale": "Aplicado"
       },
       {
         "area": "Educação",
         "recurso": "alimentação escolar (PNAE)",
-        "recebido": 2453132.0,
-        "pago": 2107361.0,
-        "lacuna": 345771.0,
+        "recebido": 2453132.4,
+        "pago": 2107360.61,
+        "lacuna": 345771.79,
         "equivale": "14% do repassado para a merenda"
       },
       {
         "area": "Educação",
         "recurso": "transporte escolar (PNATE)",
-        "recebido": 1646881.0,
-        "pago": 1569568.0,
-        "lacuna": 77313.0,
+        "recebido": 1646880.73,
+        "pago": 1569568.15,
+        "lacuna": 77312.58,
         "equivale": "Praticamente aplicado"
       },
       {
         "area": "Educação",
         "recurso": "salário-educação",
-        "recebido": 7321489.0,
-        "pago": 6873036.0,
-        "lacuna": 448453.0,
+        "recebido": 7321489.21,
+        "pago": 6873036.18,
+        "lacuna": 448453.03,
         "equivale": "A esclarecer"
       },
       {
         "area": "Educação",
         "recurso": "creches (FNDE)",
-        "recebido": 3826473.0,
-        "pago": 2885217.0,
-        "lacuna": 941256.0,
+        "recebido": 3826473.38,
+        "pago": 2885216.85,
+        "lacuna": 941256.53,
         "equivale": "A esclarecer, com as obras já inauguradas"
       },
       {
         "area": "Educação",
         "recurso": "ônibus escolar (Caminho da Escola)",
         "recebido": 468560.0,
-        "pago": 469499.0,
-        "lacuna": 0,
+        "pago": 469499.5,
+        "lacuna": 0.0,
         "equivale": "Aplicado: um ônibus comprado em 2025"
       },
       {
         "area": "Assistência social (SUAS)",
         "recurso": "Assistência social (SUAS)",
-        "recebido": 2554973.0,
-        "pago": 2456204.0,
-        "lacuna": 98769.0,
+        "recebido": 2554972.62,
+        "pago": 2456204.26,
+        "lacuna": 98768.36,
         "equivale": "Praticamente aplicado"
       },
       {
         "area": "Habitação (MCMV, 1ª parcela)",
         "recurso": "Habitação (MCMV, 1ª parcela)",
         "recebido": 2260000.0,
-        "pago": 821875.0,
-        "lacuna": 1438125.0,
+        "pago": 821875.02,
+        "lacuna": 1438124.98,
         "equivale": "Obra em andamento; saldo deve estar na conta vinculada"
       },
       {
@@ -197,11 +197,11 @@
         "recurso": "Turismo (Festeja 2025)",
         "recebido": 600000.0,
         "pago": 606000.0,
-        "lacuna": 0,
+        "lacuna": 0.0,
         "equivale": "Aplicado, mas em contratos anteriores ao convênio (seção 6.2)"
       }
     ],
-    "nota": "Fontes: Portal da Transparência, transferências a Acopiara (jan./2025 a set./2026); TCE-CE (SIM), pagamentos por fonte de recurso (fontes 600, 601, 604, 605, 550, 552, 553, 570, 660 e 700; dados até set./2026). Os valores do Fundeb não foram incluídos porque se misturam com a folha da educação. Elaboração própria.",
+    "nota": "Fontes: transferências federais e notas do SIM/TCE-CE de jan./2025 a set./2026. Pagamentos estornados foram excluídos; relançamentos válidos permanecem na fonte informada. A diferença não é saldo bancário nem prova de desvio. Somam-se as diferenças positivas por programa, sem compensá-las com pagamentos superiores ao recebido em outra linha. R$ 606 mil no Festeja incluem contrapartida, diante de R$ 600 mil federais. O Fundeb não integra este quadro.",
     "textos": [
       {
         "titulo": "Acima do teto",
@@ -213,7 +213,7 @@
         "titulo": "\"Dificuldades financeiras\"?",
         "paragrafos": [
           "A segunda é o contraste com o que o Município alega. Em juízo, ele afirma \"sérias dificuldades financeiras\" para não contratar psicólogos e assistentes sociais nas escolas nem regularizar o hospital (Anexos 12.01 e 12.10). Nos mesmos meses, há saldo federal da saúde sem gasto registrado, R$ 865 mil foram contratados para dois shows, e o Prefeito declarou publicamente que \"dinheiro tem\" (seção 6.20).",
-          "Entre janeiro de 2025 e setembro de 2026, o Município recebeu da União, só nas áreas do quadro, mais de R$ 66 milhões. Cerca de R$ 12 milhões não têm gasto registrado com a fonte correspondente, sendo R$ 8,4 milhões na saúde. O dinheiro não falta. O que falta é demonstrar onde ele está e transformá-lo em serviço: as ambulâncias, os agentes de saúde, a merenda e as creches que esses valores pagariam."
+          "Entre janeiro de 2025 e setembro de 2026, o Município recebeu da União, só nas áreas do quadro, mais de R$ 68,6 milhõeslhões. Cerca de R$ 12 milhões não têm gasto registrado com a fonte correspondente, sendo cerca de R$ 8,6 milhões na saúde. O dinheiro não falta. O que falta é demonstrar onde ele está e transformá-lo em serviço: as ambulâncias, os agentes de saúde, a merenda e as creches que esses valores pagariam."
         ]
       }
     ]
@@ -617,7 +617,7 @@
       },
       {
         "t": "Esticar contratos além da lei",
-        "d": "A lei permite aumentar um contrato em até 25%. O transporte escolar subiu 89,6%; nas creches, o extrato de Moreiras informa R$ 351.660,27 de acréscimo, e a comparação com o contrato das três unidades depende da composição por unidade.",
+        "d": "Nos aditivos, é preciso distinguir acréscimo, prazo e recomposição de preços. Os percentuais do transporte dependem dessa conferência. Em Moreiras, o extrato informa R$ 351.660,27 de acréscimo; a composição das três creches ainda deve ser reconciliada.",
         "casos": [
           "transporte-escolar-aditivos",
           "creches-pro-infancia"
@@ -648,7 +648,7 @@
       },
       {
         "t": "Dinheiro que chega e não aparece",
-        "d": "R$ 12 milhões enviados pela União sem gasto registrado com a fonte correspondente, R$ 8,4 milhões só na saúde, enquanto a Prefeitura alega dificuldades financeiras na Justiça.",
+        "d": "R$ 12 milhões enviados pela União sem gasto registrado com a fonte correspondente, cerca de R$ 8,6 milhões só na saúde, enquanto a Prefeitura alega dificuldades financeiras na Justiça.",
         "casos": [
           "quanto-veio-para-onde-foi"
         ]
