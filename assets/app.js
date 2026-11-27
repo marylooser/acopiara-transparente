@@ -745,9 +745,65 @@
       area: rights ? 'Seus direitos' : 'Fiscalize você também', cena: rights ? 'Direitos do cidadão' : 'Administração',
       fonte: rights ? 'Seus direitos · referências no texto' : 'Guia de consulta aos portais públicos', slides: blocks };
   }
+  function contextShare(p, a, qs, section) {
+    if (!p && !section) return pageShareItem('inicio', '');
+    const original = p === 'caso' ? CASOS.find(x => x.id === a) : p === 'noticia' ? NOT.find(x => x.id === a) : null;
+    if (original && !section) return original;
+    const labels = { casos:'Os casos do dossiê', noticias:'Notícias e análises', dinheiro:'O dinheiro de Acopiara', pessoas:'Pessoas nos documentos', pessoa:'Perfil nos documentos', processos:'Processos acompanhados', 'linha-do-tempo':'Linha do tempo', editorial:'Linha editorial', sobre:'Sobre o projeto', denuncie:'Como participar' };
+    const scenes = { dinheiro:'Dinheiro', processos:'Administração', pessoas:'Família e nomeações', pessoa:'Família e nomeações', 'linha-do-tempo':'Panorama', casos:'Administração', noticias:'Panorama', editorial:'Direitos do cidadão', sobre:'Panorama', denuncie:'Direitos do cidadão' };
+    const pageTitle = $('h1', main)?.textContent.trim() || labels[p] || 'Acopiara Transparente';
+    const params = new URLSearchParams(qs || ''); params.delete('trecho');
+    const route = p + (a ? '/' + encodeURIComponent(a) : '');
+    let title = pageTitle, text = $('.lead', main)?.textContent.trim() || $('p', main)?.textContent.trim() || '';
+    let blocks = [];
+    if (section) {
+      const copy = section.cloneNode(true); copy.querySelectorAll('button,.sn').forEach(el => el.remove());
+      title = copy.textContent.trim(); params.set('trecho', section.id);
+      if (original) title = pageTitle + ' · ' + title;
+      const parent = section.closest('.sec,.reading-section,.money-scope');
+      let nodes = parent ? [...parent.children].filter(n => n !== section) : [];
+      if (!parent) { for (let next=section.nextElementSibling; next && !/^H[12]$/.test(next.tagName); next=next.nextElementSibling) nodes.push(next); }
+      const paragraphs = nodes.flatMap(n => n.matches('p,li') ? [n] : [...n.querySelectorAll('p,li')]).filter(n => !n.closest('button,.page-share,form,.concl .tag'));
+      const texts = [...new Set(paragraphs.map(n => n.textContent.trim()).filter(Boolean))];
+      text = texts.join(' ') || 'Confira este quadro e os documentos na página completa.';
+      blocks = texts.map(t => ({ secao: labels[p] || 'Trecho do dossiê', titulo: title, texto: t }));
+    }
+    const query = params.toString();
+    return { shareType:'page', id:'pagina-' + norm(route + (section ? '-' + section.id : '')).replace(/[^a-z0-9]+/g,'-'), route:route + (query ? '?' + query : ''),
+      titulo:title, resumo:text, status:original?.status, area:labels[p] || (original ? original.area : 'Acopiara Transparente'),
+      cena:scenes[p] || original?.area || 'Panorama', imagem:original ? SCENES.source(original) : null,
+      fonte:'Acopiara Transparente · fontes na página', cta:section ? 'Leia o trecho e confira o contexto:' : 'Explore esta página:', slides:blocks };
+  }
+  function bindContextSharing(p, a, qs) {
+    if (p && !['direitos','fiscalize','busca'].includes(p)) {
+      const heading = $('h1', main);
+      if (heading && !$('.context-page-share',main)) {
+        const wrap = document.createElement('div'); wrap.className='page-share context-page-share';
+        wrap.innerHTML=`<button class="btn ghost">${ic('share')}Compartilhar página</button>`;
+        wrap.firstChild.onclick=()=>openShare(contextShare(p,a,location.hash.split('?')[1]),p === 'caso' || p === 'noticia' ? p+'/'+a : p+(a?'/'+a:''));
+        heading.after(wrap);
+      }
+    }
+    if (['direitos','fiscalize','busca'].includes(p)) return;
+    const headings=$$('.materia .sec > h2,.money-scope > h2,.prose > h2,.reading-section > h2,.balanco h2',main);
+    headings.forEach((h,i)=>{
+      if (h.querySelector('.section-share')) return;
+      h.id ||= 'trecho-'+norm(h.textContent).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,65)+'-'+i;
+      const title=h.textContent.replace(/^\d+\s*/,'').trim();
+      const label=document.createElement('span');label.className='heading-label';label.append(...h.childNodes);
+      const button=document.createElement('button');button.type='button';button.className='section-share';button.setAttribute('aria-label','Compartilhar trecho: '+title);button.title='Compartilhar este trecho';button.innerHTML=ic('share');
+      button.onclick=()=>openShare(contextShare(p,a,location.hash.split('?')[1],h));
+      h.replaceChildren(label,button);h.classList.add('section-share-heading');
+    });
+    const id=new URLSearchParams(qs||'').get('trecho');
+    const target=id && document.getElementById(id);
+    if (target && main.contains(target)) requestAnimationFrame(()=>target.scrollIntoView({block:'start',behavior:'instant'}));
+  }
+
   function shareBase() {
     return location.protocol === 'https:' ? location.host + location.pathname.replace(/\/(?:index\.html)?$/, '') : SITE;
   }
+  const shareStatus = status => ({comprovado:'Comprovado nos documentos',indicio:'Indício a apurar','indício a apurar':'Indício a apurar',juizo:'Em discussão na Justiça','em juízo':'Em discussão na Justiça'}[status] || status || '');
   function feedCaption(x, url) {
     const trim = (value, limit) => {
       const text = String(value || '').trim();
@@ -757,8 +813,9 @@
     };
     const parts = [trim(x.titulo, 250)], m = x.materia || {};
     parts.push(trim(x.fato || x.resumo, x.shareType === 'page' ? 1400 : 650));
+    if (x.shareType === 'page' && x.status) parts.push('Situação: ' + shareStatus(x.status) + '.');
     if (x.shareType !== 'page') {
-      const status = { comprovado: 'Comprovado nos documentos', indicio: 'Indício a apurar', juizo: 'Em discussão na Justiça' }[x.status];
+      const status = shareStatus(x.status);
       if (x.valor) parts.push((x.valor_rotulo || 'Valor indicado nos documentos') + ': ' + brl(x.valor) + '.');
       if (status) parts.push('Situação: ' + status + '.');
       if (m.impactos_editoriais?.populacao) parts.push('Por que importa: ' + trim(m.impactos_editoriais.populacao, 550));
@@ -768,8 +825,8 @@
   }
   function shareItem(x) {
     const theme = x.theme || document.documentElement.dataset.theme || 'light';
-    if (x.shareType === 'page') return { kicker: x.area, titulo: x.titulo, resumo: x.resumo, imagem: SCENES.source(x), theme,
-      link: x.id === 'portal' ? 'acopiaratransparente.com.br/' : shareBase() + '/#/' + x.route, fonte: x.fonte, cta: x.id === 'portal' ? 'Explore o portal:' : 'Leia o guia completo:', nome: 'acopiara-' + x.id + (x.route.includes('?') ? '-trecho-' + x.route.split('=')[1] : '') };
+    if (x.shareType === 'page') return { kicker: x.area, titulo: x.titulo, resumo: x.resumo, status: x.status, imagem: x.imagem || SCENES.source(x), theme,
+      link: x.id === 'portal' ? 'acopiaratransparente.com.br/' : shareBase() + '/#/' + x.route, fonte: x.fonte, cta: x.id === 'portal' ? 'Explore o portal:' : x.cta || 'Leia o guia completo:', nome: 'acopiara-' + x.id + (x.route.includes('?') ? '-trecho-' + x.route.split('=')[1] : '') };
     if (x.fato) return { theme, kicker: 'Notícia · ' + x.veiculo + ' · ' + fmtData(x.data), titulo: x.titulo, resumo: (x.analise || [])[0] || x.fato, cena: cenaKey(x.cena), imagem: SCENES.source(x), link: shareBase() + '/#/noticia/' + x.id, fonte: x.veiculo + ' e documentos públicos', cta: 'Leia a análise completa:', nome: 'acopiara-noticia-' + x.id };
     return { theme, kicker: x.area + (x.periodo ? ' · ' + per(x.periodo) : ''), titulo: x.titulo, valor: x.valor, valor_rotulo: x.valor_rotulo, resumo: x.resumo, status: x.status, cena: cenaKey(x.cena || x.area), imagem: SCENES.source(x), link: shareBase() + '/#/caso/' + x.id, fonte: (x.fontes && x.fontes[0] && x.fontes[0].tipo) || 'documentos públicos', nome: 'acopiara-caso-' + x.id };
   }
@@ -812,15 +869,21 @@
   async function openShare(x, p) {
     const it = shareItem(x), m = $('#modal'); let fmt = 'story';
     const url = 'https://' + it.link, txt = x.titulo + ' — ' + url;
-    const recordShare = mode => p ? API.share(p, mode) : Promise.resolve({ off: true });
+    const sharePage = p || (x.shareType === 'page' ? (x.route || 'inicio').split('?')[0] : '');
+    const recordShare = mode => sharePage ? API.share(sharePage, mode) : Promise.resolve({ off: true });
     m.innerHTML = `<div class="in" role="dialog" aria-label="Compartilhar"><div class="mh"><h3>Compartilhar</h3><button class="ibtn" data-x aria-label="Fechar">${ic('x')}</button></div><div class="mb"><div class="share">
       <div class="pv"><canvas id="cv" aria-label="Prévia da imagem para compartilhar"></canvas></div>
       <div><div class="seg" role="tablist" id="sh-modo"><button class="on" data-m="uma">Uma imagem</button><button data-m="seq">Sequência</button></div><div class="seg" role="tablist" id="sh-fmt" style="margin-top:8px"><button class="on" data-f="story">Stories · 9:16</button><button data-f="feed">Feed · 4:5</button></div>
         <p class="muted" style="font-size:15px" id="sh-dim">Imagem vertical de 2160 × 3840 px, pronta para Instagram, WhatsApp e Facebook. O texto fica centralizado e a ilustração vai no topo.</p>
         <div class="share-copy"><label id="sh-copy-label" for="sh-copy-text">Link para a figurinha do story</label><textarea id="sh-copy-text" readonly rows="3" spellcheck="false"></textarea><button class="btn ghost" id="sh-copy-text-btn">Copiar link para o story</button><p class="muted" id="sh-copy-help">Ao baixar ou compartilhar a imagem, tentaremos copiar este link para você colar na figurinha de link.</p></div>
         <div class="thumbs" id="sh-th" hidden></div><div class="acts"><button class="btn solid" id="sh-img">${ic('share')}Compartilhar imagem</button><button class="btn" id="sh-dl">${ic('baixar')}Baixar imagem</button>
-        <a class="btn" id="sh-wa" href="https://wa.me/?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar link pelo WhatsApp</a><button class="btn ghost" id="sh-cp">${ic('link')}Copiar link</button></div></div></div></div></div>`;
+        <a class="btn" id="sh-wa" href="https://wa.me/?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar link pelo WhatsApp</a><button class="btn ghost" id="sh-cp">${ic('link')}Copiar link</button><button class="btn ghost" id="sh-native">${ic('share')}Mais opções para o link</button></div></div></div></div></div>`;
     if (x.id === 'portal') $('#sh-modo').remove();
+    if (!navigator.share) $('#sh-native').remove();
+    else $('#sh-native').onclick = async () => {
+      try { await navigator.share({ title: x.titulo, text: x.resumo, url }); await recordShare('native'); }
+      catch (e) { if (e.name !== 'AbortError') toast('Use Copiar link ou envie pelo WhatsApp.'); }
+    };
     openLayer(m); closeable(m);
     let modo = 'uma', seqCv = [];
     const syncCopy = () => {
@@ -888,6 +951,7 @@
     if (p === 'caso') { const c = CASOS.find(x => x.id === a); if (c) bindEngage('caso/' + a, c); const eq = $('#eq'); if (eq) eq.oninput = () => { const t = norm(eq.value); $$('#etb tbody tr, #etb .rec').forEach(r => r.hidden = !!t && !(r.dataset.t || '').includes(t)); const sc = $('#el .tscroll'); if (sc && t) sc.classList.add('aberta'); }; }
     if (p === 'noticia') { const n = NOT.find(x => x.id === a); if (n) bindEngage('noticia/' + a, n); }
     if (p === '' || p === 'casos' || p === 'noticias' || p === 'fiscalize' || p === 'direitos' || p === 'dinheiro' || p === 'pessoas' || p === 'linha-do-tempo' || p === 'sobre' || p === 'denuncie' || p === 'pessoa') API.hit(p || 'inicio');
+    bindContextSharing(p, a, qs);
     $$('[data-zoom]', main).forEach(im => im.onclick = () => { const m = $('#modal'); m.innerHTML = `<div class="in"><div class="mh"><h3>Documento</h3><button class="ibtn" data-x aria-label="Fechar">${ic('x')}</button></div><div class="mb"><img class="zoom" src="${im.dataset.zoom}" alt=""></div></div>`; openLayer(m); closeable(m); });
   }
 
