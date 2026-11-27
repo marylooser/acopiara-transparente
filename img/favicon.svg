@@ -1,7 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#0E5A3A"/><rect y="0" width="512" height="22" fill="#C9A227" opacity="0"/><g transform="translate(256 256) scale(3.3) translate(-60 -60)">
-    <defs><clipPath id="lens"><circle cx="54" cy="54" r="38"/></clipPath></defs>
-    <g clip-path="url(#lens)"><rect width="42" height="120" fill="#0E5A3A"/><rect x="42" width="25" height="120" fill="#fff"/><rect x="67" width="53" height="120" fill="#123B6E"/>
-    <circle cx="54" cy="40" r="8" fill="#C9A227"/><path d="M51 82 V56 q0-5 3-5 q3 0 3 5 V82z M45 70 v-8 q0-3 2.5-3 q2.5 0 2.5 3 v4 h1 v4z M63 66 v-8 q0-3-2.5-3 q-2.5 0-2.5 3 v4 h-1 v4z" fill="#0E5A3A"/>
-    <rect x="16" y="82" width="80" height="20" fill="#E9DFC4"/><path d="M26 30 q14-16 34-16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".55"/></g>
-    <circle cx="54" cy="54" r="38" fill="none" stroke="#FBFAF6" stroke-width="7"/>
-    <path d="M82 82 L108 108" stroke="#FBFAF6" stroke-width="13" stroke-linecap="round"/><path d="M84 84 L106 106" stroke="#C9A227" stroke-width="5" stroke-linecap="round"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Acopiara Transparente" >
+<style>:root{--ring:#123B6E}@media(prefers-color-scheme:dark){:root{--ring:#FBFAF6}}</style><g stroke-linecap="round" stroke-linejoin="round">
+  <defs><clipPath id="flag-lens"><circle cx="27" cy="27" r="17"/></clipPath></defs>
+  <g class="brand-lens-flag" clip-path="url(#flag-lens)">
+    <circle cx="27" cy="27" r="17" fill="#FBFAF6"/>
+    <path d="M8 8H22C19 18 24 29 21 46H8Z" fill="#0E5A3A"/>
+    <path d="M32 8H46V46H32C35 35 29 22 32 8Z" fill="#123B6E"/>
+  </g>
+  <g class="brand-lens-frame">
+    <path d="M42.4 42.4 56 56" fill="none" stroke="var(--ring)" stroke-width="6"/>
+    <circle cx="27" cy="27" r="21" fill="none" stroke="var(--ring)" stroke-width="4"/>
+  </g>
+</g>
+</svg>

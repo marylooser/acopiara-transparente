@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Acopiara Transparente" >
+<rect width="100" height="100" fill="#0E5A3A"/>
+<g transform="translate(12 12) scale(1.1875)"><g stroke-linecap="round" stroke-linejoin="round">
+  <defs><clipPath id="flag-lens"><circle cx="27" cy="27" r="17"/></clipPath></defs>
+  <g class="brand-lens-flag" clip-path="url(#flag-lens)">
+    <circle cx="27" cy="27" r="17" fill="#FBFAF6"/>
+    <path d="M8 8H22C19 18 24 29 21 46H8Z" fill="#0E5A3A"/>
+    <path d="M32 8H46V46H32C35 35 29 22 32 8Z" fill="#123B6E"/>
+  </g>
+  <g class="brand-lens-frame">
+    <path d="M42.4 42.4 56 56" fill="none" stroke="#FBFAF6" stroke-width="6"/>
+    <circle cx="27" cy="27" r="21" fill="none" stroke="#FBFAF6" stroke-width="4"/>
+  </g>
+</g></g>
+</svg>

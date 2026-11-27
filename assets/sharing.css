@@ -1,0 +1,9 @@
+/* Controles discretos para levar os guias a outras pessoas. */
+.page-share { margin: 1.25rem 0 1.75rem; }
+.page-share .btn { font-size: .875rem; min-height: 44px; }
+.rights-section { scroll-margin-top: 7rem; }
+.rights-section + .rights-section { margin-top: var(--s4, 2rem); }
+.rights-section .page-share { margin-top: 1rem; margin-bottom: 2.5rem; }
+.share .seg button:disabled, .share .acts button:disabled { opacity: .55; cursor: wait; }
+.share .thumbs img { border-radius: 6px; }
+.share .thumbs img[role="button"]:focus-visible { outline: 3px solid var(--a, #233F5D); outline-offset: 3px; }

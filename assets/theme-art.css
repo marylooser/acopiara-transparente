@@ -1,0 +1,44 @@
+/* Acopiara Transparente · a arte noturna já contém sua própria iluminação. */
+.art-host { position: relative; }
+img[data-light][data-dark] {
+  filter: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+img.art-previous {
+  position: absolute !important;
+  display: block !important;
+  max-width: none !important;
+  margin: 0 !important;
+  z-index: 2;
+  pointer-events: none;
+  user-select: none;
+  filter: none !important;
+  transform: none !important;
+  opacity: 1 !important;
+  transition: opacity 200ms ease !important;
+}
+img.art-previous.art-fading { opacity: 0 !important; }
+[data-input="keyboard"] img.art-previous { display: none !important; transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  img.art-previous { display: none !important; transition: none !important; }
+}
+.brand .brand-lens-frame [stroke] { stroke: #123B6E; }
+[data-theme="dark"] .brand .brand-lens-frame [stroke] { stroke: #FBFAF6; }
+.brand .logomark, .brand .brand-lens-frame { transform: none; }
+.brand .brand-lens-flag { transform: none; }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :root:not([data-input="keyboard"]) .brand .logomark {
+    transform: scale(1);
+    transform-origin: 42.1875% 42.1875%;
+    transition: transform 300ms var(--ease-out);
+  }
+  :root:not([data-input="keyboard"]) .brand .brand-lens-frame {
+    transform-box: view-box;
+    transform-origin: 27px 27px;
+    transition: transform 300ms var(--ease-out);
+  }
+  :root:not([data-input="keyboard"]) .brand:hover .logomark { transform: scale(1.08); }
+  :root:not([data-input="keyboard"]) .brand:hover .brand-lens-frame { transform: rotate(-9deg); }
+}

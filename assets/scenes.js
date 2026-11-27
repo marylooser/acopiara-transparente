@@ -95,5 +95,37 @@
     G(rect(540, Y - 80, 120, 80, P.a3) + path(`M530 ${Y - 80} L600 ${Y - 110} L670 ${Y - 80}Z`, P.o) + rect(560, Y - 60, 20, 30, P.b) + rect(600, Y - 60, 20, 30, P.b)) +
     G(rect(540, Y - 26, 260, 4, P.t) + rect(670, Y - 70, 90, 44, P.v, 6) + rect(740, Y - 92, 26, 22, P.t) + circ(690, Y - 22, 9, P.t) + circ(740, Y - 22, 9, P.t)) + cacto(280, 80) + cacto(770, 70), 'Panorama de Acopiara com igreja, casario, estação e trem');
   const IMG = { 'Saúde': 'saude', 'Educação': 'educacao', 'Habitação': 'habitacao', 'Cultura e eventos': 'cultura', 'Turismo': 'turismo', 'Obras e infraestrutura': 'obras', 'Administração': 'administracao', 'Família e nomeações': 'familia', 'Direitos do cidadão': 'direitos', 'Panorama': 'panorama', 'Jornadas': 'jornadas', 'Dinheiro': 'dinheiro', 'Câmara Municipal': 'familia' };
-  window.SCENES = { IMG, get: (a) => IMG[a] ? `<span class="cena cena-img"><img src="img/cenas/${IMG[a]}.jpg" alt="" decoding="async" width="1488" height="744"></span>` : (C[a] || C['Administração'])() };
+  const collection = () => window.EDITORIAL_IMAGES || {};
+  const activeSource = image => document.documentElement.dataset.theme === 'dark' && image.nightSrc ? image.nightSrc : image.src;
+  function art(image, eager = false, className = 'cena cena-img editorial-image') {
+    return `<span class="${className}"><img src="${attr(activeSource(image))}" data-light="${attr(image.src)}"${image.nightSrc ? ` data-dark="${attr(image.nightSrc)}"` : ''} alt="${attr(image.alt)}" loading="${eager ? 'eager' : 'lazy'}" decoding="async" width="${image.width}" height="${image.height}"${eager ? ' fetchpriority="high"' : ''}></span>`;
+  }
+  const get = a => {
+    const key = IMG[a];
+    if (!key) return (C[a] || C['Administração'])();
+    return art((collection().categories || {})[key] || {src: `img/cenas/${key}.jpg`, width:1488, height:744, alt:''});
+  };
+  const record = item => {
+    const collection = window.EDITORIAL_IMAGES || {};
+    return (collection[Object.prototype.hasOwnProperty.call(item, 'fato') ? 'noticias' : 'casos'] || {})[item.id];
+  };
+  const attr = value => String(value || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  function itemImage(item, eager = false) {
+    const image = record(item);
+    if (!image) return get(item.cena || item.area);
+    return art(image, eager);
+  }
+  function source(item) {
+    const image = record(item), key = IMG[item.cena || item.area];
+    const category = (collection().categories || {})[key];
+    return image ? activeSource(image) : category ? activeSource(category) : key ? 'img/cenas/' + key + '.jpg' : null;
+  }
+  const cover = () => art(collection().cover || {src:'img/editorial/capa-acopiara.webp',width:1774,height:887,alt:'Arco da Santa na entrada de Acopiara'}, true, 'capa-art');
+  const footer = () => {
+    const images = collection();
+    const image = images.footerAlternate && /\/(?:direitos|editorial|sobre)(?:[?/#]|$)/.test(location.hash) ? images.footerAlternate : images.footer;
+    return image ? art(image, false, 'footer-art') : DOODLES.paisagem(1200, 120);
+  };
+  window.SCENES = { IMG, get, item: itemImage, source, cover, footer };
+
 })();

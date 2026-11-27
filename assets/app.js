@@ -5,7 +5,7 @@
   const nb = s => esc(s).replace(/R\$ /g, () => 'R$\u00a0').replace(/(\d) (h|km|mil|mi)\b/g, (m, a, u) => a + '\u00a0' + u);
   const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const ic = n => `<svg aria-hidden="true"><use href="#i-${n}"/></svg>`;
-  const SITE = location.host || 'acopiaratransparente.vercel.app';
+  const SITE = 'www.acopiaratransparente.com.br';
   const mq = matchMedia('(max-width: 760px)'); let M = mq.matches;
   let CASOS = [], X = {}, NOT = [], PERF = [], DIN = {}, PROC = [];
   const stCls = s => s === 'comprovado' ? 'st-comprovado' : s === 'em juízo' ? 'st-juizo' : 'st-indicio';
@@ -13,16 +13,17 @@
   const per = p => p ? CARDS.fmtPer(p) : '';
   const fmtData = d => { if (!d) return ''; const [y, m, dd] = d.split('-'); return dd ? `${dd}/${m}/${y}` : m ? `${m}/${y}` : y; };
   const main = $('#main');
+  let layerTrigger = null;
   const cenaKey = a => window.SCENES && SCENES.IMG[a];
   const img = (a, cls) => SCENES.get(a);
-  const toast = t => { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); };
+  const toast = t => { const d = document.createElement('div'); d.className = 'toast'; d.setAttribute('role', 'status'); d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); };
 
   document.body.classList.toggle('m', M);
   const j = u => fetch(u).then(r => r.ok ? r.json() : []).catch(() => []);
   Promise.all([j('data/casos.json'), j('data/site.json'), j('data/noticias.json'), j('data/perfis.json'), j('data/dinheiro.json'), j('data/processos.json')]).then(([c, x, n, p, d, pr]) => {
     DIN = d || {}; PROC = pr || [];
     CASOS = c; X = x; NOT = (n || []).sort((a, b) => b.data.localeCompare(a.data)); PERF = p || [];
-    $('#footdoodle').innerHTML = DOODLES.paisagem(1200, 120); route(); animate($('.foot')); chrome();
+    $('#footdoodle').innerHTML = SCENES.footer(); route(); animate($('.foot')); chrome();
   });
   window.addEventListener('hashchange', route);
   mq.addEventListener ? mq.addEventListener('change', e => { M = e.matches; document.body.classList.toggle('m', M); route(true); }) : 0;
@@ -30,37 +31,31 @@
   /* ---------- roteador ---------- */
   function route(keep) {
     const h = location.hash.replace(/^#\/?/, ''); const [path, qs] = h.split('?'); const [p, ...rest] = path.split('/'); const a = decodeURIComponent(rest.join('/') || '');
-    $$('.nav a').forEach(n => n.classList.toggle('on', n.getAttribute('href') === '#/' + p));
+    const current = p === 'caso' ? 'casos' : p === 'noticia' ? 'noticias' : p === 'pessoa' ? 'pessoas' : p;
+    $$('.nav a,.tabbar [data-r]').forEach(n => {
+      const on = n.getAttribute('href') === '#/' + current;
+      n.classList.toggle('on', on);
+      if (on) n.setAttribute('aria-current', 'page'); else n.removeAttribute('aria-current');
+    });
     $$('.tabbar [data-r]').forEach(n => n.classList.toggle('on', n.dataset.r === p || (p === 'caso' && n.dataset.r === 'casos') || (p === 'noticia' && n.dataset.r === 'noticias')));
-    $('#sheet').hidden = true; $('#modal').hidden = true; document.body.classList.remove('has-mbar');
+    closeLayer($('#sheet'), false); closeLayer($('#modal'), false); document.body.classList.remove('has-mbar');
     const v = { '': home, casos, caso: () => caso(a), noticias, noticia: () => noticia(a), 'linha-do-tempo': tempo, dinheiro, pessoas, pessoa: () => pessoa(a), fiscalize, direitos, denuncie, sobre, processos, editorial, busca: () => { setTimeout(() => openSearch(new URLSearchParams(qs || '').get('q') || ''), 0); return home(); } }[p] || home;
-    main.innerHTML = v(); if (keep !== true) { window.scrollTo(0, 0); main.focus({ preventScroll: true }); }
+    main.innerHTML = v(); if (keep !== true) { window.scrollTo({ top: 0, behavior: 'instant' }); main.focus({ preventScroll: true }); }
     after(p, a, qs); animate(main);
+    $('#footdoodle').innerHTML = SCENES.footer(); animate($('.foot'));
     document.title = (($('h1', main) || {}).textContent || 'Acopiara Transparente').slice(0, 70) + (p ? ' · Acopiara Transparente' : '');
   }
 
-  /* ---------- animação ---------- */
-  const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); try { count(e.target); } catch (x) { } } }), { rootMargin: '0px 0px 0px 0px', threshold: 0 }) : null;
+  /* Informação e documentos ficam legíveis desde o primeiro quadro. */
   function animate(root) {
-    $$('svg.cena,.cena-img', root).forEach(sv => io ? io.observe(sv) : sv.classList.add('in'));
-    $$('svg.draw', root).forEach(svg => $$('path,line,circle,rect,polyline,ellipse', svg).forEach((el, i) => { try { const L = Math.ceil(el.getTotalLength ? el.getTotalLength() : 600) + 2; el.style.setProperty('--len', L); el.style.setProperty('--d', (i * .04).toFixed(2) + 's'); } catch (e) { } }));
-    const sel = '.pr,.chart,.kpi,.est,.card,.lrow,.stat,.evid,.bigs div,.padrao li,.acao .grid>div,.mk,.tl,.xcard,.agente';
-    let k = 0, last = null;
-    $$(sel, root).forEach(el => {
-      if (el.closest('.modal')) return;
-      const par = el.parentElement; k = par === last ? k + 1 : 0; last = par;
-      if (!el.matches('.mk,.tl')) el.classList.add('rv');
-      el.style.setProperty('--d', Math.min(k * .06, .5).toFixed(2) + 's');
-      io ? io.observe(el) : el.classList.add('in');
+    root.classList.add('in');
+    $$('svg.cena,.cena-img,svg.draw,.pr,.chart,.tl,.mk', root).forEach(el => el.classList.add('in'));
+    $$('[data-n]', root).forEach(b => {
+      b.textContent = (b.dataset.pre || '') + Number(b.dataset.n).toLocaleString('pt-BR', {
+        minimumFractionDigits: +b.dataset.dec || 0, maximumFractionDigits: +b.dataset.dec || 0
+      }) + (b.dataset.suf || '');
     });
-    // rede de segurança: nada fica invisível se a animação não disparar
-    clearTimeout(animate._t); animate._t = setTimeout(() => $$('.rv:not(.in),svg.cena:not(.in),.cena-img:not(.in)').forEach(el => el.classList.add('in')), 2500);
   }
-  function count(el) {
-    [el, ...$$('[data-n]', el)].forEach(b => { const n = b.dataset && b.dataset.n; if (!n || b._c) return; b._c = 1; const pre = b.dataset.pre || '', suf = b.dataset.suf || '', dec = +b.dataset.dec || 0, t0 = performance.now(), D = 1400;
-      const f = t => { const x = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - x, 3); b.textContent = pre + (n * e).toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suf; if (x < 1) requestAnimationFrame(f); }; requestAnimationFrame(f); });
-  }
-
 
   /* ---------- gráficos (SVG, cores do tema) ---------- */
   const fmtN = v => v >= 1e6 ? 'R$\u00a0' + (v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 2 }) + '\u00a0mi' : v >= 1e4 ? 'R$\u00a0' + Math.round(v / 1e3).toLocaleString('pt-BR') + '\u00a0mil' : 'R$\u00a0' + Math.round(v).toLocaleString('pt-BR');
@@ -170,6 +165,12 @@
 
   /* ---------- estrutura editorial ---------- */
   function secao(n, t, html) { return html && String(html).replace(/<[^>]+>/g, '').trim() ? `<section class="sec"><h2><span class="sn">${n}</span>${esc(t)}</h2>${html}</section>` : ''; }
+  function leituraEditorial(item) {
+    const m = item.materia || {}, leitura = m.leitura_editorial;
+    if (leitura?.paragrafos?.length) return `<div class="concl"><span class="tag">Nossa leitura</span><h3 class="leitura-title">${esc(leitura.titulo)}</h3><div class="leitura-body">${leitura.paragrafos.map(p => `<p>${esc(p)}</p>`).join('')}</div></div>`;
+    const texto = m.conclusao || item.conclusao || item.avaliacao || '';
+    return texto ? `<div class="concl"><span class="tag">Nossa leitura</span><div class="leitura-body"><p>${esc(texto)}</p></div></div>` : '';
+  }
   function direitosBloco(ds) { return (ds || []).length ? `<div class="dgrid">${ds.map(d => `<div class="dcard"><h4>${esc(d.t)}</h4><p>${esc(d.d)}</p></div>`).join('')}</div>` : ''; }
   function medidasBloco(m) {
     const t = m.tomadas || [], c = [...new Set(m.cabiveis || [])];
@@ -193,22 +194,28 @@
   }
   /* ---------- peças comuns ---------- */
   function cardCaso(c) {
-    if (M) return `<a class="lrow" href="#/caso/${c.id}"><div class="th">${img(c.cena || c.area)}</div><div><div class="meta">${esc(c.area)} · ${esc(per(c.periodo))}</div><h3>${esc(c.titulo)}</h3><div class="sub">${c.valor ? `<span class="val">${brl(c.valor)}</span>` : ''}${stChip(c.status)}</div></div></a>`;
-    return `<a class="card" href="#/caso/${c.id}"><div class="media">${img(c.cena || c.area)}</div><div class="body"><div class="meta">${esc(c.area)} · ${esc(per(c.periodo))}</div><h3>${esc(c.titulo)}</h3><p>${esc(c.resumo)}</p>
+    if (M) return `<a class="lrow" href="#/caso/${c.id}"><div class="th">${SCENES.item(c)}</div><div><div class="meta">${esc(c.area)} · ${esc(per(c.periodo))}</div><h3>${esc(c.titulo)}</h3><div class="sub">${c.valor ? `<span class="val">${brl(c.valor)}</span>` : ''}${stChip(c.status)}</div></div></a>`;
+    return `<a class="card" href="#/caso/${c.id}"><div class="media">${SCENES.item(c)}</div><div class="body"><div class="meta">${esc(c.area)} · ${esc(per(c.periodo))}</div><h3>${esc(c.titulo)}</h3><p>${esc(c.resumo)}</p>
       <div class="cfoot">${c.valor ? `<span class="val">${brl(c.valor)}</span>` : '<span></span>'}${stChip(c.status)}</div></div></a>`;
   }
   function cardNot(n) {
-    if (M) return `<a class="lrow" href="#/noticia/${n.id}"><div class="th">${img(n.cena)}</div><div><div class="meta">${esc(fmtData(n.data))} · ${esc(n.veiculo)}</div><h3>${esc(n.titulo)}</h3><div class="sub">${(n.tags || []).map(t => `<span class="chip">${esc(t)}</span>`).join('')}</div></div></a>`;
-    return `<a class="card ncard" href="#/noticia/${n.id}"><div class="media">${img(n.cena)}</div><div class="body"><div class="meta">${esc(fmtData(n.data))} · ${esc(n.veiculo)}</div><h3>${esc(n.titulo)}</h3><p>${esc(n.fato.length > 220 ? n.fato.slice(0, n.fato.lastIndexOf(' ', 210)) + '…' : n.fato)}</p>
+    if (M) return `<a class="lrow" href="#/noticia/${n.id}"><div class="th">${SCENES.item(n)}</div><div><div class="meta">${esc(fmtData(n.data))} · ${esc(n.veiculo)}</div><h3>${esc(n.titulo)}</h3><div class="sub">${(n.tags || []).map(t => `<span class="chip">${esc(t)}</span>`).join('')}</div></div></a>`;
+    return `<a class="card ncard" href="#/noticia/${n.id}"><div class="media">${SCENES.item(n)}</div><div class="body"><div class="meta">${esc(fmtData(n.data))} · ${esc(n.veiculo)}</div><h3>${esc(n.titulo)}</h3><p>${esc(n.fato.length > 220 ? n.fato.slice(0, n.fato.lastIndexOf(' ', 210)) + '…' : n.fato)}</p>
       <div class="cfoot"><span class="chips">${(n.tags || []).map(t => `<span class="chip">${esc(t)}</span>`).join('')}</span><span class="muted" style="font-size:13px">Nossa análise →</span></div></div></a>`;
   }
   const list = (arr, fn, cls) => M ? `<div>${arr.map(fn).join('')}</div>` : `<div class="grid ${cls || 'g3'}">${arr.map(fn).join('')}</div>`;
   function tabela(t, opts) {
-    const head = t[0], rows = t.slice(1), numCol = head.map((h, i) => rows.every(r => /^[\sR$\d.,%+–—-]*(h|km|mil|mi|meses)?$/.test(String(r[i] || '').trim())));
-    if (M) return `<div class="recs" ${opts && opts.id ? `id="${opts.id}"` : ''}>${rows.map(r => `<div class="rec"${opts && opts.data ? ` data-t="${esc(norm(r.join(' ')))}"` : ''}><div class="h">${nb(r[0])}</div><dl>${head.slice(1).map((h, i) => `<dt>${esc(h)}</dt><dd>${nb(r[i + 1])}</dd>`).join('')}</dl></div>`).join('')}</div>`;
+    const head = t[0], rows = t.slice(1);
+    const identifier = h => /(?:processo|cpf|cnpj|c[óo]digo|protocolo|matr[ií]cula|documento|^n[úu]mero|^n[º°.]|^id$|data|^ano$|^m[eê]s$|per[ií]odo)/i.test(h);
+    const numCol = head.map((h, i) => {
+      const values = rows.map(r => String(r[i] ?? '').trim()).filter(v => v && !/^[–—-]$/.test(v));
+      return !identifier(h) && values.length > 0 && values.every(v => /^(?:R\$\s*)?[+−–-]?\d[\d\s.,]*(?:\s*(?:%|h|horas?|km|mil|mi|meses))?$/.test(v));
+    });
+    const cellClass = i => numCol[i] ? 'num' : identifier(head[i]) ? 'identifier' : 'text';
+    if (M) return `<div class="recs" ${opts && opts.id ? `id="${opts.id}"` : ''}>${rows.map(r => `<div class="rec"${opts && opts.data ? ` data-t="${esc(norm(r.join(' ')))}"` : ''}><div class="h">${nb(r[0])}</div><dl>${head.slice(1).map((h, i) => `<dt>${esc(h)}</dt><dd class="${cellClass(i + 1)}">${nb(r[i + 1])}</dd>`).join('')}</dl></div>`).join('')}</div>`;
     const objI = head.findIndex(h => /objeto/i.test(h)), lim = opts && opts.lim, cut = s => { s = String(s || ''); return s.length > 160 ? s.slice(0, s.lastIndexOf(' ', 155)) + '…' : s; };
-    const trs = rows.map((r, k) => `<tr class="${lim && k >= lim ? 'mais' : ''}"${opts && opts.data ? ` data-t="${esc(norm(r.join(' ')))}"` : ''}>${r.map((x, i) => i === objI ? `<td class="obj" title="${esc(x)}">${nb(cut(x).charAt(0) + cut(x).slice(1).toLowerCase())}</td>` : `<td class="${numCol[i] && i ? 'num' : ''}">${nb(x)}</td>`).join('')}</tr>`).join('');
-    return `<div class="tscroll"><table class="t${head.length > 5 ? ' wide' : ''}" ${opts && opts.id ? `id="${opts.id}"` : ''}><thead><tr>${head.map((h, i) => `<th class="${numCol[i] && i ? 'num' : ''}">${esc(h)}</th>`).join('')}</tr></thead><tbody>${trs}</tbody></table></div>${lim && rows.length > lim ? `<button class="btn ghost vermais" onclick="const t=this.previousElementSibling;t.classList.toggle('aberta');this.textContent=t.classList.contains('aberta')?'Mostrar menos':'Mostrar todos os ${rows.length}'">Mostrar todos os ${rows.length}</button>` : ''}`;
+    const trs = rows.map((r, k) => `<tr class="${lim && k >= lim ? 'mais' : ''}"${opts && opts.data ? ` data-t="${esc(norm(r.join(' ')))}"` : ''}>${r.map((x, i) => i === objI ? `<td class="obj" title="${esc(x)}">${nb(x)}</td>` : `<td class="${cellClass(i)}">${nb(x)}</td>`).join('')}</tr>`).join('');
+    return `<div class="tscroll" tabindex="0" role="region" aria-label="Tabela; deslize para ver todas as colunas"><table class="t${head.length > 5 ? ' wide' : ''}" ${opts && opts.id ? `id="${opts.id}"` : ''}><thead><tr>${head.map((h, i) => `<th scope="col" class="${cellClass(i)}">${esc(h)}</th>`).join('')}</tr></thead><tbody>${trs}</tbody></table></div>${lim && rows.length > lim ? `<button class="btn ghost vermais" onclick="const t=this.previousElementSibling;t.classList.toggle('aberta');this.textContent=t.classList.contains('aberta')?'Mostrar menos':'Mostrar todos os ${rows.length}'">Mostrar todos os ${rows.length}</button>` : ''}`;
   }
   function engage(p) {
     const btns = `<button class="rbtn" data-act="like" aria-label="Curtir">${ic('up')}<span class="n" data-c="like"></span></button><button class="rbtn" data-act="dislike" aria-label="Não curtir">${ic('down')}<span class="n" data-c="dislike"></span></button><button class="rbtn solid-share" data-act="share">${ic('share')}<span>Compartilhar</span></button>`;
@@ -229,13 +236,16 @@
   /* ---------- INÍCIO ---------- */
   function home() {
     const destaques = (X.destaques || []).map(id => CASOS.find(c => c.id === id)).filter(Boolean);
-    return `<section class="hero"><div class="wrap"><div class="row" style="align-items:center"><div class="c7">
-      <div class="kicker">Dossiê da Reconstrução · Acopiara, Ceará · 2025–2026</div>
+    const intro = String(X.intro || ''), split = intro.indexOf('. ');
+    const opening = split < 0 ? intro : intro.slice(0, split + 1), context = split < 0 ? '' : intro.slice(split + 2);
+    return `<section class="hero"><div class="wrap"><div class="hero-location"><span>Dossiê da Reconstrução</span><span>Acopiara, Ceará · 2025–2026</span></div><div class="row hero-grid"><div class="c7">
       <h1>O dinheiro é público.<span>A informação também.</span></h1>
-      <p class="lead">${esc(X.intro)}</p>
-      <div class="btns"><a class="btn solid" href="#/casos">Ver todos os casos</a><a class="btn" href="#/noticias">Notícias e análises</a><a class="btn azul" href="#/denuncie">Envie uma denúncia</a></div>
-      </div><div class="c5 heroart">${M ? '' : `<figure class="capa"><img src="img/cenas/capa-acopiara.jpg?v=14" alt="Ilustração do Arco da Santa, entrada de Acopiara, com a imagem de Nossa Senhora do Perpétuo Socorro" width="1455" height="728"><figcaption>Arco da Santa · entrada de Acopiara</figcaption></figure>`}</div></div>${M ? `<div class="heroart m"><figure class="capa"><img src="img/cenas/capa-acopiara.jpg?v=14" alt="Ilustração do Arco da Santa, entrada de Acopiara, com a imagem de Nossa Senhora do Perpétuo Socorro" width="1455" height="728"><figcaption>Arco da Santa · entrada de Acopiara</figcaption></figure></div>` : ''}
-      <div class="stats">${(X.numeros || []).slice(0, 5).map(n => `<div class="stat"><b>${nb(n.valor)}</b><span>${esc(n.rotulo)}</span></div>`).join('')}</div>
+      <p class="lead">${esc(opening)}</p>
+      ${context ? `<details class="hero-details"><summary>O que você encontra neste dossiê</summary><p>${esc(context)}</p></details>` : ''}
+      <div class="btns hero-actions"><a class="btn solid" href="#/casos">Explorar os casos <span aria-hidden="true">↗</span></a><a class="btn ghost" href="#/noticias">Notícias e análises</a></div>
+      <a class="source-note" href="#/sobre">${ic('casos')}Documentos públicos. Fontes para conferir.<span aria-hidden="true">→</span></a>
+      </div><div class="c5 heroart">${M ? '' : `<figure class="capa">${SCENES.cover()}<figcaption>Arco da Santa · entrada de Acopiara</figcaption></figure>`}</div></div>${M ? `<div class="heroart m"><figure class="capa">${SCENES.cover()}<figcaption>Arco da Santa · entrada de Acopiara</figcaption></figure></div>` : ''}
+      <div class="stats" aria-label="O dossiê em números">${(X.numeros || []).map(n => `<div class="stat"><b>${nb(n.valor)}</b><span>${esc(n.rotulo)}</span></div>`).join('')}</div>
     </div></section>
     <section class="block"><div class="wrap"><div class="sec-head"><div><div class="kicker">Comece por aqui</div><h2>Os casos que mais pesam no bolso de Acopiara</h2></div>${M ? '' : `<a class="btn ghost" href="#/casos">Todos os ${CASOS.length} casos</a>`}</div>
       ${list(destaques.slice(0, M ? 6 : 9), cardCaso)}${M ? `<p style="margin-top:16px"><a class="btn block" href="#/casos">Todos os ${CASOS.length} casos</a></p>` : ''}</div></section>
@@ -258,14 +268,27 @@
   function chamada() {
     const d = X.direitos || {};
     return `<section class="acao"><div class="wrap"><div class="kicker">E agora?</div><h2>${esc(d.titulo)}</h2><p class="lead">${esc(d.intro)}</p>
-      <div class="grid g3" style="margin-top:var(--s3)">${(d.passos || []).map(p => `<div><h3>${DOODLES.icon(p.icone || 'Direitos do cidadão', 26, '#0E5A3A')} ${esc(p.t)}</h3><p>${esc(p.d)}</p>${p.link ? `<a href="${esc(p.link)}">${esc(p.link_txt || 'Saiba como')} →</a>` : ''}</div>`).join('')}</div>
+      <div class="grid g3" style="margin-top:var(--s3)">${(d.passos || []).map(p => `<div><h3>${civicIcon(p.t)}<span>${esc(p.t)}</span></h3><p>${esc(p.d)}</p>${p.link ? `<a href="${esc(p.link)}">${esc(p.link_txt || 'Saiba como')} →</a>` : ''}</div>`).join('')}</div>
       <div class="btns" style="margin-top:var(--s3)"><a class="btn solid" href="#/direitos">Questionar não é crime: conheça seus direitos</a><a class="btn" href="#/denuncie">Envie uma denúncia</a></div></div></section>`;
   }
   function direitos() {
     const d = X.direitos || {};
-    return `<section class="block"><div class="wrap"><div class="row"><div class="c8"><div class="kicker">Seus direitos</div><h1>Questionar não é crime</h1><div class="heroimg">${SCENES.get('Direitos do cidadão')}</div>
-      <div class="prose">${(d.secoes || []).map(s => `<h2>${esc(s.titulo)}</h2>${s.paragrafos.map(p => `<p>${esc(p)}</p>`).join('')}${s.lista ? `<ul class="q">${s.lista.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}`).join('')}</div>
+    return `<section class="block"><div class="wrap"><div class="row"><div class="c8"><div class="kicker">Seus direitos</div><h1>Questionar não é crime</h1>${pageShareButton('direitos', '', 'Compartilhar seus direitos')}<div class="heroimg">${SCENES.get('Direitos do cidadão')}</div>
+      <div class="prose">${(d.secoes || []).map((s, i) => `<section id="direito-${i}" class="rights-section"><h2>${esc(s.titulo)}</h2>${s.paragrafos.map(p => `<p>${esc(p)}</p>`).join('')}${s.lista ? `<ul class="q">${s.lista.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}${pageShareButton('direitos', i, 'Compartilhar este trecho')}</section>`).join('')}</div>
       <div class="btns" style="margin-top:var(--s3)"><a class="btn" href="#/caso/desacato">Ver os números de Acopiara</a><a class="btn solid" href="#/denuncie">Relatar um caso</a></div></div></div></div></section>`;
+  }
+  function civicIcon(title) {
+    const label = norm(title);
+    const key = /camara/.test(label) ? 'camara' : /informacao/.test(label) ? 'informacao' : /denuncie/.test(label) ? 'denuncie' : /proteste/.test(label) ? 'proteste' : /registre/.test(label) ? 'registre' : 'protecao';
+    const paths = {
+      camara: '<path d="m3 8 9-5 9 5M4 9h16M5 20h14M3 22h18M7 10v8m5-8v8m5-8v8"/>',
+      informacao: '<path d="M13 3H5v18h9M13 3v5h5l-5-5M8 11h5m-5 4h3"/><circle cx="17" cy="16" r="3.5"/><path d="m19.5 18.5 2 2"/>',
+      denuncie: '<path d="M4 4h16v12H9l-5 4V4Z"/><path d="M12 7v4m0 2v.1"/>',
+      proteste: '<path d="m4 10 14-5v14L4 14v-4Zm3 5 1 6h3l-1-5m11-8 1-1m-1 9 1 1"/>',
+      registre: '<path d="M4 7h4l2-3h4l2 3h4v13H4V7Z"/><circle cx="12" cy="13" r="3.5"/>',
+      protecao: '<path d="M12 3 4 6v6c0 5 4 8 8 10 4-2 8-5 8-10V6l-8-3Z"/><path d="m8 12 3 3 5-6"/>'
+    };
+    return `<svg class="civic-icon" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false">${paths[key]}</svg>`;
   }
   const areas = () => { const m = {}; CASOS.forEach(c => m[c.area] = (m[c.area] || 0) + 1); return Object.entries(m).map(([nome, n]) => ({ nome, n })).sort((a, b) => b.n - a.n); };
 
@@ -284,7 +307,7 @@
         <select id="fy" aria-label="Período"><option value="">Todo o período</option>${anos.map(a => `<option>${a}</option>`).join('')}</select>
       </div>
       <div class="chips" id="fst"><button class="chip on" data-s="">Todos</button><button class="chip st-comprovado" data-s="comprovado">Comprovado</button><button class="chip st-indicio" data-s="indício a apurar">Indício a apurar</button><button class="chip st-juizo" data-s="em juízo">Em juízo</button></div>
-      <div class="count" id="fc"></div><div id="fl"></div></div></section>`;
+      <div class="count" id="fc" role="status" aria-live="polite"></div><div id="fl"></div></div></section>`;
   }
   function bindFiltros(qs) {
     const q = new URLSearchParams(qs || ''); if (q.get('area')) $('#fa').value = q.get('area'); if (q.get('pessoa')) $('#fp').value = q.get('pessoa');
@@ -297,7 +320,7 @@
       $('#fc').textContent = `${r.length} de ${CASOS.length} casos`;
     };
     ['#fq', '#fa', '#fs', '#fp', '#fy'].forEach(id => $(id).addEventListener('input', run));
-    $$('#fst button').forEach(b => b.onclick = () => { st = b.dataset.s; $$('#fst button').forEach(x => x.classList.toggle('on', x === b)); run(); });
+    $$('#fst button').forEach(b => { b.setAttribute('aria-pressed', String(b.classList.contains('on'))); b.onclick = () => { st = b.dataset.s; $$('#fst button').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', String(x === b)); }); run(); }; });
     run();
   }
 
@@ -331,16 +354,16 @@
         ${secao(7, 'O que isso causa ao patrimônio público', `<p>${esc(m.efeitos_bem_publico || '')}</p>${c.valor ? `<p>Valor envolvido: <span class="mk">${brl(c.valor)}</span>${c.valor_rotulo ? ' (' + esc(c.valor_rotulo) + ')' : ''}.</p>` : ''}`)}
         ${secao(8, 'Consequências administrativas e jurídicas', `<div class="lei">${String(m.consequencias || '').split('\n').flatMap(chunk).map(p => `<p>${esc(p)}</p>`).join('')}</div>`)}
         ${secao(9, 'Medidas já tomadas e medidas cabíveis', medidasBloco(m))}
-        ${secao(10, 'Conclusão crítica', `<div class="concl"><span class="tag">Nossa leitura</span><p>${esc(m.conclusao || c.avaliacao || '')}</p>${c.avaliacao && m.conclusao && m.conclusao !== c.avaliacao ? `<p class="tec"><b>Avaliação técnica do dossiê:</b> ${esc(c.avaliacao)}</p>` : ''}</div>`)}
+    ${secao(10, 'Conclusão crítica', leituraEditorial(c))}
         ${relNot('caso', c.id)}
         ${conferirBloco(c)}
         ${relacionadosBloco(c)}
         <h2>Fontes</h2><ul class="src">${(c.fontes || []).map(f => `<li><span class="tag">${esc(f.tipo || '')}</span>${f.url ? `<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.titulo)} ↗</a>` : esc(f.titulo)}</li>`).join('')}</ul>
         <p class="note">Indício não é condenação. As pessoas citadas podem apresentar explicações ou documentos; veja <a href="#/sobre">como pedir correção</a> ou <a href="#/denuncie">envie uma informação</a>.</p>
         <div class="pager">${prev ? `<a href="#/caso/${prev.id}"><small>Caso anterior</small>${esc(prev.titulo)}</a>` : '<span></span>'}${next ? `<a href="#/caso/${next.id}"><small>Próximo caso</small>${esc(next.titulo)}</a>` : ''}</div></div>`;
-    return `<header class="casehead"><div class="wrap">${M ? `<div class="heroimg">${img(c.cena || c.area)}</div>` : ''}<div class="row"><div class="c8">
+    return `<header class="casehead"><div class="wrap">${M ? `<div class="heroimg">${SCENES.item(c, true)}</div>` : ''}<div class="row"><div class="c8">
       <div class="chips"><a class="chip" href="#/casos">← Casos</a><span class="chip">${esc(c.area)}</span>${M ? '' : `<span class="chip">${esc(c.secretaria || '')}</span>`}<span class="chip">${esc(per(c.periodo))}</span>${stChip(c.status)}</div>
-      <h1>${esc(c.titulo)}</h1><p class="lead">${esc(c.resumo)}</p>${M ? E.line : ''}</div>${M ? '' : `<div class="c4 heroimg" style="margin-top:0">${img(c.cena || c.area)}</div>`}</div></div></header>
+      <h1>${esc(c.titulo)}</h1><p class="lead">${esc(c.resumo)}</p>${M ? E.line : ''}</div>${M ? '' : `<div class="c4 heroimg" style="margin-top:0">${SCENES.item(c, true)}</div>`}</div></div></header>
       <div class="wrap casebody"><div class="row"><article class="c8">${art}</article>
       ${M ? '' : `<aside class="c4 aside">${nums}${E.box}<div class="box toc"><h4>Nesta página</h4><div id="toc"></div></div>${ps ? `<div class="box"><h4>Pessoas citadas</h4><div class="people">${ps}</div></div>` : ''}<div class="box"><h4>Fiscalize</h4><p style="font-size:15px">Confira os documentos e as fontes você mesmo.</p><a class="btn ghost block" href="#/fiscalize">Como fiscalizar</a></div></aside>`}
       </div></div>${M ? E.bar : ''}`;
@@ -376,13 +399,13 @@
       ${secao(7, 'O que isso causa ao patrimônio público', `<p>${esc(m.efeitos_bem_publico || '')}</p>`)}
       ${secao(8, 'Consequências administrativas e jurídicas', `<div class="lei"><p>${esc(m.consequencias || '')}</p></div>`)}
       ${secao(9, 'Medidas já tomadas e medidas cabíveis', `${n.perguntas?.length ? `<h3>O que a Prefeitura precisa responder</h3><ul class="q">${n.perguntas.map(q => `<li>${esc(q)}</li>`).join('')}</ul>` : ''}${medidasBloco(m)}`)}
-      ${secao(10, 'Conclusão crítica', `<div class="analise">${(n.analise || []).map(p => `<p>${esc(p)}</p>`).join('')}</div><div class="concl"><span class="tag">Nossa leitura</span><p>${esc(m.conclusao || n.conclusao || '')}</p>${n.conclusao && m.conclusao && n.conclusao !== m.conclusao ? `<p class="tec">${esc(n.conclusao)}</p>` : ''}</div>`)}
+    ${secao(10, 'Conclusão crítica', `<div class="analise">${(n.analise || []).map(p => `<p>${esc(p)}</p>`).join('')}</div>${leituraEditorial(n)}`)}
       ${rel.length ? `<h2>Casos do dossiê ligados</h2>${list(rel, cardCaso, 'g2')}` : ''}
       ${n.documentos?.length ? `<h2>Documentos e onde conferir</h2><ul class="src">${n.documentos.map(d => `<li><a href="${esc(d.u)}" target="_blank" rel="noopener">${esc(d.t)} ↗</a></li>`).join('')}</ul>` : ''}
       <p class="note">Esta página separa o fato, atribuído à fonte, da nossa opinião. Se você é citado e quer se manifestar, veja <a href="#/sobre">como pedir correção</a>.</p></div>`;
-    return `<header class="casehead"><div class="wrap">${M ? `<div class="heroimg">${img(n.cena)}</div>` : ''}<div class="row"><div class="c8">
+    return `<header class="casehead"><div class="wrap">${M ? `<div class="heroimg">${SCENES.item(n, true)}</div>` : ''}<div class="row"><div class="c8">
       <div class="chips"><a class="chip" href="#/noticias">← Notícias</a><span class="chip">${esc(fmtData(n.data))}</span><span class="chip">${esc(n.veiculo)}</span></div>
-      <h1>${esc(n.titulo)}</h1>${M ? E.line : ''}</div>${M ? '' : `<div class="c4 heroimg" style="margin-top:0">${img(n.cena)}</div>`}</div></div></header>
+      <h1>${esc(n.titulo)}</h1>${M ? E.line : ''}</div>${M ? '' : `<div class="c4 heroimg" style="margin-top:0">${SCENES.item(n, true)}</div>`}</div></div></header>
       <div class="wrap casebody"><div class="row"><article class="c8">${art}</article>${M ? '' : `<aside class="c4 aside">${E.box}<div class="box toc"><h4>Nesta página</h4><div id="toc"></div></div><div class="box"><h4>Fonte original</h4><a class="btn ghost block" href="${esc(n.url)}" target="_blank" rel="noopener">Abrir ${esc(n.veiculo)} ↗</a></div></aside>`}</div></div>${M ? E.bar : ''}`;
   }
 
@@ -524,10 +547,10 @@
   /* ---------- FISCALIZE ---------- */
   function fiscalize() {
     return `<section class="block"><div class="wrap"><div class="row"><div class="c8"><div class="kicker">Fiscalize você também</div><h1>Como conferir tudo isso sozinho</h1>
-      <p class="lead">${esc(X.fiscalize_intro)}</p>
+      <p class="lead">${esc(X.fiscalize_intro)}</p>${pageShareButton('fiscalize', '', 'Compartilhar este guia')}
       <div style="margin-top:var(--s4)">${(X.tutoriais || []).map((t, i) => `<details class="tut" id="tut-${i}"><summary><span class="n">${i + 1}</span>${esc(t.titulo)}</summary><div class="in">
         <p>${esc(t.para_que)}</p>${t.link ? `<p><a class="btn azul" href="${esc(t.link)}" target="_blank" rel="noopener">Abrir ${esc(t.site)} ↗</a></p>` : ''}
-        <ol>${t.passos.map(s => `<li>${esc(s)}</li>`).join('')}</ol>${t.dica ? `<p class="lei"><b>Dica:</b> ${esc(t.dica)}</p>` : ''}</div></details>`).join('')}</div></div>
+        <ol>${t.passos.map(s => `<li>${esc(s)}</li>`).join('')}</ol>${t.dica ? `<p class="lei"><b>Dica:</b> ${esc(t.dica)}</p>` : ''}${pageShareButton('fiscalize', i, 'Compartilhar este passo a passo')}</div></details>`).join('')}</div></div>
       <aside class="c4 aside"><div class="box"><h4>Pesquise nos portais</h4><p style="font-size:15px">A busca do site também procura nos portais oficiais.</p><button class="btn solid block" data-open-search>${ic('busca')}Pesquisar</button></div></aside></div></div></section>`;
   }
 
@@ -598,15 +621,15 @@
   function openSearch(q0) {
     const m = $('#modal'), ar = areas().map(a => a.nome), anos = ['2025', '2026'];
     m.innerHTML = `<div class="in" role="dialog" aria-label="Pesquisar"><div class="mh"><h3>Pesquisar</h3><button class="ibtn" data-x aria-label="Fechar">${ic('x')}</button></div><div class="mb">
-      <div class="search-in"><input class="field" id="sq0" type="search" placeholder="Nome, empresa, valor, assunto…" value="${esc(q0 || '')}" autocomplete="off"></div>
+      <div class="search-in"><input class="field" id="sq0" aria-label="Pesquisar no dossiê" type="search" placeholder="Nome, empresa, valor, assunto…" value="${esc(q0 || '')}" autocomplete="off"></div>
       <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:600;font-size:14px">Pesquisa avançada</summary><div class="adv">
-        <select class="field" id="sq-tipo"><option value="">Tudo</option><option>Caso</option><option>Notícia</option><option>Pessoa</option><option>Tutorial</option><option>Data</option></select>
-        <select class="field" id="sq-area"><option value="">Todas as áreas</option>${ar.map(a => `<option>${esc(a)}</option>`).join('')}</select>
-        <select class="field" id="sq-ano"><option value="">Todo o período</option>${anos.map(a => `<option>${a}</option>`).join('')}</select>
-        <select class="field" id="sq-st"><option value="">Qualquer situação</option><option>comprovado</option><option>indício a apurar</option><option>em juízo</option></select>
+        <select class="field" id="sq-tipo" aria-label="Tipo de conteúdo"><option value="">Tudo</option><option>Caso</option><option>Notícia</option><option>Pessoa</option><option>Tutorial</option><option>Data</option></select>
+        <select class="field" id="sq-area" aria-label="Área"><option value="">Todas as áreas</option>${ar.map(a => `<option>${esc(a)}</option>`).join('')}</select>
+        <select class="field" id="sq-ano" aria-label="Período"><option value="">Todo o período</option>${anos.map(a => `<option>${a}</option>`).join('')}</select>
+        <select class="field" id="sq-st" aria-label="Situação"><option value="">Qualquer situação</option><option>comprovado</option><option>indício a apurar</option><option>em juízo</option></select>
       </div><label class="check" style="margin-top:12px"><input type="checkbox" id="sq-exato"> Frase exata</label></details>
-      <div id="sq-res" class="res"></div><div id="sq-ext"></div></div></div>`;
-    m.hidden = false; const inp = $('#sq0'); setTimeout(() => inp.focus(), 30);
+      <div id="sq-res" class="res" aria-live="polite"></div><div id="sq-ext"></div></div></div>`;
+    openLayer(m); const inp = $('#sq0'); inp.focus({ preventScroll: true });
     const run = () => {
       const raw = inp.value.trim(), q = norm(raw), ex = $('#sq-exato').checked, tipo = $('#sq-tipo').value, area = $('#sq-area').value, ano = $('#sq-ano').value, st = $('#sq-st').value;
       const toks = ex ? [q] : q.split(/\s+/).filter(Boolean);
@@ -614,21 +637,91 @@
       r = r.map(x => ({ x, s: toks.reduce((a, t) => a + (x.tt.includes(t) ? 5 : 0) + (x.t.split(t).length - 1), 0) + (x.tipo === 'Caso' ? 2 : x.tipo === 'Notícia' ? 1 : 0) })).sort((a, b) => b.s - a.s).map(o => o.x);
       $('#sq-res').innerHTML = !toks.length && !tipo && !area && !ano && !st ? '<p class="muted" style="margin-top:16px">Digite para pesquisar em casos, notícias, pessoas, datas e tutoriais.</p>' : r.length ? `<p class="count">${r.length} resultado${r.length > 1 ? 's' : ''} no site</p>` + r.slice(0, 60).map(x => `<a href="${x.href}"><small>${esc(x.tipo)}${x.area ? ' · ' + esc(x.area) : ''}</small><b>${esc(x.titulo)}</b><span>${esc((x.sub || '').slice(0, 170))}</span></a>`).join('') : '<p class="muted" style="margin-top:16px">Nada encontrado no site. Tente os portais oficiais abaixo.</p>';
       $('#sq-ext').innerHTML = raw ? `<h4 style="margin-top:var(--s3)">Pesquisar “${esc(raw)}” nos portais oficiais</h4><div class="ext">${EXT.map(([n, f]) => `<a href="${esc(f(raw))}" target="_blank" rel="noopener">${esc(n)}<span>↗</span></a>`).join('')}</div><p class="muted" style="font-size:13px;margin-top:8px">Abre o portal em outra aba com a pesquisa já feita. Alguns usam a busca do Google restrita ao site oficial.</p>` : '';
-      $$('#sq-res a').forEach(a => a.onclick = () => { m.hidden = true; });
+      $$('#sq-res a').forEach(a => a.onclick = () => closeLayer(m));
     };
     let tm; inp.oninput = () => { clearTimeout(tm); tm = setTimeout(run, 120); }; $$('#sq-tipo,#sq-area,#sq-ano,#sq-st,#sq-exato').forEach(e => e.onchange = run);
-    inp.onkeydown = e => { if (e.key === 'Enter') { const a = $('#sq-res a'); if (a) { location.hash = a.getAttribute('href'); m.hidden = true; } } };
+    inp.onkeydown = e => { if (e.key === 'Enter') { const a = $('#sq-res a'); if (a) { location.hash = a.getAttribute('href'); closeLayer(m); } } };
     closeable(m); run();
   }
-  function closeable(m) { $$('[data-x]', m).forEach(b => b.onclick = () => m.hidden = true); m.onclick = e => { if (e.target === m) m.hidden = true; }; }
+  function layerFocusable(layer) {
+    return $$('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),summary,[tabindex="0"]', layer)
+      .filter(el => !el.closest('[hidden]') && el.getClientRects().length);
+  }
+  function openLayer(layer) {
+    if ($('#modal').hidden && $('#sheet').hidden) layerTrigger = document.activeElement;
+    [$('#modal'), $('#sheet')].forEach(other => { if (other !== layer) other.hidden = true; });
+    layer.hidden = false;
+    document.body.classList.add('overlay-open');
+    $$('.top,main,.foot,.tabbar').forEach(el => el.inert = true);
+    const panel = $('.in', layer);
+    panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-modal', 'true'); panel.tabIndex = -1;
+    if (!panel.hasAttribute('aria-label') && !panel.hasAttribute('aria-labelledby')) panel.setAttribute('aria-label', ($('h2,h3', panel) || {}).textContent || 'Janela');
+    $$('#btn-menu,#tab-mais').forEach(b => b.setAttribute('aria-expanded', String(layer.id === 'sheet')));
+    (layerFocusable(layer)[0] || panel).focus({ preventScroll: true });
+  }
+  function closeLayer(layer, restore = true) {
+    if (layer.hidden) return;
+    layer.hidden = true;
+    if (!$('#modal').hidden || !$('#sheet').hidden) return;
+    document.body.classList.remove('overlay-open');
+    $$('.top,main,.foot,.tabbar').forEach(el => el.inert = false);
+    $$('#btn-menu,#tab-mais').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    if (restore && layerTrigger && layerTrigger.isConnected) layerTrigger.focus({ preventScroll: true });
+    layerTrigger = null;
+  }
+  function closeable(m) {
+    $$('[data-x]', m).forEach(b => b.onclick = () => closeLayer(m));
+    m.onclick = e => { if (e.target === m) closeLayer(m); };
+  }
 
   /* ---------- COMPARTILHAR ---------- */
+  function pageShareButton(page, section, label) {
+    return `<div class="page-share"><button class="btn ghost" data-share-page="${page}" data-share-section="${section}" aria-label="${esc(label)}">${ic('share')}${esc(label)}</button></div>`;
+  }
+  // Os trechos vêm do próprio conteúdo da página; páginas informativas não usam contadores de casos.
+  function pageShareItem(page, section) {
+    const index = section === '' || section == null ? null : Number(section);
+    const rights = page === 'direitos', d = X.direitos || {};
+    const all = rights ? (d.secoes || []) : (X.tutoriais || []);
+    const selected = index == null ? null : all[index];
+    let blocks = (selected ? [selected] : all).map(b => rights
+      ? { secao: 'Seus direitos', titulo: b.titulo, texto: (b.paragrafos || []).join(' '), lista: b.lista || [] }
+      : { secao: 'Fiscalize você também', titulo: b.titulo, texto: b.para_que, lista: b.passos || [] });
+    if (!rights && !selected) {
+      // O guia completo compartilha um índice; cada tutorial oferece a própria sequência detalhada.
+      blocks = [];
+      for (let i = 0; i < all.length; i += 3) blocks.push({ secao: 'Fiscalize você também', titulo: 'Onde consultar', lista: all.slice(i, i + 3).map(b => b.titulo) });
+    }
+    return { shareType: 'page', id: page, route: page + (selected ? '?sec=' + index : ''),
+      titulo: selected ? selected.titulo : rights ? d.titulo || 'Questionar não é crime' : 'Como conferir tudo isso sozinho',
+      resumo: selected ? rights ? (selected.paragrafos || []).join(' ') : selected.para_que : rights ? d.intro : X.fiscalize_intro,
+      area: rights ? 'Seus direitos' : 'Fiscalize você também', cena: rights ? 'Direitos do cidadão' : 'Administração',
+      fonte: rights ? 'Seus direitos · referências no texto' : 'Guia de consulta aos portais públicos', slides: blocks };
+  }
   function shareItem(x) {
-    if (x.fato) return { kicker: 'Notícia · ' + x.veiculo + ' · ' + fmtData(x.data), titulo: x.titulo, resumo: x.analise[0], cena: cenaKey(x.cena), link: SITE + '/#/noticia/' + x.id, fonte: x.veiculo + ' e documentos públicos', cta: 'Leia a análise completa:', nome: 'acopiara-noticia-' + x.id };
-    return { kicker: x.area + (x.periodo ? ' · ' + per(x.periodo) : ''), titulo: x.titulo, valor: x.valor, valor_rotulo: x.valor_rotulo, resumo: x.resumo, status: x.status, cena: cenaKey(x.cena || x.area), link: SITE + '/#/caso/' + x.id, fonte: (x.fontes && x.fontes[0] && x.fontes[0].tipo) || 'documentos públicos', nome: 'acopiara-caso-' + x.id };
+    const theme = x.theme || document.documentElement.dataset.theme || 'light';
+    if (x.shareType === 'page') return { kicker: x.area, titulo: x.titulo, resumo: x.resumo, imagem: SCENES.source(x), theme,
+      link: SITE + '/#/' + x.route, fonte: x.fonte, cta: 'Leia o guia completo:', nome: 'acopiara-' + x.id + (x.route.includes('?') ? '-trecho-' + x.route.split('=')[1] : '') };
+    if (x.fato) return { theme, kicker: 'Notícia · ' + x.veiculo + ' · ' + fmtData(x.data), titulo: x.titulo, resumo: (x.analise || [])[0] || x.fato, cena: cenaKey(x.cena), imagem: SCENES.source(x), link: SITE + '/#/noticia/' + x.id, fonte: x.veiculo + ' e documentos públicos', cta: 'Leia a análise completa:', nome: 'acopiara-noticia-' + x.id };
+    return { theme, kicker: x.area + (x.periodo ? ' · ' + per(x.periodo) : ''), titulo: x.titulo, valor: x.valor, valor_rotulo: x.valor_rotulo, resumo: x.resumo, status: x.status, cena: cenaKey(x.cena || x.area), imagem: SCENES.source(x), link: SITE + '/#/caso/' + x.id, fonte: (x.fontes && x.fontes[0] && x.fontes[0].tipo) || 'documentos públicos', nome: 'acopiara-caso-' + x.id };
   }
 
   function slidesDe(x, link) {
+    if (x.shareType === 'page') {
+      const slides = [];
+      (x.slides || []).forEach(b => {
+        // Dividir parágrafos longos mantém o texto inteiro e a leitura confortável.
+        const chunks = []; let chunk = '';
+        String(b.texto || '').split(/(?<=[.!?])\s+/).forEach(sentence => {
+          if (chunk && (chunk + ' ' + sentence).length > 480) { chunks.push(chunk); chunk = ''; }
+          chunk += (chunk ? ' ' : '') + sentence;
+        });
+        if (chunk) chunks.push(chunk);
+        chunks.forEach((texto, i) => slides.push({ secao: b.secao, titulo: b.titulo + (i ? ' · continuação' : ''), texto }));
+        for (let i = 0; i < (b.lista || []).length; i += 3) slides.push({ secao: b.secao, titulo: b.titulo, lista: b.lista.slice(i, i + 3) });
+      });
+      return slides.map((s, i) => Object.assign(s, { n: i + 2, total: slides.length + 1, link, theme: x.theme || document.documentElement.dataset.theme }));
+    }
     const m = x.materia || {}, cut = (t, n) => { t = String(t || ''); return t.length > n ? t.slice(0, t.lastIndexOf(' ', n - 1)) + '…' : t; }, S = [];
     const fatos = x.fato || (x.o_que_aconteceu || []).filter(p => !/^[a-z]\) /.test(p))[0];
     S.push({ secao: 'O problema', titulo: 'O que está errado', texto: cut(m.problema || x.resumo, 420) });
@@ -639,23 +732,31 @@
     if (m.efeitos_coletivos) S.push({ secao: 'O que isso causa a você', titulo: 'O preço para a cidade', texto: cut(m.efeitos_coletivos, 420) });
     const cab = (m.cabiveis || []).slice(0, 3).map(t => cut(t, 120));
     if (cab.length) S.push({ secao: 'O que pode ser feito', titulo: 'Medidas cabíveis', lista: cab });
-    if (m.conclusao) S.push({ secao: 'Conclusão crítica', titulo: '', texto: cut(m.conclusao, 560), tema: 'escuro' });
+    if (m.leitura_editorial?.paragrafos?.length) {
+      m.leitura_editorial.paragrafos.forEach((texto, i) => {
+        S.push({ secao: 'Nossa leitura · ' + (i + 1) + '/' + m.leitura_editorial.paragrafos.length, titulo: i ? '' : m.leitura_editorial.titulo, texto, tema: 'escuro' });
+      });
+    } else if (m.conclusao) S.push({ secao: 'Conclusão crítica', titulo: '', texto: cut(m.conclusao, 560), tema: 'escuro' });
     S.push({ secao: 'Fiscalize', titulo: 'Leia completo, com os documentos', texto: 'No link: ' + link + '. Cada informação tem a fonte oficial. Compartilhe. Cobrar é direito.', tema: 'escuro' });
-    const total = S.length + 1; S.forEach((s, i) => { s.n = i + 2; s.total = total; s.link = link; });
+    const total = S.length + 1; S.forEach((s, i) => { s.n = i + 2; s.total = total; s.link = link; s.theme = x.theme || document.documentElement.dataset.theme; });
     return S;
   }
   async function openShare(x, p) {
     const it = shareItem(x), m = $('#modal'); let fmt = 'story';
     const url = 'https://' + it.link, txt = x.titulo + ' — ' + url;
+    const recordShare = mode => p ? API.share(p, mode) : Promise.resolve({ off: true });
     m.innerHTML = `<div class="in" role="dialog" aria-label="Compartilhar"><div class="mh"><h3>Compartilhar</h3><button class="ibtn" data-x aria-label="Fechar">${ic('x')}</button></div><div class="mb"><div class="share">
-      <div class="pv"><canvas id="cv" aria-label="Prévia da imagem"></canvas></div>
+      <div class="pv"><canvas id="cv" aria-label="Prévia da imagem para compartilhar"></canvas></div>
       <div><div class="seg" role="tablist" id="sh-modo"><button class="on" data-m="uma">Uma imagem</button><button data-m="seq">Sequência</button></div><div class="seg" role="tablist" id="sh-fmt" style="margin-top:8px"><button class="on" data-f="story">Stories · 9:16</button><button data-f="feed">Feed · 4:5</button></div>
-        <p class="muted" style="font-size:15px" id="sh-dim">Imagem vertical de 2160 × 3840 px, pronta para Instagram, WhatsApp e Facebook. O texto fica centralizado e a ilustração do caso vai no topo.</p>
+        <p class="muted" style="font-size:15px" id="sh-dim">Imagem vertical de 2160 × 3840 px, pronta para Instagram, WhatsApp e Facebook. O texto fica centralizado e a ilustração vai no topo.</p>
         <div class="thumbs" id="sh-th" hidden></div><div class="acts"><button class="btn solid" id="sh-img">${ic('share')}Compartilhar imagem</button><button class="btn" id="sh-dl">${ic('baixar')}Baixar imagem</button>
         <a class="btn" id="sh-wa" href="https://wa.me/?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Enviar link pelo WhatsApp</a><button class="btn ghost" id="sh-cp">${ic('link')}Copiar link</button></div></div></div></div></div>`;
-    m.hidden = false; closeable(m);
+    openLayer(m); closeable(m);
     let modo = 'uma', seqCv = [];
     const cv = $('#cv'), draw = async () => {
+      const controls = $$('#sh-modo button, #sh-fmt button, #sh-img, #sh-dl', m);
+      controls.forEach(b => b.disabled = true); cv.setAttribute('aria-busy', 'true');
+      try {
       $('#sh-th').hidden = modo !== 'seq';
       $('#sh-img').innerHTML = ic('share') + (modo === 'seq' ? 'Compartilhar a sequência' : 'Compartilhar imagem'); $('#sh-dl').innerHTML = ic('baixar') + (modo === 'seq' ? 'Baixar todas' : 'Baixar imagem');
       const pvx = $('#pvimg'); if (pvx) pvx.remove(); cv.style.display = '';
@@ -664,20 +765,29 @@
       const S = slidesDe(x, it.link); seqCv = [cv];
       for (const s of S) { const c = document.createElement('canvas'); await CARDS.slide(c, s, fmt); seqCv.push(c); }
       const pv0 = $('#pvimg'); if (pv0) pv0.remove(); cv.style.display = '';
-      $('#sh-th').innerHTML = ''; seqCv.forEach((c, i) => { const t = document.createElement('img'); t.src = c.toDataURL('image/jpeg', .5); t.alt = 'Imagem ' + (i + 1); t.onclick = () => { let pv = $('#pvimg'); if (!pv) { pv = document.createElement('img'); pv.id = 'pvimg'; pv.style.cssText = 'width:100%;height:auto;display:block'; cv.after(pv); } pv.src = c.toDataURL('image/jpeg', .85); cv.style.display = 'none'; $$('#sh-th img').forEach(z => z.classList.toggle('on', z === t)); }; $('#sh-th').appendChild(t); });
+      $('#sh-th').innerHTML = ''; seqCv.forEach((c, i) => { const t = document.createElement('img'); t.src = c.toDataURL('image/jpeg', .5); t.alt = 'Imagem ' + (i + 1); t.tabIndex = 0; t.setAttribute('role', 'button'); t.setAttribute('aria-label', 'Ver imagem ' + (i + 1) + ' de ' + seqCv.length); t.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t.click(); } }; t.onclick = () => { let pv = $('#pvimg'); if (!pv) { pv = document.createElement('img'); pv.id = 'pvimg'; pv.style.cssText = 'width:100%;height:auto;display:block'; cv.after(pv); } pv.src = c.toDataURL('image/jpeg', .85); cv.style.display = 'none'; $$('#sh-th img').forEach(z => z.classList.toggle('on', z === t)); }; $('#sh-th').appendChild(t); });
       $('#sh-dim').textContent = `${seqCv.length} imagens em sequência (${fmt === 'story' ? 'stories 9:16' : 'carrossel do feed 4:5'}). No celular, toque em "Compartilhar a sequência" e escolha o Instagram: no feed elas viram um carrossel; nos stories, entram uma depois da outra. No computador, as imagens são baixadas numeradas.`;
+      } finally { controls.forEach(b => b.disabled = false); cv.removeAttribute('aria-busy'); }
     };
     $$('#sh-modo button', m).forEach(b => b.onclick = async () => { modo = b.dataset.m; $$('#sh-modo button', m).forEach(x => x.classList.toggle('on', x === b)); await draw(); });
     $$('#sh-fmt button', m).forEach(b => b.onclick = async () => { fmt = b.dataset.f; $$('#sh-fmt button', m).forEach(x => x.classList.toggle('on', x === b)); await draw(); });
-    $('#sh-img').onclick = async () => { const r = modo === 'seq' ? await CARDS.shareMany(seqCv, it.nome + '-' + fmt, x.titulo) : await CARDS.share($('#cv'), it.nome + '-' + fmt, x.titulo); if (r !== 'cancel') API.share(p, fmt).then(r => r && !r.off && $$(`[data-eng] [data-c="shares"]`).forEach(e => e.textContent = Number(r.shares).toLocaleString('pt-BR'))); };
-    $('#sh-dl').onclick = async () => { if (modo === 'seq') await CARDS.saveMany(seqCv, it.nome + '-' + fmt); else await CARDS.save($('#cv'), it.nome + '-' + fmt); API.share(p, fmt + '-download'); };
-    $('#sh-wa').onclick = () => { API.share(p, 'whatsapp'); };
-    $('#sh-cp').onclick = async () => { try { await navigator.clipboard.writeText(url); toast('Link copiado'); } catch (e) { prompt('Copie o link:', url); } API.share(p, 'link'); };
+    $('#sh-img').onclick = async () => { const r = modo === 'seq' ? await CARDS.shareMany(seqCv, it.nome + '-' + fmt, x.titulo) : await CARDS.share($('#cv'), it.nome + '-' + fmt, x.titulo); if (r !== 'cancel') recordShare(fmt).then(r => r && !r.off && $$(`[data-eng] [data-c="shares"]`).forEach(e => e.textContent = Number(r.shares).toLocaleString('pt-BR'))); };
+    $('#sh-dl').onclick = async () => { if (modo === 'seq') await CARDS.saveMany(seqCv, it.nome + '-' + fmt); else await CARDS.save($('#cv'), it.nome + '-' + fmt); recordShare(fmt + '-download'); };
+    $('#sh-wa').onclick = () => { recordShare('whatsapp'); };
+    $('#sh-cp').onclick = async () => { try { await navigator.clipboard.writeText(url); toast('Link copiado'); } catch (e) { prompt('Copie o link:', url); } recordShare('link'); };
     await draw();
   }
 
   /* ---------- interações por página ---------- */
   function after(p, a, qs) {
+    $$('[data-share-page]', main).forEach(b => b.onclick = () => openShare(pageShareItem(b.dataset.sharePage, b.dataset.shareSection)));
+    if (p === 'direitos' || p === 'fiscalize') {
+      const section = new URLSearchParams(qs || '').get('sec');
+      if (section !== null && /^\d+$/.test(section)) {
+        const target = document.getElementById((p === 'direitos' ? 'direito-' : 'tut-') + section);
+        if (target) { if (target.tagName === 'DETAILS') target.open = true; requestAnimationFrame(() => target.scrollIntoView({ block: 'start' })); }
+      }
+    }
     $$('[data-open-search]', main).forEach(b => b.onclick = () => openSearch(''));
     if (p === 'casos') bindFiltros(qs);
     if (p === 'linha-do-tempo') { const run = () => { const t = norm($('#tq').value), ar = $('#ta').value; $$('#tl .ev').forEach(e => e.hidden = !((!t || e.dataset.t.includes(t)) && (!ar || e.dataset.a === ar))); }; $('#tq').oninput = run; $('#ta').oninput = run; }
@@ -693,13 +803,15 @@
     if (p === 'caso') { const c = CASOS.find(x => x.id === a); if (c) bindEngage('caso/' + a, c); const eq = $('#eq'); if (eq) eq.oninput = () => { const t = norm(eq.value); $$('#etb tbody tr, #etb .rec').forEach(r => r.hidden = !!t && !(r.dataset.t || '').includes(t)); const sc = $('#el .tscroll'); if (sc && t) sc.classList.add('aberta'); }; }
     if (p === 'noticia') { const n = NOT.find(x => x.id === a); if (n) bindEngage('noticia/' + a, n); }
     if (p === '' || p === 'casos' || p === 'noticias' || p === 'fiscalize' || p === 'direitos' || p === 'dinheiro' || p === 'pessoas' || p === 'linha-do-tempo' || p === 'sobre' || p === 'denuncie' || p === 'pessoa') API.hit(p || 'inicio');
-    $$('[data-zoom]', main).forEach(im => im.onclick = () => { const m = $('#modal'); m.hidden = false; m.innerHTML = `<div class="in"><div class="mh"><h3>Documento</h3><button class="ibtn" data-x aria-label="Fechar">${ic('x')}</button></div><div class="mb"><img class="zoom" src="${im.dataset.zoom}" alt=""></div></div>`; closeable(m); });
+    $$('[data-zoom]', main).forEach(im => im.onclick = () => { const m = $('#modal'); m.innerHTML = `<div class="in"><div class="mh"><h3>Documento</h3><button class="ibtn" data-x aria-label="Fechar">${ic('x')}</button></div><div class="mb"><img class="zoom" src="${im.dataset.zoom}" alt=""></div></div>`; openLayer(m); closeable(m); });
   }
 
   /* ---------- moldura: busca, tema, app, notificações ---------- */
   function chrome() {
     $('#btn-busca').onclick = () => openSearch(''); $('#tab-busca').onclick = () => openSearch('');
-    $('#tab-mais').onclick = () => { $('#sheet').hidden = false; }; $('#btn-menu').onclick = () => { $('#sheet').hidden = false; }; $('#sheet').onclick = e => { if (e.target.id === 'sheet' || e.target.closest('a')) $('#sheet').hidden = true; };
+    $('#tab-mais').onclick = () => openLayer($('#sheet')); $('#btn-menu').onclick = () => openLayer($('#sheet'));
+    $('#close-menu').onclick = () => closeLayer($('#sheet'));
+    $('#sheet').onclick = e => { if (e.target.id === 'sheet') closeLayer($('#sheet')); else if (e.target.closest('a')) closeLayer($('#sheet')); };
     const tema = () => { const d = document.documentElement, t = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = t; try { localStorage.setItem('tema', t); } catch (e) { } $('meta[name=theme-color]').content = t === 'dark' ? '#0E1411' : '#0E5A3A'; };
     $('#btn-tema').onclick = tema; $('#sh-tema').onclick = tema;
     const showApp = () => { const v = (API.canInstall() || (API.isIOS && !API.standalone)); $('#btn-app').hidden = !v; $('#sh-app').hidden = !v; };
@@ -710,6 +822,18 @@
     showN();
     const nt = async () => { const r = await API.subscribe(); if (r.ok) toast('Pronto! Você vai receber as novas publicações.'); else alert(r.erro); showN(); };
     $('#btn-notif').onclick = nt; $('#sh-notif').onclick = nt;
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { $('#modal').hidden = true; $('#sheet').hidden = true; } if (e.key === '/' && !/input|textarea|select/i.test(document.activeElement.tagName)) { e.preventDefault(); openSearch(''); } });
+    document.addEventListener('pointerdown', () => { document.documentElement.dataset.input = 'pointer'; }, { passive: true });
+    document.addEventListener('keydown', e => {
+      document.documentElement.dataset.input = 'keyboard';
+      const layer = !$('#modal').hidden ? $('#modal') : !$('#sheet').hidden ? $('#sheet') : null;
+      if (e.key === 'Escape' && layer) { e.preventDefault(); closeLayer(layer); return; }
+      if (e.key === 'Tab' && layer) {
+        const items = layerFocusable(layer), first = items[0], last = items[items.length - 1];
+        if (!first) { e.preventDefault(); $('.in', layer).focus(); }
+        else if (e.shiftKey && (document.activeElement === first || !items.includes(document.activeElement))) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && (document.activeElement === last || !items.includes(document.activeElement))) { e.preventDefault(); first.focus(); }
+      }
+      if (e.key === '/' && !layer && !e.ctrlKey && !e.metaKey && !e.altKey && !/input|textarea|select/i.test(document.activeElement.tagName) && !document.activeElement.isContentEditable) { e.preventDefault(); openSearch(''); }
+    }, true);
   }
 })();
