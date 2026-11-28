@@ -8,7 +8,7 @@
 .profile-audit { margin: 24px 0; border-block: 1px solid var(--line); }
 .profile-audit > summary { padding: 16px 0; font: 700 15px/1.5 var(--sans); cursor: pointer; }
 .profile-audit > summary span { color: var(--muted); font-weight: 400; }
-.profile-audit > summary:focus-visible { outline: 2px solid var(--green); outline-offset: 4px; }
+.profile-audit > summary:focus-visible { outline: 2px solid var(--verde); outline-offset: 4px; }
 .profile-audit-content { padding: 0 0 20px; }
 .profile-check + .profile-check { border-top: 1px solid var(--line); margin-top: 20px; padding-top: 20px; }
 .profile-check h3 { margin: 0 0 8px; font: 700 17px/1.45 var(--sans); }
