@@ -2,13 +2,21 @@
 window.PROFILES = (() => {
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const key = name => String(name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  let people = new Map(), criteria = '';
+  let people = new Map(), criteria = '', reviewMethod = '';
   const get = name => people.get(key(name));
   function set(data) {
     people = new Map((data?.pessoas || []).map(person => [key(person.nome), person]));
     criteria = data?.criterios || '';
+    reviewMethod = data?.metodoConferencia || '';
   }
   function summary(name) { return get(name)?.resumo || ''; }
+  function role(person) { return get(person.nome)?.cargoExibido || person.cargo || ''; }
+  function audit(name) {
+    const items = get(name)?.conferencia;
+    if (!items?.length) return '';
+    const labels = {confirmado: 'Registro localizado', declarado: 'Informação atribuída à fonte', divergente: 'Fontes divergentes', limitado: 'Limite da verificação'};
+    return `<details class="profile-audit"><summary>Conferência biográfica <span>· ${items.length} ${items.length === 1 ? 'ponto' : 'pontos'}</span></summary><div class="profile-audit-content">${items.map(item => `<section class="profile-check"><p class="profile-check-label">${escape(labels[item.tipo] || 'Conferência')}</p><h3>${escape(item.titulo)}</h3><p>${escape(item.texto)}</p><p class="profile-citations">${item.fontes.map(source => `<a href="${escape(source.url)}"${source.url.startsWith('https://') ? ' target="_blank" rel="noopener noreferrer"' : ''}>${escape(source.titulo)} ↗</a>`).join('<span aria-hidden="true"> · </span>')}</p></section>`).join('')}<p class="profile-review-method">${escape(reviewMethod)}</p></div></details>`;
+  }
   function avatar(person, initials) {
     const source = get(person.nome)?.foto;
     const path = source?.arquivo || person.foto;
@@ -40,5 +48,5 @@ window.PROFILES = (() => {
   document.addEventListener('error', event => {
     if (event.target instanceof HTMLImageElement && event.target.matches('[data-portrait]')) event.target.remove();
   }, true);
-  return {set, get, summary, avatar, biography, channels, provenance, dossierContext};
+  return {set, get, summary, role, audit, avatar, biography, channels, provenance, dossierContext};
 })();
