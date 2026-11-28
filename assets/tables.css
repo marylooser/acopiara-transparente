@@ -33,6 +33,7 @@ table.t td.obj { min-width: 26ch; max-width: 48ch; font-size: 14px; line-height:
 .tscroll[data-layout="records"] td::before { content: attr(data-label); display: block; margin-bottom: 5px; font: 600 12px/1.5 var(--sans); letter-spacing: .02em; color: var(--muted); }
 .tscroll[data-layout="records"] td:first-child { grid-column: 1 / -1; font-weight: 600; font-size: 15px; border-bottom: 1px solid var(--line); margin-bottom: 2px; }
 .tscroll[data-layout="records"] td.obj { grid-column: 1 / -1; }
+.tscroll[data-layout="records"] td:last-child:nth-child(even) { grid-column: 1 / -1; }
 .tscroll[data-layout="records"] td.num { font-variant-numeric: tabular-nums; }
 .tscroll[data-layout="records"] tr.mais { display: none; }
 .tscroll.aberta[data-layout="records"] tr.mais { display: grid; }
@@ -40,3 +41,12 @@ table.t td.obj { min-width: 26ch; max-width: 48ch; font-size: 14px; line-height:
   .tscroll[data-layout="records"] tr { grid-template-columns: minmax(0, 1fr); }
 }
 @media print { .tscroll[data-layout="records"] tr { break-inside: avoid; } }
+
+/* Highlight the reading unit, including its spacing, rather than separate cells. */
+@media (hover: hover) and (pointer: fine) {
+  table.t tbody tr { transition: background-color 140ms ease; }
+  table.t tbody tr:hover { background-color: color-mix(in srgb, var(--verde) 6%, var(--surface)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  table.t tbody tr { transition: none; }
+}

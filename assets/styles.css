@@ -217,7 +217,6 @@ table.t{width:100%;border-collapse:collapse;font-size:14.5px}
 table.t th{background:var(--ink);color:var(--bg);text-align:left;padding:10px 12px;font-weight:600}
 table.t td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 table.t td.num,table.t th.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
-table.t tr:hover td{background:color-mix(in srgb,var(--verde-2) 50%,transparent)}
 /* tabela como fichas (celular) */
 .recs{display:grid;gap:12px}
 .rec{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:var(--s2)}

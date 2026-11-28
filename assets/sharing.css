@@ -20,9 +20,10 @@
 .document-export .btn{min-height:44px;font-size:14px}
 .document-export-status:empty{display:none}
 .document-export-status{margin-top:10px!important}
-.publication-history{margin-top:18px;color:var(--muted);font-size:12px;line-height:1.65}
-.publication-history>span{display:block}.publication-history time{font-variant-numeric:tabular-nums}
-.publication-history details{margin-top:7px}.publication-history summary{cursor:pointer;width:fit-content}
+.publication-history{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:16px;row-gap:4px;margin:20px 0 8px;padding-top:12px;border-top:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.6}
+.publication-history>span{display:inline}.publication-history time{font-variant-numeric:tabular-nums}
+.publication-history details{margin:0;font-size:11px}.publication-history summary{cursor:pointer;width:fit-content}
+.publication-history details[open]{flex-basis:100%}
 .publication-history ol{margin:10px 0;padding-left:18px}.publication-history li{margin:6px 0}
 .publication-history details p{font-size:12px;line-height:1.65;margin:10px 0 0;max-width:65ch}
 
