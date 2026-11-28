@@ -1,0 +1,931 @@
+{
+  "consultadoEm": "2026-11-28",
+  "criterios": "Biografias e retratos são vinculados a fontes nominais. Redes declaradas em eleição são identificadas com o ano; isso não confirma atividade atual, titularidade permanente ou selo de verificação. Ausência de confirmação não significa ausência de conta.",
+  "pessoas": [
+    {
+      "nome": "Francisco Vilmar Félix Martins",
+      "resumo": "Médico formado pela UFC, ex-vereador e ex-vice-prefeito. Governou Acopiara entre 2013 e 2016 e retornou à Prefeitura em 2025.",
+      "trajetoria": [
+        {
+          "titulo": "Medicina e atuação estudantil",
+          "texto": "A biografia institucional o apresenta como médico formado pela Universidade Federal do Ceará, com atuação em cirurgia geral e pediatria. Registra também sua participação na fundação da União dos Estudantes Universitários Acopiarenses.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografias de prefeito e vice",
+              "url": "https://www.acopiara.ce.gov.br/gestores.php"
+            }
+          ]
+        },
+        {
+          "titulo": "Trajetória política",
+          "texto": "Foi eleito vereador em 1996 e vice-prefeito em 2000. Exerceu o mandato de prefeito de 2013 a 2016 e venceu novamente a eleição de 2024, pelo PSB, para o mandato iniciado em 2025.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografias de prefeito e vice",
+              "url": "https://www.acopiara.ce.gov.br/gestores.php"
+            },
+            {
+              "titulo": "TSE · candidaturas e redes declaradas em 2024",
+              "url": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+            }
+          ]
+        },
+        {
+          "titulo": "Pai e filho têm trajetórias diferentes",
+          "texto": "Este perfil é do prefeito. Francisco Vilmar Félix Martins Filho é outra pessoa, médico ligado à ortopedia e à cirurgia da mão; sua formação e seus registros não devem ser atribuídos ao pai.",
+          "fontes": [
+            {
+              "titulo": "SBOT · relação de novos ortopedistas",
+              "url": "https://sbot.org.br/bem-vindos-novos-ortopedistas/"
+            }
+          ]
+        }
+      ],
+      "redes": [
+        {
+          "plataforma": "Instagram",
+          "usuario": "@drvilmarfelix",
+          "url": "https://www.instagram.com/drvilmarfelix/",
+          "criterio": "Declarado à Justiça Eleitoral em 2024; atividade atual não aferida.",
+          "fonte": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+        }
+      ],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Identificado no registro eleitoral de 2024.",
+      "foto": {
+        "arquivo": "img/pessoas/francisco-vilmar-felix-martins.webp",
+        "origem": "https://www.acopiara.ce.gov.br/gestores.php",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      },
+      "contextoDossie": "Médico, eleito prefeito de Acopiara em 2024 e no cargo desde 1º de janeiro de 2025; já havia governado a cidade entre 2013 e 2016. Em 03/09/2025 foi condenado em primeiro grau por improbidade administrativa (Ação 0280002-09.2021), por ter nomeado e deixado de fiscalizar um assessor comissionado que recebia sem trabalhar: suspensão dos direitos políticos por 8 anos, multa de R$ 46.200 e proibição de contratar com o poder público por 5 anos. A sentença está em apelação no Tribunal de Justiça e não transitou em julgado."
+    },
+    {
+      "nome": "Antonio Leandro Florentino Brito",
+      "resumo": "Advogado e professor universitário, com atuação cultural como poeta e escritor e participação em debates da advocacia previdenciária.",
+      "trajetoria": [
+        {
+          "titulo": "Advocacia e docência",
+          "texto": "A Prefeitura o apresenta como advogado e professor universitário. Em notícia de agosto de 2020, a OAB-CE o identifica como especialista em Direito Trabalhista e Previdenciário pela URCA e participante de um ciclo de debates da área.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografia e cadastro da unidade",
+              "url": "https://www.acopiara.ce.gov.br/secretaria.php?sec=4"
+            },
+            {
+              "titulo": "OAB-CE · ciclo de debates previdenciários",
+              "url": "https://oabce.org.br/2020/08/oab-ce-realiza-ciclo-de-debates-na-semana-da-advocacia-previdenciarista/"
+            }
+          ]
+        },
+        {
+          "titulo": "Literatura e gestão cultural",
+          "texto": "No Mapa Cultural do Ceará, seu cadastro público o apresenta como poeta e escritor, com áreas de atuação em literatura, gestão cultural e direito autoral. Essa é uma apresentação do próprio agente na plataforma, distinta do registro de cargos municipais.",
+          "fontes": [
+            {
+              "titulo": "Secult-CE · Mapa Cultural",
+              "url": "https://mapacultural.secult.ce.gov.br/agente/151296/"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/antonio-leandro-florentino-brito.webp",
+        "origem": "https://www.acopiara.ce.gov.br/secretaria.php?sec=4",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      }
+    },
+    {
+      "nome": "Maria Ivânia de Araújo Ferreira",
+      "resumo": "Professora com licenciaturas em Pedagogia e Biologia, pós-graduação na área educacional e experiência de gestão municipal e estadual.",
+      "trajetoria": [
+        {
+          "titulo": "Formação e carreira na educação",
+          "texto": "Segundo a biografia da Prefeitura, possui licenciaturas em Pedagogia e Biologia e pós-graduação em Gestão Escolar e Metodologia do Ensino Fundamental e Médio. A mesma fonte informa experiência como professora e gestora nas redes municipal e estadual.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografia e cadastro da unidade",
+              "url": "https://www.acopiara.ce.gov.br/secretaria.php?sec=11"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/maria-ivania-de-araujo-ferreira.webp",
+        "origem": "https://www.acopiara.ce.gov.br/secretaria.php?sec=11",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      }
+    },
+    {
+      "nome": "Claudenisia Felix da Silva do Vale",
+      "resumo": "Farmacêutica registrada em equipe multiprofissional de atenção básica no CNES; ocupou a Secretaria de Saúde em 2025.",
+      "trajetoria": [
+        {
+          "titulo": "Atuação farmacêutica",
+          "texto": "O CNES relaciona seu nome à equipe multiprofissional da atenção básica de Acopiara, na ocupação de farmacêutica, com data de entrada em 16/11/2025. O cadastro registra o vínculo informado pelo estabelecimento; não substitui a consulta ao conselho profissional nem comprova presença diária.",
+          "fontes": [
+            {
+              "titulo": "Ministério da Saúde · equipe multiprofissional no CNES",
+              "url": "https://cnes2.datasus.gov.br/Mod_Equipes_Profisssional.asp?VMunicipio=230030&VSeqEq=79146&VTipo=72&VUnidade=2300305983061&Varea=0001"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Antonia Norma Teclane Marques Lima",
+      "resumo": "Enfermeira homenageada pela Assembleia Legislativa e secretária de Saúde de Acopiara desde novembro de 2025.",
+      "trajetoria": [
+        {
+          "titulo": "Enfermagem e reconhecimento profissional",
+          "texto": "A Assembleia Legislativa do Ceará a inclui entre as enfermeiras homenageadas em sessão alusiva ao Dia Internacional da Enfermagem. Em novembro de 2026, a Lei Municipal 2.328 concedeu-lhe o título de cidadã acopiarense.",
+          "fontes": [
+            {
+              "titulo": "Alece · homenagem à enfermagem",
+              "url": "https://www.al.ce.gov.br/noticias/53071-atuacao-profissional-e-exaltada-em-sessao-alusiva-ao-dia-internacional-da-enfermagem"
+            },
+            {
+              "titulo": "Diário Oficial · Lei 2.328/2026",
+              "url": "https://www.diariomunicipal.com.br/aprece/download/edicao/B171DB87"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/antonia-norma-teclane-marques-lima.webp",
+        "origem": "https://www.acopiara.ce.gov.br/secretaria.php?sec=13",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      }
+    },
+    {
+      "nome": "Tales Martins Teixeira Florentino",
+      "resumo": "",
+      "trajetoria": [
+        {
+          "titulo": "Mudança na titularidade do Meio Ambiente",
+          "texto": "A página institucional registra Tales como titular da pasta a partir de 01/10/2025 e cita a nomeação 0407/2025. Mantém também a passagem anterior de Kamilla Teixeira Costa Peixoto. A consulta não confirmou formação acadêmica ou canal de Instagram que pudesse ser atribuído a ele com segurança.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografia e cadastro da unidade",
+              "url": "https://www.acopiara.ce.gov.br/secretaria.php?sec=3"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/tales-martins-teixeira-florentino.webp",
+        "origem": "https://www.acopiara.ce.gov.br/secretaria.php?sec=3",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      }
+    },
+    {
+      "nome": "José Lindomar Batista Duarte",
+      "resumo": "",
+      "trajetoria": [
+        {
+          "titulo": "Histórico na administração de obras",
+          "texto": "Há registro no portal de licitações do TCE-CE de sua atuação como ordenador de despesas em contratação de manutenção de esgotos e bueiros em 2013. A trajetória administrativa antecede, portanto, o período de 2025–2026 abordado no dossiê.",
+          "fontes": [
+            {
+              "titulo": "TCE-CE · contratação de 2013",
+              "url": "https://municipios-licitacoes.tce.ce.gov.br/index.php/licitacao/detalhes/proc/32731/licit/25413"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Francisco Rubens Félix Martins",
+      "resumo": "",
+      "trajetoria": [
+        {
+          "titulo": "Identificação e vínculo público",
+          "texto": "O portal municipal o identifica nominalmente como secretário de Infraestrutura. A justificativa de projeto de lei da Assembleia Legislativa de 2023 relaciona Rubens e Vilmar no mesmo núcleo familiar. Essa fonte biográfica é distinta do ato de nomeação para o cargo.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografia e cadastro da unidade",
+              "url": "https://www.acopiara.ce.gov.br/secretaria.php?sec=12"
+            },
+            {
+              "titulo": "Alece · justificativa do PL 1.025/2023",
+              "url": "https://www2.al.ce.gov.br/legislativo/tramit2023/pl1025_23.pdf"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/francisco-rubens-felix-martins.webp",
+        "origem": "https://www.acopiara.ce.gov.br/secretaria.php?sec=12",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      }
+    },
+    {
+      "nome": "Maria Simone da Silva",
+      "resumo": "Contadora formada pela UVA e servidora pública desde 2013, segundo a apresentação institucional. Não é a presidente da Câmara, Simone Félix.",
+      "trajetoria": [
+        {
+          "titulo": "Contabilidade e serviço público",
+          "texto": "A biografia municipal informa formação em Ciências Contábeis pela Universidade Estadual do Vale do Acaraú e ingresso no serviço público em 2013. Apresenta-a como pós-graduanda em Gestão Pública e Gestão Financeira; essa informação não é tratada aqui como curso concluído.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografia e cadastro da unidade",
+              "url": "https://www.acopiara.ce.gov.br/secretaria.php?sec=14"
+            }
+          ]
+        },
+        {
+          "titulo": "Duas Simones, cargos distintos",
+          "texto": "Maria Simone da Silva está vinculada à Administração e Finanças. Maria Simone Félix Gurgel Vieira é a vereadora conhecida como Simone Félix. Os atos, retratos e trajetórias de uma não devem ser atribuídos à outra.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografia e cadastro da unidade",
+              "url": "https://www.acopiara.ce.gov.br/secretaria.php?sec=14"
+            },
+            {
+              "titulo": "Câmara · Simone Félix",
+              "url": "https://camaraacopiara.ce.gov.br/parlamentares/12/perfil/"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/maria-simone-da-silva.webp",
+        "origem": "https://www.acopiara.ce.gov.br/secretaria.php?sec=14",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      }
+    },
+    {
+      "nome": "Gleirton Dias Figueredo",
+      "resumo": "Servidor público municipal, ex-vereador eleito em 2020 e titular da Cultura em 2026. Também tem atuação registrada no Legislativo.",
+      "trajetoria": [
+        {
+          "titulo": "Trajetória eleitoral e legislativa",
+          "texto": "Foi eleito vereador pelo PT em 2020, com 765 votos, segundo o TRE-CE. Em 2024, concorreu novamente e ficou como suplente. Seu registro de candidatura de 2024 declara ensino superior completo e ocupação de servidor público municipal.",
+          "fontes": [
+            {
+              "titulo": "TRE-CE · resultado oficial de 2020",
+              "url": "https://apps.tre-ce.jus.br/tre/eleicoes/resultados/2020/CARGOS/CARGOS-VEREADOR-RESULTADO_POR_MUNICIPIO.HTML"
+            },
+            {
+              "titulo": "TSE · candidaturas e redes declaradas em 2024",
+              "url": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+            }
+          ]
+        },
+        {
+          "titulo": "Atuação na cultura",
+          "texto": "O portal da Câmara registra proposição de sua autoria sobre auxílio emergencial a trabalhadores da cultura durante a pandemia. Na Prefeitura, a página da pasta cultural o identifica como secretário e cita a nomeação 0286/2026.",
+          "fontes": [
+            {
+              "titulo": "Câmara · proposição de auxílio à cultura",
+              "url": "https://camaraacopiara.ce.gov.br/sessao/56/lista-materia-ordem"
+            },
+            {
+              "titulo": "Prefeitura · biografia e cadastro da unidade",
+              "url": "https://www.acopiara.ce.gov.br/secretaria.php?sec=23"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/gleirton-dias-figueredo.webp",
+        "origem": "https://www.acopiara.ce.gov.br/secretaria.php?sec=23",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      }
+    },
+    {
+      "nome": "Josefa Marli do Nascimento Almeida",
+      "resumo": "Pedagoga, empresária e ex-vereadora por dois mandatos. Presidiu a Câmara e foi eleita vice-prefeita na chapa de 2024.",
+      "trajetoria": [
+        {
+          "titulo": "Educação, atividade empresarial e mandatos",
+          "texto": "A Prefeitura a apresenta como pedagoga e empresária. Foi eleita vereadora em 2012 e reeleita em 2016; assumiu a Secretaria de Agricultura em 2017 e foi eleita presidente da Câmara em 2018. Em 2024, foi eleita vice-prefeita na chapa de Dr. Vilmar.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografias de prefeito e vice",
+              "url": "https://www.acopiara.ce.gov.br/gestores.php"
+            },
+            {
+              "titulo": "TSE · candidaturas e redes declaradas em 2024",
+              "url": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+            }
+          ]
+        }
+      ],
+      "redes": [
+        {
+          "plataforma": "Instagram",
+          "usuario": "@marliacopiara",
+          "url": "https://www.instagram.com/marliacopiara/",
+          "criterio": "Conta atribuída à vice-prefeita em publicação jornalística de 2026; atividade atual não aferida.",
+          "fonte": "https://diariodonordeste.verdesmares.com.br/pontopoder/prefeitos-e-vices-cortam-relacoes-no-ceara-por-divergencias-sobre-eleicoes-de-2026-veja-lista-1.3776963"
+        },
+        {
+          "plataforma": "Instagram",
+          "usuario": "@marlinascimentooficial",
+          "url": "https://www.instagram.com/marlinascimentooficial/",
+          "criterio": "Declarado à Justiça Eleitoral em 2024; atividade atual não aferida.",
+          "fonte": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+        }
+      ],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Conta citada na imprensa em 2026 e registro histórico de candidatura.",
+      "foto": {
+        "arquivo": "img/pessoas/josefa-marli-do-nascimento-almeida.webp",
+        "origem": "https://www.acopiara.ce.gov.br/gestores.php",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      },
+      "contextoDossie": "Vice-prefeita eleita em 2024 na chapa do prefeito. Comandou a Secretaria do Trabalho e Desenvolvimento Social em 2025 e foi exonerada por portaria de 15/05/2026; afirma que a saída foi retaliação política, o que o Prefeito nega."
+    },
+    {
+      "nome": "Francisca Dênis Moreira Leitão",
+      "resumo": "Assistente social identificada na composição oficial da comissão do Minha Casa Minha Vida; também aparece em ato do Conselho de Assistência Social.",
+      "trajetoria": [
+        {
+          "titulo": "Serviço social e participação em colegiados",
+          "texto": "O ato de composição da comissão do MCMV a identifica como assistente social. A Portaria 0400, de outubro de 2026, também a relaciona como suplente no Conselho Municipal de Assistência Social. São funções documentadas; a formação universitária específica não foi presumida.",
+          "fontes": [
+            {
+              "titulo": "Diário Oficial · comissão do MCMV",
+              "url": "https://www.diariomunicipal.com.br/aprece/download/edicao/4B7357BD"
+            },
+            {
+              "titulo": "Diário Oficial · Conselho de Assistência Social",
+              "url": "https://www.diariomunicipal.com.br/aprece/materia/CB84E5AF"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Maria Simone Felix Gurgel Vieira",
+      "resumo": "Professora de ensino médio, vereadora com trajetória de mandatos desde 2004 e presidente da Câmara na legislatura iniciada em 2025.",
+      "trajetoria": [
+        {
+          "titulo": "Magistério e trajetória parlamentar",
+          "texto": "A Câmara a apresenta como professora de ensino médio com formação superior completa e informa seis eleições consecutivas para vereadora entre 2004 e 2024. Na eleição de 2024, seu registro é pelo PSB. A sequência de partidos ao longo da carreira não deve ser confundida com filiação atual.",
+          "fontes": [
+            {
+              "titulo": "Câmara · biografia de Simone Félix",
+              "url": "https://camaraacopiara.ce.gov.br/parlamentares/12/perfil/"
+            },
+            {
+              "titulo": "TSE · candidaturas e redes declaradas em 2024",
+              "url": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+            }
+          ]
+        }
+      ],
+      "redes": [
+        {
+          "plataforma": "Instagram",
+          "usuario": "@simonefelixgv",
+          "url": "https://www.instagram.com/simonefelixgv/",
+          "criterio": "Declarado à Justiça Eleitoral em 2024; atividade atual não aferida.",
+          "fonte": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+        }
+      ],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Identificado no registro eleitoral de 2024.",
+      "foto": {
+        "arquivo": "img/pessoas/maria-simone-felix-gurgel-vieira.webp",
+        "origem": "https://camaraacopiara.ce.gov.br/parlamentares/12/perfil/",
+        "credito": "Câmara Municipal de Acopiara · retrato parlamentar"
+      }
+    },
+    {
+      "nome": "Francisca Valdelice do Vale",
+      "resumo": "Pedagoga identificada em ato da comissão do MCMV e ocupante interina da Secretaria do Trabalho e Desenvolvimento Social em 2026.",
+      "trajetoria": [
+        {
+          "titulo": "Educação e assistência social",
+          "texto": "O ato da comissão do MCMV a apresenta como pedagoga. Em 15/05/2026, foi nomeada interinamente para a Secretaria do Trabalho e Desenvolvimento Social, em caráter temporário, conforme publicação oficial.",
+          "fontes": [
+            {
+              "titulo": "Diário Oficial · comissão do MCMV",
+              "url": "https://www.diariomunicipal.com.br/aprece/download/edicao/4B7357BD"
+            },
+            {
+              "titulo": "Diário Oficial · nomeação interina",
+              "url": "https://www.diariomunicipal.com.br/aprece/download/edicao/18E48258"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Francisco Marlucio Paz Lima Junior",
+      "resumo": "Advogado com experiência pública e privada, passagem anterior pela Procuradoria e assessoria jurídica da autarquia previdenciária.",
+      "trajetoria": [
+        {
+          "titulo": "Advocacia pública e privada",
+          "texto": "A biografia municipal registra atuação na advocacia privada, exercício da Procuradoria-Geral nos últimos anos da gestão 2013–2016 e passagem pela assessoria jurídica da autarquia previdenciária de Acopiara.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografia e cadastro da unidade",
+              "url": "https://www.acopiara.ce.gov.br/secretaria.php?sec=10"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/francisco-marlucio-paz-lima-junior.webp",
+        "origem": "https://www.acopiara.ce.gov.br/secretaria.php?sec=10",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      }
+    },
+    {
+      "nome": "Maria Iderlandia Ferreira Lima",
+      "resumo": "Professora e participante da vida legislativa, conhecida eleitoralmente como Dra. Maidê. Disputou a eleição municipal de 2024 pelo PV.",
+      "trajetoria": [
+        {
+          "titulo": "Docência e trajetória eleitoral",
+          "texto": "O registro eleitoral de 2024 a identifica pelo nome de urna Dra. Maidê, com ensino superior completo e ocupação declarada de professora de ensino médio. Concorreu pelo PV e ficou como suplente. O tratamento “Dra.” usado na urna não é, por si, comprovação de doutorado acadêmico.",
+          "fontes": [
+            {
+              "titulo": "TSE · candidaturas e redes declaradas em 2024",
+              "url": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+            }
+          ]
+        },
+        {
+          "titulo": "Registro na Câmara",
+          "texto": "A Câmara mantém perfil público com o nome civil Maria Iderlândia Ferreira Lima, associado à 25ª Legislatura, de 2021 a 2024, e com matérias e votações registradas. Esse histórico é apresentado separadamente dos vínculos do Executivo citados no dossiê.",
+          "fontes": [
+            {
+              "titulo": "Câmara · perfil de Professora Maidê",
+              "url": "https://camaraacopiara.ce.gov.br/parlamentares/41/perfil/"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/maria-iderlandia-ferreira-lima.webp",
+        "origem": "https://camaraacopiara.ce.gov.br/parlamentares/41/perfil/",
+        "credito": "Câmara Municipal de Acopiara · retrato parlamentar"
+      }
+    },
+    {
+      "nome": "Antonio Neto Pinheiro de Macedo",
+      "resumo": "",
+      "trajetoria": [],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Kessia Almeida Amorim",
+      "resumo": "",
+      "trajetoria": [],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Antonia Elizabethe Alves de Almeida",
+      "resumo": "",
+      "trajetoria": [],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "José Edinaldo Rodrigues de Macedo",
+      "resumo": "",
+      "trajetoria": [],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/jose-edinaldo-rodrigues-de-macedo.webp",
+        "origem": "https://www.acopiara.ce.gov.br/secretaria.php?sec=8",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      }
+    },
+    {
+      "nome": "Rivaldo Freitas de Lima",
+      "resumo": "Conhecido como Bill ou Bil dos Moreiras, foi vereador eleito em 2020 e passou pela Secretaria de Agricultura. Há divergência de escolaridade entre fontes.",
+      "trajetoria": [
+        {
+          "titulo": "Experiência no Legislativo",
+          "texto": "O resultado oficial do TRE-CE registra sua eleição para vereador em 2020, pelo DEM, com 698 votos. Em 2024, concorreu pelo PT com o nome Bil dos Moreiras e ficou como suplente.",
+          "fontes": [
+            {
+              "titulo": "TRE-CE · resultado oficial de 2020",
+              "url": "https://apps.tre-ce.jus.br/tre/eleicoes/resultados/2020/CARGOS/CARGOS-VEREADOR-RESULTADO_POR_MUNICIPIO.HTML"
+            },
+            {
+              "titulo": "TSE · candidaturas e redes declaradas em 2024",
+              "url": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+            }
+          ]
+        },
+        {
+          "titulo": "Escolaridade: fontes divergentes",
+          "texto": "A biografia da Prefeitura o apresenta como graduado em Administração de Empresas. Já a candidatura registrada no TSE em 2024 informa ensino fundamental completo. As fontes divergem; sem documento adicional, este perfil não escolhe uma das versões como formação comprovada.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografia e cadastro da unidade",
+              "url": "https://www.acopiara.ce.gov.br/secretaria.php?sec=1"
+            },
+            {
+              "titulo": "TSE · candidaturas e redes declaradas em 2024",
+              "url": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+            }
+          ]
+        }
+      ],
+      "redes": [
+        {
+          "plataforma": "Instagram",
+          "usuario": "@bil_dos_moreira",
+          "url": "https://www.instagram.com/bil_dos_moreira/",
+          "criterio": "Declarado à Justiça Eleitoral em 2024; atividade atual não aferida.",
+          "fonte": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+        }
+      ],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Identificado no registro eleitoral de 2024.",
+      "foto": {
+        "arquivo": "img/pessoas/rivaldo-freitas-de-lima.webp",
+        "origem": "https://www.acopiara.ce.gov.br/secretaria.php?sec=1",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      }
+    },
+    {
+      "nome": "Kamilla Teixeira Costa Peixoto",
+      "resumo": "",
+      "trajetoria": [
+        {
+          "titulo": "Passagem pelo Meio Ambiente",
+          "texto": "O histórico oficial da pasta registra seu exercício entre 06/01/2025 e 01/10/2025, quando Tales Martins Teixeira Florentino aparece como sucessor. Esse intervalo permite distinguir a antiga gestão da titularidade posterior.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografia e cadastro da unidade",
+              "url": "https://www.acopiara.ce.gov.br/secretaria.php?sec=3"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Antonio Edegildo Alves Mulato",
+      "resumo": "Apresentado pela Prefeitura como segundo-tenente da Polícia Militar e ex-comandante da Guarda Civil Municipal de Acopiara.",
+      "trajetoria": [
+        {
+          "titulo": "Segurança pública e trânsito",
+          "texto": "A apresentação institucional registra carreira como segundo-tenente da Polícia Militar do Ceará e passagem pelo comando da Guarda Civil Municipal de Acopiara. O vínculo com a Superintendência de Transporte e Trânsito é tratado no histórico de gestão abaixo.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografia e cadastro da unidade",
+              "url": "https://www.acopiara.ce.gov.br/secretaria.php?sec=18"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/antonio-edegildo-alves-mulato.webp",
+        "origem": "https://www.acopiara.ce.gov.br/secretaria.php?sec=18",
+        "credito": "Prefeitura de Acopiara · retrato institucional"
+      }
+    },
+    {
+      "nome": "Silvana Maria da Silva Araujo",
+      "resumo": "",
+      "trajetoria": [
+        {
+          "titulo": "Atuação na previdência municipal",
+          "texto": "Há documento do próprio Instituto de Previdência do Município de Acopiara, de 2024, assinado em seu nome. É uma atuação anterior ao recorte financeiro de 2025–2026 exibido no portal; não se presume formação acadêmica a partir do cargo.",
+          "fontes": [
+            {
+              "titulo": "AcopiaraPrev · documento institucional de 2024",
+              "url": "https://acopiaraprev.com.br/wp-content/uploads/2024/04/aviso_de_disoensa_Previdencia-_Acopiara_assinado.pdf"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Francisco Ivamar Clares Bezerra",
+      "resumo": "Conhecido como Ivo Bezerra, é ex-vereador e ex-secretário de Agricultura; também passou pela gestão municipal de transportes.",
+      "trajetoria": [
+        {
+          "titulo": "Passagens por diferentes funções públicas",
+          "texto": "A Prefeitura o apresenta como ex-vereador e ex-secretário de Agricultura. A Câmara mantém seu perfil parlamentar nas legislaturas de 2017–2020 e 2021–2024. A nomeação para Transportes em 2025 é uma função distinta desses mandatos.",
+          "fontes": [
+            {
+              "titulo": "Prefeitura · biografia e cadastro da unidade",
+              "url": "https://www.acopiara.ce.gov.br/secretaria.php?sec=21"
+            },
+            {
+              "titulo": "Câmara · perfil de Ivo Bezerra",
+              "url": "https://camaraacopiara.ce.gov.br/parlamentares/3/perfil/"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/francisco-ivamar-clares-bezerra.webp",
+        "origem": "https://camaraacopiara.ce.gov.br/parlamentares/3/perfil/",
+        "credito": "Câmara Municipal de Acopiara · retrato parlamentar"
+      }
+    },
+    {
+      "nome": "Presley Gonzaga Viana",
+      "resumo": "",
+      "trajetoria": [
+        {
+          "titulo": "Engenharia e atuação profissional",
+          "texto": "Seu perfil profissional público no LinkedIn o apresenta ligado à JK Engenharia e Construções, com serviços de acompanhamento, planejamento de projetos e execução de obras. Trata-se de apresentação profissional, que não substitui certidão atual de registro no conselho de engenharia.",
+          "fontes": [
+            {
+              "titulo": "LinkedIn · apresentação profissional",
+              "url": "https://br.linkedin.com/in/presley-gonzaga-viana-8951071a2"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Mauro Fernando Papaleo Alves",
+      "resumo": "",
+      "trajetoria": [],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Francisco Vilmar Félix Martins Filho",
+      "resumo": "Médico com formação e residências nas áreas de ortopedia e cirurgia da mão. Sua trajetória é distinta da do prefeito, seu pai.",
+      "trajetoria": [
+        {
+          "titulo": "Formação e residência médica",
+          "texto": "Seu currículo Lattes reproduzido pelo Escavador informa graduação em Medicina pela Unifor em 2014 e residência em Ortopedia e Traumatologia no INTO, concluída em 2018. A lista oficial de seleção do INTO de 2014–2015 registra seu nome entre os classificados.",
+          "fontes": [
+            {
+              "titulo": "Currículo Lattes reproduzido pelo Escavador",
+              "url": "https://www.escavador.com/sobre/9300924/francisco-vilmar-felix-martins-filho"
+            },
+            {
+              "titulo": "INTO · classificação da residência",
+              "url": "https://www.into.saude.gov.br/images/pdf/ensino/residencia/concurso_2014_2015/classificacao_final_ortopedia.pdf"
+            }
+          ]
+        },
+        {
+          "titulo": "Ortopedia e cirurgia da mão",
+          "texto": "A SBOT o inclui em relação de novos ortopedistas. A publicação do Instituto de Ortopedia e Traumatologia do Hospital das Clínicas da USP também registra seu nome no contexto da formação médica. Essas fontes não devem ser usadas como comprovação de presença nos plantões municipais.",
+          "fontes": [
+            {
+              "titulo": "SBOT · novos ortopedistas",
+              "url": "https://sbot.org.br/bem-vindos-novos-ortopedistas/"
+            },
+            {
+              "titulo": "IOT-HC/USP · Folha de Ortopedia, edição 80",
+              "url": "https://www.iothcfmusp.com.br/wp-content/uploads/2021/07/Folha-de-Ortopedia-e-Traumatologia-Edicao-80-2018.pdf"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Gustavo Gomes Martins",
+      "resumo": "Médico com trajetória de formação em cirurgia; consta em documento de convocação da residência de Cirurgia Plástica da UFC em 2022.",
+      "trajetoria": [
+        {
+          "titulo": "Formação em cirurgia",
+          "texto": "A relação oficial do processo seletivo das residências médicas do Ceará de 2022 registra seu nome na terceira convocação da especialidade de Cirurgia Plástica. Convocação não equivale, sozinha, a diploma de conclusão ou registro de especialista; este perfil não transforma esse documento em certificação profissional.",
+          "fontes": [
+            {
+              "titulo": "UFC/ARES · convocação de residência em 2022",
+              "url": "https://www.resmedceara.ufc.br/ares/wp-content/uploads/2022/03/Lista-de-participantes-aptos-por-Especialidade-3a-Convocacao.pdf"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Larissa Gomes Martins Vasconcelos",
+      "resumo": "Médica com ocupação de oftalmologista nos registros de saúde usados pelo dossiê. A identificação exige distinguir nomes profissionais semelhantes.",
+      "trajetoria": [
+        {
+          "titulo": "Identificação profissional",
+          "texto": "O perfil nominal derivado do CNES registra Larissa Gomes Martins Vasconcelos com ocupação de oftalmologista e CRM/CE 19316. Não foi confirmada a ligação entre esse nome completo e todos os currículos ou perfis abreviados encontrados como Larissa Martins; por isso, formação e fotos dessas outras páginas não foram incorporadas.",
+          "fontes": [
+            {
+              "titulo": "Perfil nominal com origem declarada no CNES",
+              "url": "https://bula.com.br/index.php/medico/larissa-gomes-martins-vasconcelos-crm-ce-19316"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Rodrigo Felix Gurgel",
+      "resumo": "",
+      "trajetoria": [],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Jacinto Alves Teixeira Neto",
+      "resumo": "",
+      "trajetoria": [],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Denis Rodrigues Bastos",
+      "resumo": "Vereador de Acopiara com registros nas legislaturas de 2017–2020, 2021–2024 e 2025–2028. Foi eleito pelo PSD em 2024.",
+      "trajetoria": [
+        {
+          "titulo": "Trajetória parlamentar",
+          "texto": "O portal da Câmara mantém registros de sua atuação nas legislaturas de 2017–2020, 2021–2024 e 2025–2028. Na candidatura de 2024, declarou ensino superior completo e ocupação de vereador; foi eleito pelo PSD.",
+          "fontes": [
+            {
+              "titulo": "Câmara · perfil de Dênis Bastos",
+              "url": "https://camaraacopiara.ce.gov.br/parlamentares/16/perfil/"
+            },
+            {
+              "titulo": "TSE · candidaturas e redes declaradas em 2024",
+              "url": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+            }
+          ]
+        }
+      ],
+      "redes": [
+        {
+          "plataforma": "Instagram",
+          "usuario": "@denisbastosoficial",
+          "url": "https://www.instagram.com/denisbastosoficial/",
+          "criterio": "Declarado à Justiça Eleitoral em 2024; atividade atual não aferida.",
+          "fonte": "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
+        }
+      ],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Identificado no registro eleitoral de 2024.",
+      "foto": {
+        "arquivo": "img/pessoas/denis-rodrigues-bastos.webp",
+        "origem": "https://camaraacopiara.ce.gov.br/parlamentares/16/perfil/",
+        "credito": "Câmara Municipal de Acopiara · retrato parlamentar"
+      }
+    },
+    {
+      "nome": "Tuanny Martins Teixeira Florentino Dias",
+      "resumo": "",
+      "trajetoria": [],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Ana Paula Henrique Pinho",
+      "resumo": "Educadora com atuação no SESI Ceará e coautoria de pesquisa sobre inclusão de alunos neuroatípicos e formação docente.",
+      "trajetoria": [
+        {
+          "titulo": "Gestão educacional e pesquisa",
+          "texto": "O relatório de gestão do SESI Ceará de 2024 a relaciona na Gerência da Unidade de Educação e Cultura. Também é coautora de artigo sobre atendimento inclusivo e formação de professores nas escolas do SESI Ceará, com DOI 10.54033/cadpedv21n8-169.",
+          "fontes": [
+            {
+              "titulo": "SESI Ceará · relatório de gestão 2024",
+              "url": "https://arquivos.sfiec.org.br/sesi-transparencia/files/files/demonstracao%20de%20resultados/Relatorio%20de%20Gestao_SESI_2024.pdf"
+            },
+            {
+              "titulo": "Caderno Pedagógico · artigo de pesquisa",
+              "url": "https://ojs.studiespublicacoes.com.br/ojs/index.php/cadped/article/view/6913"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Douglas Teixeira de Sousa",
+      "resumo": "",
+      "trajetoria": [],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Zenilda Josielle Matos Guilherme",
+      "resumo": "",
+      "trajetoria": [],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    },
+    {
+      "nome": "Davyson Sampaio Braga",
+      "resumo": "Oftalmologista com residência registrada pela Escola Cearense de Oftalmologia e atuação profissional no Cariri.",
+      "trajetoria": [
+        {
+          "titulo": "Residência e especialização",
+          "texto": "A Escola Cearense de Oftalmologia o inclui nominalmente em sua galeria de ex-residentes, no período de fevereiro de 2015 a março de 2018. A Revista Interativa do Jornal do Médico descreve atuação em cirurgia de catarata e retina clínica e passagem pela coordenação da residência da instituição.",
+          "fontes": [
+            {
+              "titulo": "Escola Cearense de Oftalmologia · ex-residentes",
+              "url": "https://escolacearenseoftalmologia.com.br/medico/residentes/ex-residentes/"
+            },
+            {
+              "titulo": "Jornal do Médico · perfil publicado em maio de 2024",
+              "url": "https://jornaldomedico.com.br/wp-content/uploads/RI-Maio-2024-web.pdf"
+            }
+          ]
+        },
+        {
+          "titulo": "Atuação além de Acopiara",
+          "texto": "O perfil profissional publicado pelo Jornal do Médico relata sua atuação no Cariri e a representação regional na Sociedade Cearense de Oftalmologia. Esse histórico profissional é apresentado separadamente dos contratos e vínculos públicos examinados nos casos do portal.",
+          "fontes": [
+            {
+              "titulo": "Jornal do Médico · trajetória profissional",
+              "url": "https://jornaldomedico.com.br/wp-content/uploads/RI-Maio-2024-web.pdf"
+            }
+          ]
+        }
+      ],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas.",
+      "foto": {
+        "arquivo": "img/pessoas/davyson-sampaio-braga.webp",
+        "origem": "https://escolacearenseoftalmologia.com.br/medico/residentes/ex-residentes/",
+        "credito": "Escola Cearense de Oftalmologia · galeria de ex-residentes"
+      }
+    },
+    {
+      "nome": "Josenildo Mourato da Silva",
+      "resumo": "",
+      "trajetoria": [],
+      "redes": [],
+      "consultadoEm": "2026-11-28",
+      "instagramSituacao": "Não confirmado nas fontes consultadas."
+    }
+  ]
+}

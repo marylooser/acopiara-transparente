@@ -1,0 +1,34 @@
+.portrait { display: block; position: relative; width: 72px; height: 72px; flex: none; }
+.portrait img { position: absolute; inset: 0; object-fit: cover; object-position: center 30%; }
+.profile-topic { margin: 0 0 24px; }
+.profile-topic h3 { font: 700 18px/1.4 var(--sans); margin: 0 0 8px; }
+.profile-topic p { margin: 0 0 8px; }
+.profile-topic .profile-citations { color: var(--muted); font-size: 12px; line-height: 1.7; }
+.profile-citations a { color: inherit; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.profile-channels { margin-bottom: 20px; }
+.profile-network + .profile-network { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 16px; }
+.profile-network .btn { width: 100%; justify-content: flex-start; height: auto; min-height: 44px; overflow-wrap: anywhere; }
+.profile-network p { font-size: 12px; line-height: 1.65; margin: 8px 0 0; color: var(--muted); }
+.profile-provenance { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 24px; display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--muted); font-size: 11px; line-height: 1.7; }
+.profile-provenance > span { display: block; }
+.profile-provenance details[open] { flex-basis: 100%; }
+.profile-provenance summary { cursor: pointer; width: fit-content; }
+.profile-provenance details p { margin-top: 8px; font-size: 12px; max-width: 70ch; }
+.person-list-identity { display: flex; align-items: center; gap: 12px; }
+.person-list-identity .avatar, .person-list-identity .portrait { width: 44px; height: 44px; font-size: 17px; flex: none; }
+.person-list-identity > a, .person-list-identity > span:last-child { min-width: 0; }
+.people-directory .card .perfil { grid-template-columns: 64px minmax(0, 1fr); gap: 12px; }
+.people-directory .card .avatar, .people-directory .card .portrait { width: 64px; height: 64px; }
+.people-directory .card h3 { overflow-wrap: break-word; }
+.people-directory .card .profile-summary { font-size: 14px; line-height: 1.65; margin-top: 16px; }
+@media (max-width: 760px) {
+  .profile-heading { grid-template-columns: 64px minmax(0, 1fr); gap: 14px; }
+  .profile-heading .portrait, .profile-heading .avatar { width: 64px; height: 64px; }
+  .profile-heading h1 { overflow-wrap: break-word; }
+  .profile-heading .lead { font-size: 14px; line-height: 1.5; }
+  .profile-side { margin-top: 24px; }
+}
+@media print {
+  .profile-side { display: block; position: static; }
+  .profile-provenance details { display: none; }
+}

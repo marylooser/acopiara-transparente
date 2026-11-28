@@ -22,7 +22,8 @@
 
   document.body.classList.toggle('m', M);
   const j = u => fetch(u, { cache: 'no-cache' }).then(r => r.ok ? r.json() : []).catch(() => []);
-  Promise.all([j('data/casos.json'), j('data/site.json'), j('data/noticias.json'), j('data/perfis.json'), j('data/dinheiro.json'), j('data/processos.json')]).then(([c, x, n, p, d, pr]) => {
+  Promise.all([j('data/casos.json'), j('data/site.json'), j('data/noticias.json'), j('data/perfis.json'), j('data/dinheiro.json'), j('data/processos.json'), j('data/perfis-complementares.json')]).then(([c, x, n, p, d, pr, profiles]) => {
+    window.PROFILES?.set(profiles);
     DIN = d || {}; PROC = pr || [];
     CASOS = c; X = x; NOT = (n || []).sort((a, b) => b.data.localeCompare(a.data)); PERF = p || [];
     (X.numeros || []).forEach(n => { if (n.chave === 'casos') n.valor = String(CASOS.length); });
@@ -552,16 +553,16 @@
     const rows = s.linhas.map(r => { const f = salCols(r[2]); return [r[0], r[1], f.meses + (f.extra ? '; ' + f.extra : ''), f.media, f.maximo, f.sit, r[3], r[4], r[5]]; });
     return tabela([['Profissional', 'Cargo', 'Meses na folha', 'Média mensal', 'Máximo', 'Situação', 'Horas em Acopiara', 'Horas em outras cidades', 'Total semanal'], ...rows], { id: 'stb', data: 1 });
   }
-  function avatar(p) { return p.foto ? `<img class="avatar" src="${esc(p.foto)}" alt="Foto de ${esc(p.nome)}" loading="lazy">` : `<div class="avatar" aria-hidden="true">${initials(p.nome)}</div>`; }
+  function avatar(p) { return window.PROFILES?.avatar(p, initials(p.nome)) || `<span class="avatar" aria-hidden="true">${initials(p.nome)}</span>`; }
   function initials(n) { const p = n.split(' ').filter(w => w.length > 2); return (p[0][0] + (p[p.length - 1] || ' ')[0]).toUpperCase(); }
   function pessoas() {
     const P = todasPessoas(); const s = X.salarios || { linhas: [] };
     const linhas = P.map(p => [p.nome, [...p.papeis].filter(Boolean).join('; '), p.casos.length]);
-    const tab = M ? `<div class="recs" id="pt">${P.map(p => `<a class="rec" style="text-decoration:none;color:inherit" href="#/pessoa/${encodeURIComponent(p.nome)}" data-t="${esc(norm(p.nome + ' ' + [...p.papeis].join(' ')))}" data-qtd="${p.casos.length}"><div class="h">${esc(p.nome)}</div><div class="muted" style="font-size:14px">${esc([...p.papeis].filter(Boolean).join('; '))}</div><div style="font-size:13px;margin-top:6px">${p.casos.length} caso${p.casos.length === 1 ? '' : 's'}</div></a>`).join('')}</div>`
-      : `<div class="tscroll"><table class="t" id="pt"><thead><tr><th>Nome</th><th>Papel nos documentos</th><th>Casos</th></tr></thead><tbody>${P.map(p => `<tr data-t="${esc(norm(p.nome + ' ' + [...p.papeis].join(' ')))}" data-qtd="${p.casos.length}"><td><a href="#/pessoa/${encodeURIComponent(p.nome)}"><b>${esc(p.nome)}</b></a></td><td>${esc([...p.papeis].filter(Boolean).join('; '))}</td><td>${p.casos.map(c => `<a href="#/caso/${c.id}">${esc(c.titulo)}</a>`).join('<br>')}</td></tr>`).join('')}</tbody></table></div>`;
+    const tab = M ? `<div class="recs" id="pt">${P.map(p => `<a class="rec" style="text-decoration:none;color:inherit" href="#/pessoa/${encodeURIComponent(p.nome)}" data-t="${esc(norm(p.nome + ' ' + [...p.papeis].join(' ')))}" data-qtd="${p.casos.length}"><div class="h person-list-identity">${avatar(p)}<span>${esc(p.nome)}</span></div><div class="muted" style="font-size:14px">${esc([...p.papeis].filter(Boolean).join('; '))}</div><div style="font-size:13px;margin-top:6px">${p.casos.length} caso${p.casos.length === 1 ? '' : 's'}</div></a>`).join('')}</div>`
+      : `<div class="tscroll"><table class="t" id="pt"><thead><tr><th>Nome</th><th>Papel nos documentos</th><th>Casos</th></tr></thead><tbody>${P.map(p => `<tr data-t="${esc(norm(p.nome + ' ' + [...p.papeis].join(' ')))}" data-qtd="${p.casos.length}"><td><div class="person-list-identity">${avatar(p)}<a href="#/pessoa/${encodeURIComponent(p.nome)}"><b>${esc(p.nome)}</b></a></div></td><td>${esc([...p.papeis].filter(Boolean).join('; '))}</td><td>${p.casos.map(c => `<a href="#/caso/${c.id}">${esc(c.titulo)}</a>`).join('<br>')}</td></tr>`).join('')}</tbody></table></div>`;
     return `<section class="block"><div class="wrap"><div class="kicker">Pessoas</div><h1>Quem aparece nos documentos</h1>
       <p class="lead">Agentes públicos, empresas e pessoas citadas nos atos oficiais, com os casos em que aparecem. Aparecer aqui não significa culpa.</p>
-      ${PERF.length ? `<h2 style="margin-top:var(--s5)">Quem decide</h2><div class="grid ${M ? '' : 'g3'}" style="margin-bottom:var(--s5)">${PERF.map(p => `<a class="card" href="#/pessoa/${encodeURIComponent(p.nome)}"><div class="body"><div class="perfil">${avatar(p)}<div><h3 style="font-size:17px">${esc(p.nome)}</h3><div class="meta" style="margin-top:6px">${esc(p.cargo)}</div></div></div><p style="margin-top:12px">${esc(p.bio.length > 160 ? p.bio.slice(0, p.bio.lastIndexOf(' ', 150)) + '…' : p.bio)}</p></div></a>`).join('')}</div>` : ''}
+      ${PERF.length ? `<h2 style="margin-top:var(--s5)">Quem decide</h2><div class="grid people-directory ${M ? '' : 'g3'}" style="margin-bottom:var(--s5)">${PERF.map(p => `<a class="card" href="#/pessoa/${encodeURIComponent(p.nome)}"><div class="body"><div class="perfil">${avatar(p)}<div><h3 style="font-size:17px">${esc(p.nome)}</h3><div class="meta" style="margin-top:6px">${esc(p.cargo)}</div></div></div><p class="profile-summary">${esc(PROFILES.summary(p.nome) || (p.bio.length > 160 ? p.bio.slice(0, p.bio.lastIndexOf(' ', 150)) + '…' : p.bio))}</p></div></a>`).join('')}</div>` : ''}
       <h2>Todos os citados</h2>
       <div class="filters" style="grid-template-columns:2fr 1fr"><input id="pq" type="search" placeholder="Buscar por nome ou cargo…"><select id="pc"><option value="">Todos</option><option value="1">Com mais de um caso</option></select></div>
       ${tab}
@@ -576,14 +577,17 @@
     const lado = pf ? `<div class="box"><h4>Contatos oficiais</h4>${pf.contatos.map(c => `<a class="btn ghost block" style="margin-bottom:8px" href="${esc(c.u)}" target="_blank" rel="noopener">${esc(c.t)} ↗</a>`).join('')}<p class="muted" style="font-size:13px;margin:8px 0 0">Publicamos só canais institucionais. Telefones e endereços pessoais não são divulgados.</p></div>` : '';
     return `<section class="block"><div class="wrap"><div class="chips"><a class="chip" href="#/pessoas">← Pessoas</a></div>
       <div class="row" style="margin-top:var(--s3)"><div class="c8">
-      <div class="perfil">${avatar(pf || p)}<div><h1 style="font-size:clamp(28px,3.4vw,40px);margin-bottom:8px">${esc(p.nome)}</h1><p class="lead" style="margin:0">${esc(pf ? pf.cargo + (pf.partido ? ' · ' + pf.partido : '') : [...p.papeis].filter(Boolean).join('; '))}</p></div></div>
+      <div class="perfil profile-heading">${avatar(pf || p)}<div><h1 style="font-size:clamp(28px,3.4vw,40px);margin-bottom:8px">${esc(p.nome)}</h1><p class="lead" style="margin:0">${esc(pf ? pf.cargo + (pf.partido ? ' · ' + pf.partido : '') : [...p.papeis].filter(Boolean).join('; '))}</p></div></div>
       <div class="prose" style="margin-top:var(--s4)">
-      ${pf ? `<h2>Quem é</h2><p>${esc(pf.bio)}</p>${financialSummary(pf.gestao?.financeiro)}${pf.historico?.length ? `<h2>Cargos e funções</h2><ul class="q">${pf.historico.map(h => `<li>${esc(h)}</li>`).join('')}</ul>` : ''}<h2>O que assinou ou decidiu nos documentos</h2><p>${esc(pf.atos)}</p>
+      ${pf ? `<h2>Quem é</h2><p>${esc(PROFILES.summary(nome) || pf.bio)}</p>` : PROFILES.summary(nome) ? `<h2>Quem é</h2><p>${esc(PROFILES.summary(nome))}</p>` : ''}
+      ${PROFILES.biography(nome)}
+      ${PROFILES.dossierContext(nome)}
+      ${pf ? `${financialSummary(pf.gestao?.financeiro)}${pf.historico?.length ? `<h2>Cargos e funções</h2><ul class="q">${pf.historico.map(h => `<li>${esc(h)}</li>`).join('')}</ul>` : ''}<h2>O que assinou ou decidiu nos documentos</h2><p>${esc(pf.atos)}</p>
         ${pf.declaracoes?.length ? `<h2>O que disse publicamente</h2>${pf.declaracoes.map(d => `<p><b>${fmtData(d.data)}.</b> ${esc(d.texto)} <a href="${esc(d.url)}" target="_blank" rel="noopener">Fonte ↗</a></p>`).join('')}` : ''}` : ''}
       ${sal.length ? `<h2>Vínculos e jornada (indício a apurar)</h2>${sal.map(r => `<div class="box"><div class="nums">${X.salarios.colunas.map((c, i) => `<div><span>${esc(c)}</span><b>${nb(r[i])}</b></div>`).join('')}</div></div>`).join('')}` : ''}
       <h2>Casos em que aparece</h2>${p.casos.length ? list(p.casos, cardCaso, 'g2') : '<p>Citado em tabela de vínculos ou em ato oficial.</p>'}
-      <p class="note">Aparecer em um documento oficial não significa ter cometido irregularidade. Correções e manifestações: veja <a href="#/sobre">Sobre</a>.</p></div></div>
-      <aside class="c4 aside">${lado}</aside></div></div></section>`;
+      <p class="note">Aparecer em um documento oficial não significa ter cometido irregularidade. Correções e manifestações: veja <a href="#/sobre">Sobre</a>.</p>${PROFILES.provenance(nome)}</div></div>
+      <aside class="c4 aside profile-side">${PROFILES.channels(nome)}${lado}</aside></div></div></section>`;
   }
 
   /* ---------- FISCALIZE ---------- */
@@ -644,7 +648,7 @@
     const it = [];
     CASOS.forEach(c => it.push({ tipo: 'Caso', titulo: c.titulo, sub: c.resumo, href: '#/caso/' + c.id, area: c.area, ano: c.periodo?.inicio?.slice(0, 4), fim: (c.periodo?.fim || c.periodo?.inicio || '').slice(0, 4), status: c.status, t: norm([c.titulo, c.resumo, c.area, c.secretaria, (c.o_que_aconteceu || []).join(' '), JSON.stringify(c.tabelas || []), (c.pessoas || []).map(p => p.nome + ' ' + p.papel).join(' ')].join(' ')), tt: norm(c.titulo) }));
     NOT.forEach(n => it.push({ tipo: 'Notícia', titulo: n.titulo, sub: n.veiculo + ' · ' + fmtData(n.data), href: '#/noticia/' + n.id, area: (n.tags || [])[0], ano: n.data.slice(0, 4), fim: n.data.slice(0, 4), t: norm([n.titulo, n.fato, n.analise.join(' '), n.veiculo, (n.tags || []).join(' ')].join(' ')), tt: norm(n.titulo) }));
-    todasPessoas().forEach(p => it.push({ tipo: 'Pessoa', titulo: p.nome, sub: [...p.papeis].filter(Boolean).join('; '), href: '#/pessoa/' + encodeURIComponent(p.nome), t: norm(p.nome + ' ' + [...p.papeis].join(' ')), tt: norm(p.nome) }));
+    todasPessoas().forEach(p => { const profile = PROFILES.get(p.nome); it.push({ tipo: 'Pessoa', titulo: p.nome, sub: PROFILES.summary(p.nome) || [...p.papeis].filter(Boolean).join('; '), href: '#/pessoa/' + encodeURIComponent(p.nome), t: norm([p.nome, ...p.papeis, profile?.resumo || '', ...(profile?.trajetoria || []).map(t => t.titulo + ' ' + t.texto)].join(' ')), tt: norm(p.nome) }); });
     (X.tutoriais || []).forEach((t, i) => it.push({ tipo: 'Tutorial', titulo: t.titulo, sub: t.para_que, href: '#/fiscalize', t: norm(t.titulo + ' ' + t.para_que + ' ' + t.passos.join(' ')), tt: norm(t.titulo) }));
     CASOS.forEach(c => (c.datas || []).forEach(d => it.push({ tipo: 'Data', titulo: fmtData(d.data) + ' · ' + d.evento, sub: c.titulo, href: '#/caso/' + c.id, area: c.area, ano: d.data.slice(0, 4), fim: d.data.slice(0, 4), t: norm(d.evento + ' ' + c.titulo), tt: norm(d.evento) })));
     return IDX = it;
